@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
 
 :root {
-  --header-height: 6rem;
+  --header-height: 7rem;
   --nav-width: 104px;
   --first-color: rgb(255 50 59);
   --first-color-light: #afa5d9;
@@ -183,4 +183,63 @@ a {
   .body-pd {
     padding-left: calc(var(--nav-width) + 188px);
   }
+}
+
+.btn-nav{
+  margin-left: 5px;
+  border-radius: 5px;
+}
+
+.btn-nav:hover{
+  background-color: rgb(255, 50, 59);
+  color: #fff;
+}
+
+.num-commentary, .num-answer{
+  background-color: rgb(7, 26, 57);
+  margin-left: 5px;
+  margin-right: 5px;
+  border-radius: 6px;
+}
+
+.titulo{
+  color: rgb(255 50 59);
+}
+
+.info{  
+  background-color: rgb(255 50 59);
+  border-radius: 6px;
+}
+
+.img-add-tema{
+  background-image: rgb(255 50 59);
+}
+
+.text-add-tema{
+  color: rgb(255 50 59);
+}
+
+.text-add-tema:hover{
+  color: rgb(7, 26, 57);
+}
+
+.container {
+  width: 90%;
+}
+
+.titulo-tema{
+  border-bottom: 2px solid rgb(7, 26, 57);
+}
+
+.tema-informacion{
+  box-shadow: 2px 2px 15px #999;
+}
+
+.img-busqueda{
+  width: 30px;
+  height: 30px;
+}
+
+.bt-nav{
+  
 }

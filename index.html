@@ -14,12 +14,29 @@
 
 <body id="body-pd">
     <header class="header" id="header">
-        <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
-        <h1 id="title"><span style="color:red;">BIENVENIDO AL</span> <span style="color: white;">FORO ASSIST</span></h1>
-        <button>Temas</button>
-        <button>Actividad Reciente</button>
-        <button>Comentarios</button>
-        <!-- <div class="header_img"> <img src="https://i.imgur.com/hczKIze.jpg" alt=""> </div> -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
+                <h1 id="title"><span style="color:red;">BIENVENIDO AL</span> <span style="color: white;">FORO ASSIST</span></h1>
+                <!-- <div class="header_img"> <img src="https://i.imgur.com/hczKIze.jpg" alt=""> </div> -->
+            </div>
+            <div class="row">
+                <div class="btn-group">
+                    <div class="col-md-2 d-grid">                    
+                        <button type="button" class="btn btn-outline-light btn-nav">Temas</button>                    
+                    </div>    
+                    <div class="col-md-2 d-grid">
+                        <button type="button" class="btn btn-outline-light btn-nav">Actividad Reciente</button>
+                    </div>  
+                    <div class="col-md-2 d-grid">
+                        <button type="button" class="btn btn-outline-light btn-nav">Comentarios</button>
+                    </div>   
+                </div>  
+                <div class="col-md-2">
+                        <img class="img img-busqueda"  src="img/Busqueda.png" alt="">
+                </div> 
+            </div>
+        </div>
     </header>
     <div class="l-navbar" id="nav-bar">
         <nav class="nav">
@@ -35,7 +52,61 @@
     </div>
     <!--Container Main start-->
     <div class="height-100 bg-light">
-        <h4>Main Components</h4>
+        
+        <div class="container">
+
+            <div class="row d-flex justify-content-end">
+                <div class="col-md-5 mt-3 d-flex justify-content-end">
+                    <div class="card info">
+                        <div class="row card-body d-flex">
+                            <div class="col num-commentary pt-2">
+                                <h6 class="text-center titulo">COMENTARIOS</h6>
+                                <h6 class="text-center text-light">####</h6>
+                            </div>
+                            <div class="col num-answer pt-2">
+                                <h6 class="text-center titulo">RESPUESTAS</h6>
+                                <h6 class="text-center text-light">####</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 d-flex align-items-end justify-content-center">
+                    <div class="row tema">
+                        <div class="col-md-6 d-flex justify-content-end btn">
+                        <img class="img img-add-tema" src="img/agregar.png" alt="">
+                        </div>
+                        <div class="col-md-6 d-flex justify-content-start align-items-end btn">
+                                <h5 class="text-center text-add-tema text-nowrap">CREAR TEMA</h5>                
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4 d-flex justify-content-start">
+                <div class="card tema-informacion">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-5 ">
+                                <h6><strong>Publicado por: José Pérez (Administrador)</strong></h6> 
+                            </div>
+                            <div class="col-7">
+                                <p class="fs-6 text-muted">Fecha: Junio 31 de 2021</p>
+                            </div>
+                        </div>
+                        <div class="row titulo titulo-tema">
+                            <div class="col">
+                                <h1><strong>Transformación digital en pandemia</strong></h1>
+                            </div>
+                        </div>
+                        <div class="row cuerpo-tema mt-3">
+                            <div class="col">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos odit modi ut, totam, dolorem magnam corporis qui doloribus eius optio cupiditate asperiores molestiae fugit. Temporibus id sit voluptatum ea perferendis nesciunt veritatis. Eius repellendus perferendis ad! Quasi illo id, cupiditate rerum, ad quam adipisci amet blanditiis, vero minus facere voluptatum molestias provident ducimus? Quasi voluptatum a deleniti veritatis ipsa illo!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!--Container Main end-->
 
