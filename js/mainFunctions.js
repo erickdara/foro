@@ -1,3 +1,5 @@
+$(selector).on(-"load", function () {});
+
 document.addEventListener("DOMContentLoaded", function (event) {
   const showNavbar = (toggleId, navId, bodyId, headerId) => {
     const toggle = document.getElementById(toggleId),
