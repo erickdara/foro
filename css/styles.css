@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
 
 :root {
-  --header-height: 7rem;
+  --header-height: 7.1rem;
   --nav-width: 104px;
   --first-color: rgb(255 50 59);
   --first-color-light: #afa5d9;
@@ -187,7 +187,10 @@ a {
 
 .btn-nav{
   margin-left: 5px;
-  border-radius: 5px;
+  border-radius: 4px;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  border-right: 2px solid #fff;
 }
 
 .btn-nav:hover{
@@ -231,6 +234,12 @@ a {
   border-bottom: 2px solid rgb(7, 26, 57);
 }
 
+.titulo-comentario{
+  border-top: 2px solid rgb(7, 26, 57);
+  width: 100%;
+  border-top: dotted;
+}
+
 .tema-informacion{
   box-shadow: 2px 2px 15px #999;
 }
@@ -240,6 +249,21 @@ a {
   height: 30px;
 }
 
-.bt-nav{
-  
+.btn-vermas:hover{
+  background-color: rgb(255 50 59);
+  color: rgb(7, 26, 57);
+}
+
+.btn-vermas{
+  color: rgb(255 50 59); 
+  background-color: rgb(7, 26, 57);
+}
+
+.img-user{
+  border: 3px solid rgb(255 50 59);
+  border-radius: 50px;
+}
+
+.container-commentary{
+  border-top: 3px solid rgb(255 50 59);
 }
