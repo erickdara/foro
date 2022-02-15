@@ -1,269 +1,262 @@
 @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
-
 :root {
-  --header-height: 7.1rem;
-  --nav-width: 104px;
-  --first-color: rgb(255 50 59);
-  --first-color-light: #afa5d9;
-  --background-header-color: rgb(7 26 57);
-  --body-font: "Nunito", sans-serif;
-  --normal-font-size: 1rem;
-  --z-fixed: 100;
+    --header-height: 7.1rem;
+    --nav-width: 104px;
+    --first-color: rgb(255 50 59);
+    --first-color-light: #afa5d9;
+    --background-header-color: rgb(7 26 57);
+    --body-font: "Nunito", sans-serif;
+    --normal-font-size: 1rem;
+    --z-fixed: 100;
 }
 
 *,
 ::before,
 ::after {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-  position: relative;
-  margin: var(--header-height) 0 0 0;
-  padding: 0 1rem;
-  font-family: var(--body-font);
-  font-size: var(--normal-font-size);
-  transition: 0.5s;
+    position: relative;
+    margin: var(--header-height) 0 0 0;
+    padding: 0 1rem;
+    font-family: var(--body-font);
+    font-size: var(--normal-font-size);
+    transition: 0.5s;
 }
 
 a {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 .header {
-  width: 100%;
-  height: var(--header-height);
-  position: fixed;
-  top: 0;
-  left: 0;
-  /* display: flex; */
-  align-items: center;
-  justify-content: flex-start;
-  padding: 0 1rem;
-  background-color: var(--background-header-color);
-  z-index: var(--z-fixed);
-  transition: 0.5s;
+    width: 100%;
+    height: var(--header-height);
+    position: fixed;
+    top: 0;
+    left: 0;
+    /* display: flex; */
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 1rem;
+    background-color: var(--background-header-color);
+    z-index: var(--z-fixed);
+    transition: 0.5s;
 }
 
 .header_toggle {
-  color: var(--first-color);
-  font-size: 1.5rem;
-  cursor: pointer;
+    color: var(--first-color);
+    font-size: 1.5rem;
+    cursor: pointer;
 }
 
 .header_img {
-  width: 35px;
-  height: 35px;
-  display: flex;
-  justify-content: center;
-  border-radius: 50%;
-  overflow: hidden;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    border-radius: 50%;
+    overflow: hidden;
 }
 
 .header_img img {
-  width: 40px;
+    width: 40px;
 }
 
 .l-navbar {
-  position: fixed;
-  top: 0;
-  left: -30%;
-  width: var(--nav-width);
-  height: 100vh;
-  background-color: var(--first-color);
-  padding: 0.5rem 1rem 0 0;
-  transition: 0.5s;
-  z-index: var(--z-fixed);
+    position: fixed;
+    top: 0;
+    left: -30%;
+    width: var(--nav-width);
+    height: 100vh;
+    background-color: var(--first-color);
+    padding: 0.5rem 1rem 0 0;
+    transition: 0.5s;
+    z-index: var(--z-fixed);
 }
 
 .nav {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
 }
 
 .nav_logo,
 .nav_link {
-  display: grid;
-  grid-template-columns: max-content max-content;
-  align-items: center;
-  column-gap: 1rem;
-  padding: 0.5rem 0 0.5rem 1.5rem;
+    display: grid;
+    grid-template-columns: max-content max-content;
+    align-items: center;
+    column-gap: 1rem;
+    padding: 0.5rem 0 0.5rem 1.5rem;
 }
 
 .nav_logo {
-  margin-bottom: 2rem;
+    margin-bottom: 2rem;
 }
 
 .nav_logo-icon {
-  font-size: 1.25rem;
-  color: var(--background-header-color);
+    font-size: 1.25rem;
+    color: var(--background-header-color);
 }
 
 .nav_logo-name {
-  color: var(--background-header-color);
-  font-weight: 700;
+    color: var(--background-header-color);
+    font-weight: 700;
 }
 
 .nav_link {
-  position: relative;
-  color: var(--first-color-light);
-  margin-bottom: 1.5rem;
-  transition: 0.3s;
+    position: relative;
+    color: var(--first-color-light);
+    margin-bottom: 1.5rem;
+    transition: 0.3s;
 }
 
 .nav_link:hover {
-  color: var(--background-header-color);
+    color: var(--background-header-color);
 }
 
 .nav_icon {
-  font-size: 1.25rem;
+    font-size: 1.25rem;
 }
 
-.show {
-  left: 0;
+.showMenu {
+    left: 0;
 }
 
 .body-pd {
-  padding-left: calc(var(--nav-width) + 1rem);
+    padding-left: calc(var(--nav-width) + 1rem);
 }
 
 .active {
-  color: var(--background-header-color);
+    color: var(--background-header-color);
 }
 
 .active::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  width: 2px;
-  height: 32px;
-  background-color: var(--background-header-color);
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 2px;
+    height: 32px;
+    background-color: var(--background-header-color);
 }
 
 .height-100 {
-  height: 100vh;
+    height: 100vh;
 }
 
-.title {
-}
+.title {}
 
 @media screen and (min-width: 768px) {
-  body {
-    margin: calc(var(--header-height) + 1rem) 0 0 0;
-    padding-left: calc(var(--nav-width) + 2rem);
-  }
-
-  .header {
-    height: calc(var(--header-height) + 1rem);
-    padding: 0 2rem 0 calc(var(--nav-width) + 2rem);
-  }
-
-  .header_img {
-    width: 40px;
-    height: 40px;
-  }
-
-  .header_img img {
-    width: 45px;
-  }
-
-  .l-navbar {
-    left: 0;
-    padding: 1rem 1rem 0 0;
-    padding-left: 10px;
-  }
-
-  .show {
-    width: calc(var(--nav-width) + 156px);
-  }
-
-  .body-pd {
-    padding-left: calc(var(--nav-width) + 188px);
-  }
+    body {
+        margin: calc(var(--header-height) + 1rem) 0 0 0;
+        padding-left: calc(var(--nav-width) + 2rem);
+    }
+    .header {
+        height: calc(var(--header-height) + 1rem);
+        padding: 0 2rem 0 calc(var(--nav-width) + 2rem);
+    }
+    .header_img {
+        width: 40px;
+        height: 40px;
+    }
+    .header_img img {
+        width: 45px;
+    }
+    .l-navbar {
+        left: 0;
+        padding: 1rem 1rem 0 0;
+        padding-left: 10px;
+    }
+    .showMenu {
+        width: calc(var(--nav-width) + 156px);
+    }
+    .body-pd {
+        padding-left: calc(var(--nav-width) + 188px);
+    }
 }
 
-.btn-nav{
-  margin-left: 5px;
-  border-radius: 4px;
-  border-top: 2px solid #fff;
-  border-left: 2px solid #fff;
-  border-right: 2px solid #fff;
+.btn-nav {
+    margin-left: 5px;
+    border-radius: 4px;
+    border-top: 2px solid #fff;
+    border-left: 2px solid #fff;
+    border-right: 2px solid #fff;
 }
 
-.btn-nav:hover{
-  background-color: rgb(255, 50, 59);
-  color: #fff;
+.btn-nav:hover {
+    background-color: rgb(255, 50, 59);
+    color: #fff;
 }
 
-.num-commentary, .num-answer{
-  background-color: rgb(7, 26, 57);
-  margin-left: 5px;
-  margin-right: 5px;
-  border-radius: 6px;
+.num-commentary,
+.num-answer {
+    background-color: rgb(7, 26, 57);
+    margin-left: 5px;
+    margin-right: 5px;
+    border-radius: 6px;
 }
 
-.titulo{
-  color: rgb(255 50 59);
+.titulo {
+    color: rgb(255 50 59);
 }
 
-.info{  
-  background-color: rgb(255 50 59);
-  border-radius: 6px;
+.info {
+    background-color: rgb(255 50 59);
+    border-radius: 6px;
 }
 
-.img-add-tema{
-  background-image: rgb(255 50 59);
+.img-add-tema {
+    background-image: rgb(255 50 59);
 }
 
-.text-add-tema{
-  color: rgb(255 50 59);
+.text-add-tema {
+    color: rgb(255 50 59);
 }
 
-.text-add-tema:hover{
-  color: rgb(7, 26, 57);
+.text-add-tema:hover {
+    color: rgb(7, 26, 57);
 }
 
 .container {
-  width: 90%;
+    width: 90%;
 }
 
-.titulo-tema{
-  border-bottom: 2px solid rgb(7, 26, 57);
+.titulo-tema {
+    border-bottom: 2px solid rgb(7, 26, 57);
 }
 
-.titulo-comentario{
-  border-top: 2px solid rgb(7, 26, 57);
-  width: 100%;
-  border-top: dotted;
+.titulo-comentario {
+    border-top: 2px solid rgb(7, 26, 57);
+    width: 100%;
+    border-top: dotted;
 }
 
-.tema-informacion{
-  box-shadow: 2px 2px 15px #999;
+.tema-informacion {
+    box-shadow: 2px 2px 15px #999;
 }
 
-.img-busqueda{
-  width: 30px;
-  height: 30px;
+.img-busqueda {
+    width: 30px;
+    height: 30px;
 }
 
-.btn-vermas:hover{
-  background-color: rgb(255 50 59);
-  color: rgb(7, 26, 57);
+.btn-vermas:hover {
+    background-color: rgb(255 50 59);
+    color: rgb(7, 26, 57);
 }
 
-.btn-vermas{
-  color: rgb(255 50 59); 
-  background-color: rgb(7, 26, 57);
+.btn-vermas {
+    color: rgb(255 50 59);
+    background-color: rgb(7, 26, 57);
 }
 
-.img-user{
-  border: 3px solid rgb(255 50 59);
-  border-radius: 50px;
+.img-user {
+    border: 3px solid rgb(255 50 59);
+    border-radius: 50px;
 }
 
-.container-commentary{
-  border-top: 3px solid rgb(255 50 59);
+.container-commentary {
+    border-top: 3px solid rgb(255 50 59);
 }
