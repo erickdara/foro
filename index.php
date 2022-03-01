@@ -3,46 +3,46 @@
 session_start();
 
 // Check if the user is already logged in, if yes then redirect him to welcome page
-if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-    header("location: welcome.php");
-    exit;
-}
+//if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
+  //  header("location: index.php");
+   // exit;
+//}
 
 // Include config file
 require_once "config.php";
 
 // Define variables and initialize with empty values
-$username = $password = "";
+$usuCorreo = $usuPassword = "";
 $username_err = $password_err = $login_err = "";
 
 // Processing form data when form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Check if username is empty
-    if (empty(trim($_POST["username"]))) {
+    if (empty(trim($_POST['username']))) {
         $username_err = "Please enter username.";
     } else {
-        $username = trim($_POST["username"]);
+        $usuCorreo = trim($_POST['username']);
     }
 
     // Check if password is empty
-    if (empty(trim($_POST["password"]))) {
+    if (empty(trim($_POST['password']))) {
         $password_err = "Please enter your password.";
     } else {
-        $password = trim($_POST["password"]);
+        $usuPassword = trim($_POST['password']);
     }
 
     // Validate credentials
     if (empty($username_err) && empty($password_err)) {
         // Prepare a select statement
-        $sql = "SELECT id, username, password FROM users WHERE username = ?";
+        $sql = "SELECT idUsuario, usuCorreo, usuPassword FROM usuario WHERE usuCorreo = ?";
 
         if ($stmt = mysqli_prepare($link, $sql)) {
             // Bind variables to the prepared statement as parameters
             mysqli_stmt_bind_param($stmt, "s", $param_username);
 
             // Set parameters
-            $param_username = $username;
+            $param_username = $usuCorreo;
 
             // Attempt to execute the prepared statement
             if (mysqli_stmt_execute($stmt)) {
@@ -53,25 +53,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if (mysqli_stmt_num_rows($stmt) == 1) {
                     echo "Estoy encontrando resultados de la consulta";
                     // Bind result variables
-                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password);
+                    mysqli_stmt_bind_result($stmt, $idUsuario, $usuCorreo, $hashed_password);
                     if (mysqli_stmt_fetch($stmt)) {
 
-                        if (password_verify($password, $hashed_password)) {
+                        if (password_verify($usuPassword, $hashed_password)) {
                             echo "Estoy entrando a la validación de la password";
                             // Password is correct, so start a new session
                             session_start();
 
                             // Store data in session variables
                             $_SESSION["loggedin"] = true;
-                            $_SESSION["id"] = $id;
-                            $_SESSION["username"] = $username;
+                            $_SESSION["id"] = $idUsuario;
+                            $_SESSION["username"] = $usuCorreo;
 
                             // Redirect user to welcome page
-                            header("location: welcome.php");
+                            header("location: index.php");
 
                         } else {
                             // Password is not valid, display a generic error message
-                            $login_err = "Invalid username or password.";
+                            $login_err = "Invalid username orrr password.";
                         }
                     }
                 } else {
@@ -83,12 +83,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
 
             // Close statement
-            mysqli_stmt_close($stmt);
+           // mysqli_stmt_close($stmt);
         }
     }
 
     // Close connection
-    mysqli_close($link);
+    //mysqli_close($link);
 }
 ?>
 
@@ -121,26 +121,22 @@ if (!empty($login_err)) {
     <title>Foro ASSIST</title>
 </head>
     <header class="header" id="header">
-        <div class="row">
+    <div class="row">
             <div class="col-md-12">
                 <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
                 <h1 id="title"><span style="color:red;">BIENVENIDO AL</span> <span style="color: white;">FORO ASSIST</span></h1>
                 <!-- <div class="header_img"> <img src="https://i.imgur.com/hczKIze.jpg" alt=""> </div> -->
             </div>
-            <div class="row">
-                <div class="btn-group">
-                    <div class="col-md-2 d-grid">
-                        <button type="button" class="btn text-light btn-nav">Temas</button>
-                    </div>
-                    <div class="col-md-2 d-grid">
-                        <button type="button" class="btn text-light btn-nav">Actividad Reciente</button>
-                    </div>
-                    <div class="col-md-2 d-grid">
-                        <button type="button" class="btn text-light btn-nav">Comentarios</button>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <img class="img img-busqueda" src="img/Busqueda.png" alt="">
+            <div class="col-md-12 d-flex justify-content-start">
+                    <div class="col-md-6 col-sm-2 pb-1">                    
+                        <a href="index.html" type="button" class="btn text-light btn-nav">Temas</a>                    
+                        <a href="actividad.html" type="button" class="btn text-light btn-nav">Actividad Reciente</a>
+                        <a href="comentarios.html" type="button" class="btn text-light btn-nav">Comentarios</a>
+                    </div>   
+                 
+                <div class="col-md-6 col-sm- 4 d-flex align-items-center justify-content-end">
+                        <img style="width: 40px; height: 30px;" class="img img-busqueda"  src="./img/busqueda.png" alt="">
+                        <input type="text" style="background-color: rgb(7, 26, 57);" class="input-busqueda text-light" placeholder="Búsqueda">
                 </div>
             </div>
         </div>
@@ -155,8 +151,7 @@ if (!empty($login_err)) {
                     <a href="#" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Comunidad Assist</span> </a>
                     <a href="#" class="nav_link"></div>
             </div>
-            <a href="#" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">Comunidad
-                    Assist</span> </a>
+            <a href="logout.php" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">Cerrar sesión</span> </a>
         </nav>
     </div>
     <!--Container Main start-->
@@ -177,38 +172,77 @@ if (!empty($login_err)) {
                         </div>
                     </div>
                 </div>
-                <div class="col-md-5 d-flex align-items-end justify-content-center">
+                <div class="col-md-5 d-flex align-items-end justify-content-center">   
                     <div class="row tema">
+                    <button type="button" class="btn d-flex justify-content-between align-items-center" data-bs-toggle="modal" data-bs-target="#modalTema">
                         <div class="col-md-6 d-flex justify-content-end btn">
                             <img class="img img-add-tema" src="img/agregar.png" alt="">
                         </div>
-                        <div class="col-md-6 d-flex justify-content-start align-items-end btn">
+                        <div class="col-md-6 d-flex justify-content-center btn">
                             <h5 class="text-center text-add-tema text-nowrap">CREAR TEMA</h5>
                         </div>
+                        </button>
                     </div>
                 </div>
             </div>
 
             <div class="row mt-4 d-flex justify-content-start">
-                <div class="card tema-informacion">
+
+            <!-- Modal para crear tema-->
+            <div class="modal fade" id="modalTema" tabindex="-1" aria-labelledby="modalTema" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTema">Crear tema</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="crearTema.php" method="POST" >
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="tituloTema" class="form-label">Titulo:</label>
+                            <input type="text" class="form-control" name="tituloTema">
+                        </div>
+                        <div class="mb-3">
+                            <label for="describeTema" class="form-label">Descripción:</label>
+                            <textarea name="describeTema" class="form-control" cols="30" rows="8"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <input name="crearTema" type="submit" class="btn btn-primary" value="Publicar tema"></input>
+                    </div>
+                </form>
+                </div>
+            </div>
+            </div>
+            <!-- Fin del modal-->
+                <?php
+                  $query = "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, r.tipoRol, t.tituloTema, t.describeTema, t.created_at 
+                  FROM tema t 
+                  INNER JOIN usuario u ON t.idUsuario = u.idUsuario 
+                  INNER JOIN rol r ON u.idRol = r.idRol";  
+
+                  $resultQuery = mysqli_query($link, $query);
+                  while($row = mysqli_fetch_array($resultQuery)){
+                 ?>
+                <div class="card tema-informacion mt-2 mb-3">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-5 ">
-                                <h6><strong>Publicado por: José Pérez (Administrador)</strong></h6>
+                                <h6><strong>Publicado por: <?php echo $row['nombres']?> (<?php echo $row['tipoRol']?>)</strong></h6>
                             </div>
                             <div class="col-7">
-                                <p class="fs-6 text-muted">Fecha: Junio 31 de 2021</p>
+                                <p class="fs-6 text-muted">Fecha: <?php echo $row['created_at'] ?></p>
                             </div>
                         </div>
                         <div class="row titulo titulo-tema">
                             <div class="col">
-                                <h1><strong>Transformación digital en pandemia</strong></h1>
+                                <h1><strong><?php echo $row['tituloTema'];?></strong></h1>
                             </div>
                         </div>
                         <div class="row cuerpo-tema mt-3">
                             <div class="col">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos odit modi ut, totam, dolorem magnam corporis qui doloribus eius optio cupiditate asperiores molestiae fugit. Temporibus id sit voluptatum ea perferendis nesciunt veritatis. Eius repellendus
-                                perferendis ad! Quasi illo id, cupiditate rerum, ad quam adipisci amet blanditiis, vero minus facere voluptatum molestias provident ducimus? Quasi voluptatum a deleniti veritatis ipsa illo!
+                                <?php echo $row['describeTema']; ?>
                             </div>
                         </div>
                         <div class="row mt-4">
@@ -297,6 +331,9 @@ if (!empty($login_err)) {
                         </div>
                     </div>
                 </div>
+                <?php
+                  }
+                ?>
             </div>
         </div>
     </div>
@@ -317,7 +354,7 @@ if (!empty($login_err)) {
           <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
           <div class="mb-3">
             <label for="correo usuario" class="col-form-label">Correo:</label>
-            <input type="text" name="username" class="form-control<?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
+            <input type="text" name="username" class="form-control" <?php echo $usuCorreo; ?>>
             <span class="invalid-feedback"><?php echo $username_err; ?></span>
           </div>
           <div class="mb-3">

@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $username_err = "Username can only contain letters, numbers, and underscores.";
     } else {
         // Prepare a select statement
-        $sql = "SELECT id FROM users WHERE username = ?";
+        $sql = "SELECT idUsuario FROM usuario WHERE usuCorreo = ?";
 
         if ($stmt = mysqli_prepare($link, $sql)) {
             // Bind variables to the prepared statement as parameters
@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if (mysqli_stmt_num_rows($stmt) == 1) {
                     $username_err = "This username is already taken.";
                 } else {
-                    $username = trim($_POST["username"]);
+                    $usuCorreo = trim($_POST["username"]);
                 }
             } else {
                 echo "Oops! Something went wrong. Please try again later.";
@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif (strlen(trim($_POST["password"])) < 6) {
         $password_err = "Password must have atleast 6 characters.";
     } else {
-        $password = trim($_POST["password"]);
+        $usuPassword = trim($_POST["password"]);
     }
 
     // Validate confirm password
@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $confirm_password_err = "Please confirm password.";
     } else {
         $confirm_password = trim($_POST["confirm_password"]);
-        if (empty($password_err) && ($password != $confirm_password)) {
+        if (empty($password_err) && ($usuPassword != $confirm_password)) {
             $confirm_password_err = "Password did not match.";
         }
     }
@@ -66,16 +66,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Check input errors before inserting in database
     if (empty($username_err) && empty($password_err) && empty($confirm_password_err)) {
 
+        $nombres = $_POST['nombres'];
+        $apellidos = $_POST['apellidos'];
         // Prepare an insert statement
-        $sql = "INSERT INTO users (username, password) VALUES (?, ?)";
+        $sql = "INSERT INTO usuario (usuNombres, usuApellidos, idRol, usuCorreo, usuPassword) VALUES ('$nombres','$apellidos', 1,?, ?)";
 
         if ($stmt = mysqli_prepare($link, $sql)) {
             // Bind variables to the prepared statement as parameters
             mysqli_stmt_bind_param($stmt, "ss", $param_username, $param_password);
 
             // Set parameters
-            $param_username = $username;
-            $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
+            $param_username = $usuCorreo;
+            $param_password = password_hash($usuPassword, PASSWORD_DEFAULT); // Creates a password hash
 
             // Attempt to execute the prepared statement
             if (mysqli_stmt_execute($stmt)) {
@@ -112,7 +114,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <p>Please fill this form to create an account.</p>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="form-group">
-                <label>Username</label>
+                <label>Nombres</label>
+                <input type="text" name="nombres" class="form-control">
+                <span class="invalid-feedback"><?php echo $username_err; ?></span>
+            </div>
+            <div class="form-group">
+                <label>Apellidos</label>
+                <input type="text" name="apellidos" class="form-control" value="">
+                <span class="invalid-feedback"><?php echo $username_err; ?></span>
+            </div>
+            <div class="form-group">
+                <label>Correo</label>
                 <input type="text" name="username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
                 <span class="invalid-feedback"><?php echo $username_err; ?></span>
             </div>
