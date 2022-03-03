@@ -5,9 +5,9 @@ session_start();
 
 // Check if the user is already logged in, if yes then redirect him to welcome page
 //if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-//  header("location: index.php");
-// exit;
-//}
+  //header("location: index.php");
+ // exit;
+ //}
 
 // Include config file
 require_once "config.php";
@@ -144,10 +144,10 @@ if (!empty($login_err)) {
 <div class="l-navbar" id="nav-bar">
     <nav class="nav">
         <div>
-            <a href="#" class="nav_logo" data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">Iniciar Sesion</span> </a>
+            
             <div class="nav_list">
-                <a href="#" class="nav_link active"> <i class='bx bx-grid-alt nav_icon'></i>
-                    <span class="nav_name">Registrarse</span> </a>
+            <a href="#" class="nav_logo" data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">Iniciar Sesion</span> </a>
+                <a href="#" class="nav_link active" data-bs-toggle="modal" data-bs-target="#exampleModalregister"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Registrarse</span> </a>
                 <a href="#" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Comunidad Assist</span> </a>
                 <a href="#" class="nav_link">
             </div>
@@ -156,6 +156,20 @@ if (!empty($login_err)) {
     </nav>
 </div>
 <!--Container Main start-->
+<?php
+    $idUsuario = $_SESSION['id'];
+    $totalC = "SELECT COUNT(idUsuario) AS totalComentarios FROM comentario c
+    WHERE c.idUsuario != '$idUsuario';";
+
+    $resultTotalC = mysqli_query($link,$totalC);
+    $rowTotalC = mysqli_fetch_array($resultTotalC);
+
+    $totalR = "SELECT COUNT(idUsuario) AS totalRespuestas FROM respuesta r
+    WHERE r.idUsuario = '$idUsuario';";
+
+    $resultTotalR = mysqli_query($link,$totalR);
+    $rowTotalR = mysqli_fetch_array($resultTotalR);
+?>
 <div class="height-100 bg-light">
     <div class="container">
         <div class="row d-flex justify-content-end">
@@ -164,11 +178,11 @@ if (!empty($login_err)) {
                     <div class="row card-body d-flex">
                         <div class="col num-commentary pt-2">
                             <h6 class="text-center titulo">COMENTARIOS</h6>
-                            <h6 class="text-center text-light">####</h6>
+                            <h6 class="text-center text-light"><?php echo $rowTotalC['totalComentarios'];?></h6>
                         </div>
                         <div class="col num-answer pt-2">
                             <h6 class="text-center titulo">RESPUESTAS</h6>
-                            <h6 class="text-center text-light">####</h6>
+                            <h6 class="text-center text-light"><?php echo $rowTotalR['totalRespuestas'];?></h6>
                         </div>
                     </div>
                 </div>
@@ -248,17 +262,29 @@ if (!empty($login_err)) {
                             </div>
                         </div>
                         <div class="row mt-4">
+                            <?php
+                            $idTemaC = $row['idTema']; 
+                            $queryCountComentario = "SELECT COUNT(*) AS com FROM comentario c WHERE c.idTema = '$idTemaC' ";
+                            $resultCount = mysqli_query($link,$queryCountComentario);
+                            $rowCountComentario = mysqli_fetch_array($resultCount);
+                            ?>
                             <div class="col-md-4 d-flex d-wrap">
                                 <p class="mt-1" style="color: rgb(7, 26, 57); font-size: 15px;"><b>Comentarios del tema:</b></p>
-                                <b class="btn btn-comentarios" type="button" data-bs-toggle="collapse" data-bs-target="#collapseComentarios" aria-expanded="false" aria-controls="collapseExample" style="color: rgb(7, 26, 57); font-size: 13px; font-weight: bold;">1 Comentario</b>
+                                <b class="btn btn-comentarios" type="button" data-bs-toggle="collapse" data-bs-target="#tema<?php echo $row['idTema'] ?>" aria-expanded="false" aria-controls="collapseExample" style="color: rgb(7, 26, 57); font-size: 13px; font-weight: bold;"><?php echo $rowCountComentario['com'] . " Comentario(s)" ?></b>
                                 <!-- <button class="btn d-flex align-items-start" type="button" data-bs-toggle="collapse" data-bs-target="#collapseComentarios" aria-expanded="false" aria-controls="collapseExample"><b style="color: rgb(7, 26, 57); font-size: 13px;">1 Comentario</b></button>-->
                                 <!--<p style="color: rgb(7, 26, 57); font-size: 12px;"><b>Comentarios del tema: 1 comentario</b></p>-->
                             </div>
-                            <div class="col-md-3 d-flex justify-content-between" style="font-size: 12px;">
+                            <?php
+                                
+                            ?>
+                            
+                                <form  action="likes.php" method="POST" class="col-md-5 d-flex d-wrap"  style="font-size: 12px;">
+                                <input type="hidden" name="idTemaLike" value="<?php echo $row['idTema'];?>">
                                 <div class="d-flex justify-content-between">
                                     <div>
                                         <button class="btn-outline-light">
-                                            <img style="width: 20px; height: 15px;" src="img/agregar.png" alt="">
+                                            <input type="hidden" name="meGustaTema" value="1">
+                                            <input type="image" src="img/agregar.png" style="width: 20px; height: 15px;">
                                         </button>
                                     </div>
                                     <div>
@@ -270,7 +296,8 @@ if (!empty($login_err)) {
                                 <div class="d-flex justify-content-between">
                                     <div>
                                         <button class="btn-outline-light">
-                                            <img style="width: 20px; height: 15px;" src="img/agregar.png" alt="">
+                                            <input type="hidden" name="noGustaTema" value="1">
+                                            <input type="image" src="img/agregar.png" style="width: 20px; height: 15px;">
                                         </button>
                                     </div>
                                     <div>
@@ -279,8 +306,9 @@ if (!empty($login_err)) {
                                         </b>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-2">
+                                </form>
+                           
+                           <!-- <div class="col-md-2">
                                 <div class="d-flex justify-content-center">
                                     <div class="d-flex justify-content-between">
                                         <img style="width: 20px; height: 15px;" src="img/agregar.png" alt="">
@@ -289,7 +317,7 @@ if (!empty($login_err)) {
                                         </b>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="col-md-3 d-grid">
                                 <!--<button class="btn btn-vermas" type="button" data-bs-toggle="collapse" data-bs-target="#collapseComentarios" aria-expanded="false" aria-controls="collapseExample"><b>VER MÁS</b></button>-->
                                 <!--<button class="btn btn-vermas" type="button" data-bs-toggle="modal" data-bs-target="#modalComentario"><b>Comentar</b></button>-->
@@ -312,17 +340,18 @@ if (!empty($login_err)) {
                         </form>
                          
                         <?php
-                          
+                          $idTema = $row['idTema'];
                           $queryComentario = "SELECT c.idComentario, c.idTema, c.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, c.describeComentario, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
                           FROM comentario c 
                           INNER JOIN tema t ON c.idTema = t.idTema
-                          INNER JOIN usuario u ON t.idUsuario = u.idUsuario 
+                          INNER JOIN usuario u ON c.idUsuario = u.idUsuario 
+                          WHERE C.idTema = '$idTema'
                           ORDER BY c.idComentario DESC";
 
                           $resultComentario = mysqli_query($link, $queryComentario);
                           while($rowComentario = mysqli_fetch_array($resultComentario)){
                         ?>
-                        <div class="row collapse titulo-comentario mt-3" id="collapseComentarios">
+                        <div class="row collapse titulo-comentario mt-3" id="tema<?php echo $row['idTema'] ?>">
                             <div class="col-md-12 mt-3">
                                 <h5><b>Comentarios anteriores</b></h5>
                             </div>
@@ -420,7 +449,6 @@ if (!empty($login_err)) {
         </div>
     </div>
     <!-- Fin Modal Login -->
-
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="js/mainFunctions.js"></script>
