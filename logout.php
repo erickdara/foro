@@ -10,5 +10,5 @@ $_SESSION = array();
 session_destroy();
 
 //Redirect the login page
-header("location: index.php");
+header("location: ./Strange/index.php");
 exit;

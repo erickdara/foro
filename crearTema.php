@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             VALUES (idTema, '$idUsuario', '$tituloTema', '$describeTema', now());";
 
             $resultQuery = mysqli_query($link,$query);
-            header("Location: index.php");
+            header("Location: ./User/index.php");
 
         if(!$resultQuery){
             echo("Query failed");

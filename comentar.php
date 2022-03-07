@@ -15,7 +15,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
          VALUES (idComentario,'$idTema', '$idUsuario', '$describeComentario', now());";
 
          $resultQuery = mysqli_query($link,$query);
-         header('Location: index.php');
+         header('Location: ./User/index.php');
 
          if(!$resultQuery){
             echo "Query failed";

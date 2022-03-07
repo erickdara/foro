@@ -121,6 +121,7 @@ a {
     font-size: 1.25rem;
 }
 
+
 .showMenu {
     left: 0;
 }
@@ -237,6 +238,10 @@ a {
     box-shadow: 2px 2px 15px #999;
 }
 
+.actividad-info{
+    box-shadow: 2px 2px 15px #999;
+}
+
 .img-busqueda {
     width: 30px;
     height: 30px;
@@ -260,3 +265,4 @@ a {
 .container-commentary {
     border-top: 3px solid rgb(255 50 59);
 }
+
