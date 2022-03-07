@@ -76,3 +76,46 @@ function modalLogin() {
         modalBodyInput.value = recipient;
     });
 }
+
+// register USER
+function registerUser() {
+    // get values
+    var username = $("#username").val();
+    var mail = $("#mail").val();
+    var password = $("#password").val();
+    var confirm_password = $("#confirm_password").val();
+
+    // agregar registros
+    $.post(
+        "registerUser.php", {
+            username: username,
+            mail: mail,
+            password: password,
+            confirm_password: confirm_password,
+        },
+        function(data, status) {
+            // close the popup
+            $("#modalRegisterForm").modal("hide");
+
+            alert("Data: " + data + "\nStatus: " + status);
+
+            // alert("Usuario:" + mail + "registrado con exito");
+
+            // borrar campos
+            $("#username").val("");
+            $("#mail").val("");
+            $("#password").val("");
+            $("#confirm_password").val("");
+        }
+    );
+}
+
+// FB.getLoginStatus(function(response) {
+//     statusChangeCallback(response);
+// });
+
+function checkLoginState() {
+    FB.getLoginStatus(function(response) {
+        statusChangeCallback(response);
+    });
+}

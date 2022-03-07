@@ -12,17 +12,17 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 require_once "config.php";
 
 // Define variables and initialize with empty values
-$username = $password = "";
-$username_err = $password_err = $login_err = "";
+$mail = $password = "";
+$mail_err = $password_err = $login_err = "";
 
 // Processing form data when form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    // Check if username is empty
-    if (empty(trim($_POST["username"]))) {
-        $username_err = "Please enter username.";
+    // Check if mail is empty
+    if (empty(trim($_POST["mail"]))) {
+        $mail_err = "Please enter user mail.";
     } else {
-        $username = trim($_POST["username"]);
+        $mail = trim($_POST["mail"]);
     }
 
     // Check if password is empty
@@ -33,16 +33,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Validate credentials
-    if (empty($username_err) && empty($password_err)) {
+    if (empty($mail_err) && empty($password_err)) {
         // Prepare a select statement
-        $sql = "SELECT id, username, password FROM users WHERE username = ?";
+        $sql = "SELECT idUsuario, usuCorreo, usuPassword FROM usuario WHERE usuCorreo = ?";
 
         if ($stmt = mysqli_prepare($link, $sql)) {
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "s", $param_username);
+            mysqli_stmt_bind_param($stmt, "s", $param_mail);
 
             // Set parameters
-            $param_username = $username;
+            $param_mail = $mail;
 
             // Attempt to execute the prepared statement
             if (mysqli_stmt_execute($stmt)) {
@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if (mysqli_stmt_num_rows($stmt) == 1) {
                     echo "Estoy encontrando resultados de la consulta";
                     // Bind result variables
-                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password);
+                    mysqli_stmt_bind_result($stmt, $idUsuario, $mail, $hashed_password);
                     if (mysqli_stmt_fetch($stmt)) {
 
                         if (password_verify($password, $hashed_password)) {
@@ -64,10 +64,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             // Store data in session variables
                             $_SESSION["loggedin"] = true;
                             $_SESSION["id"] = $id;
-                            $_SESSION["username"] = $username;
+                            $_SESSION["mail"] = $mail;
 
                             // Redirect user to welcome page
-                            header("location: index.html");
+                            header("location: welcome.php");
 
                         } else {
                             // Password is not valid, display a generic error message
@@ -113,12 +113,12 @@ if (!empty($login_err)) {
           <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
           <div class="mb-3">
             <label for="correo usuario" class="col-form-label">Correo:</label>
-            <input type="text" name="username" class="form-control<?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
-            <span class="invalid-feedback"><?php echo $username_err; ?></span>
+            <input type="text" name="mail" class="form-control<?php echo (!empty($mail_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $mail; ?>">
+            <span class="invalid-feedback"><?php echo $mail_err; ?></span>
           </div>
           <div class="mb-3">
             <label for="password" class="col-form-label">Contraseña:</label>
-            <input type="password" name="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>">
+            <input type="password" name="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?> value="<?php echo $password; ?>">
             <span class="invalid-feedback"><?php echo $password_err; ?></span>
           </div>
         </div>
@@ -158,9 +158,9 @@ if (!empty($login_err)) {
 
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="form-group">
-                <label>Username</label>
-                <input type="text" name="username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
-                <span class="invalid-feedback"><?php echo $username_err; ?></span>
+                <label>Correo:</label>
+                <input type="text" name="mail" class="form-control <?php echo (!empty($mail_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $mail; ?>">
+                <span class="invalid-feedback"><?php echo $mail_err; ?></span>
             </div>
             <div class="form-group">
                 <label>Password</label>

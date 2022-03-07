@@ -14,16 +14,16 @@ require_once "config.php";
 
 // Define variables and initialize with empty values
 $usuCorreo = $usuPassword = "";
-$username_err = $password_err = $login_err = "";
+$username_err = $password_err = $mail_err = $login_err = "";
 
 // Processing form data when form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Check if username is empty
-    if (empty(trim($_POST['username']))) {
-        $username_err = "Please enter username.";
+    if (empty(trim($_POST['mail']))) {
+        $mail_err = "Please enter user mail.";
     } else {
-        $usuCorreo = trim($_POST['username']);
+        $usuCorreo = trim($_POST['mail']);
     }
 
     // Check if password is empty
@@ -34,16 +34,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Validate credentials
-    if (empty($username_err) && empty($password_err)) {
+    if (empty($mail_err) && empty($password_err)) {
         // Prepare a select statement
-        $sql = "SELECT idUsuario, usuCorreo, usuPassword FROM usuario WHERE usuCorreo = ?";
+        $sql = "SELECT idRol, idUsuario, usuCorreo, usuPassword FROM usuario WHERE usuCorreo = ?";
 
         if ($stmt = mysqli_prepare($link, $sql)) {
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "s", $param_username);
+            mysqli_stmt_bind_param($stmt, "s", $param_mail);
 
             // Set parameters
-            $param_username = $usuCorreo;
+            $param_mail = $usuCorreo;
 
             // Attempt to execute the prepared statement
             if (mysqli_stmt_execute($stmt)) {
@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if (mysqli_stmt_num_rows($stmt) == 1) {
                     echo "Estoy encontrando resultados de la consulta";
                     // Bind result variables
-                    mysqli_stmt_bind_result($stmt, $idUsuario, $usuCorreo, $hashed_password);
+                    mysqli_stmt_bind_result($stmt, $idRol, $idUsuario, $usuCorreo ,$hashed_password);
                     if (mysqli_stmt_fetch($stmt)) {
 
                         if (password_verify($usuPassword, $hashed_password)) {
@@ -65,13 +65,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             // Store data in session variables
                             $_SESSION["loggedin"] = true;
                             $_SESSION["id"] = $idUsuario;
+                            $_SESSION["rol"] = $idRol;
+                            //TODO: Validate this field if is neccesary
                             $_SESSION["username"] = $usuCorreo;
 
                             // Redirect user to welcome page
                             header("location: index.php");
                         } else {
                             // Password is not valid, display a generic error message
-                            $login_err = "Invalid username orrr password.";
+                            $login_err = "Invalid username or password.";
                         }
                     }
                 } else {
@@ -117,6 +119,8 @@ if (!empty($login_err)) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
     <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <title>Foro ASSIST</title>
 </head>
@@ -147,7 +151,7 @@ if (!empty($login_err)) {
             
             <div class="nav_list">
             <a href="#" class="nav_logo" data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">Iniciar Sesion</span> </a>
-                <a href="#" class="nav_link active" data-bs-toggle="modal" data-bs-target="#exampleModalregister"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Registrarse</span> </a>
+                <a href="#" class="nav_link active" data-bs-toggle="modal" data-bs-target="#modalRegisterForm"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Registrarse</span> </a>
                 <a href="#" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Comunidad Assist</span> </a>
                 <a href="#" class="nav_link">
             </div>
@@ -157,9 +161,12 @@ if (!empty($login_err)) {
 </div>
 <!--Container Main start-->
 <?php
+
+    // if(isset($_SESSION['id']))
     $idUsuario = $_SESSION['id'];
     $totalC = "SELECT COUNT(idUsuario) AS totalComentarios FROM comentario c
     WHERE c.idUsuario != '$idUsuario';";
+    
 
     $resultTotalC = mysqli_query($link,$totalC);
     $rowTotalC = mysqli_fetch_array($resultTotalC);
@@ -169,6 +176,7 @@ if (!empty($login_err)) {
 
     $resultTotalR = mysqli_query($link,$totalR);
     $rowTotalR = mysqli_fetch_array($resultTotalR);
+  
 ?>
 <div class="height-100 bg-light">
     <div class="container">
@@ -231,8 +239,63 @@ if (!empty($login_err)) {
                 </div>
             </div>
             <!-- Fin del modal-->
+
+            <!--Start Register Modal -->
+<div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    <?php require "registerUser.php" ?>
+  aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Registrarse</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <!-- <span aria-hidden="true">&times;</span> -->
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+      <!-- <form action="registerUser.php" method="post"> -->
+        <div class="md-form mb-4">
+            <i class="fas fa-user prefix grey-text"></i>
+          <label data-error="wrong" data-success="right" for="orangeForm-name">Nombre</label>
+          <input type="text" id="username" name="username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
+          <span class="invalid-feedback"><?php echo $username_err; ?></span>
+        </div>
+        <div class="md-form mb-4">
+          <i class="fas fa-envelope prefix grey-text"></i>
+          <label data-error="wrong" data-success="right" for="email">Correo</label>
+          <input type="email" id="mail" name="mail" class="form-control <?php echo (!empty($mail_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $mail; ?>">
+          <span class="invalid-feedback"><?php echo $mail_err; ?></span>
+        </div>
+
+        <div class="md-form mb-4">
+          <i class="fas fa-lock prefix grey-text"></i>
+          <label data-error="wrong" data-success="right" for="orangeForm-pass">Contraseña</label>
+          <input type="password" id="password" name="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $password; ?>">
+          <span class="invalid-feedback"><?php echo $password_err; ?></span>
+        </div>
+
+        <div class="md-form mb-4">
+        <i class="fa-solid fa-key"></i>
+          <!-- <i class="fas fa-lock prefix grey-text"></i> -->
+          <label data-error="wrong" data-success="right" for="orangeForm-pass">Confirm password</label>
+          <input type="password" id="confirm_password" name="confirm_password" class="form-control <?php echo (!empty($confirm_password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $confirm_password; ?>">
+          <span class="invalid-feedback"><?php echo $confirm_password_err; ?>
+        </div>
+
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="button" onclick="registerUser()" class="btn">Registrar</button>
+        <!-- </form> -->
+      </div>
+    </div>
+  </div>
+ ?></div>
+
+            <!--End Register Modal -->
+
+
             <?php
-            $query = "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, r.tipoRol, t.tituloTema, t.describeTema, DATE_FORMAT(t.created_at, \"%M %d de %Y\") AS fecha
+            $query = "SELECT t.idTema, t.idUsuario, r.tipoRol, u.usuNombres, t.tituloTema, t.describeTema, DATE_FORMAT(t.created_at, \"%M %d de %Y\") AS fecha
                   FROM tema t 
                   INNER JOIN usuario u ON t.idUsuario = u.idUsuario 
                   INNER JOIN rol r ON u.idRol = r.idRol
@@ -245,7 +308,7 @@ if (!empty($login_err)) {
                     <div class="card-body">
                         <div class="row">
                             <div class="col-5 ">
-                                <h6><strong>Publicado por: <?php echo $row['nombres'] ?> (<?php echo $row['tipoRol'] ?>)</strong></h6>
+                                <h6><strong>Publicado por: <?php echo $row['usuNombres'] ?> (<?php echo $row['tipoRol'] ?>)</strong></h6>
                             </div>
                             <div class="col-7">
                                 <p class="text-muted" style="font-size: smaller;">Fecha: <?php echo $row['fecha'] ?></p>
@@ -341,7 +404,7 @@ if (!empty($login_err)) {
                          
                         <?php
                           $idTema = $row['idTema'];
-                          $queryComentario = "SELECT c.idComentario, c.idTema, c.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, c.describeComentario, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
+                          $queryComentario = "SELECT c.idComentario, c.idTema, c.idUsuario, c.describeComentario, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
                           FROM comentario c 
                           INNER JOIN tema t ON c.idTema = t.idTema
                           INNER JOIN usuario u ON c.idUsuario = u.idUsuario 
@@ -430,17 +493,19 @@ if (!empty($login_err)) {
             <div class="modal-body">
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                     <div class="mb-3">
+                        <i class="fas fa-envelope prefix grey-text"></i>
                         <label for="correo usuario" class="col-form-label">Correo:</label>
-                        <input type="text" name="username" class="form-control" <?php echo $usuCorreo; ?>>
-                        <span class="invalid-feedback"><?php echo $username_err; ?></span>
+                        <input type="text" name="mail" class="form-control" <?php echo $usuCorreo; ?>>
+                        <span class="invalid-feedback"><?php echo $mail_err; ?></span>
                     </div>
                     <div class="mb-3">
+                        <i class="fas fa-lock prefix grey-text"></i>
                         <label for="password" class="col-form-label">Contraseña:</label>
                         <input type="password" name="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>">
                         <span class="invalid-feedback"><?php echo $password_err; ?></span>
                     </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer d-flex justify-content-center">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <!-- <button type="button" class="btn btn-primary">Send message</button> -->
                 <input type="submit" class="btn btn-primary" value="Login">
