@@ -38,8 +38,10 @@ $adapters = $hybridauth->getConnectedAdapters();
     <ul>
         <?php foreach ($adapters as $name => $adapter) : ?>
             <li>
+            <strong><?php print_r($adapter->getUserProfile()) ?></strong> from
                 <strong><?php print $adapter->getUserProfile()->displayName; ?></strong> from
                 <i><?php print $name; ?></i>
+                <strong><?php print $adapter->getUserProfile()->email; ?>
                 <span>(<a href="<?php print $config['callback'] . "?logout={$name}"; ?>">Log Out</a>)</span>
             </li>
         <?php endforeach; ?>

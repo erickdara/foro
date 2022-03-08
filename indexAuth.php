@@ -26,18 +26,23 @@ require_once('App/Auth/Auth.php');
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v13.0&appId=427082155860894&autoLogAppEvents=1" nonce="CAeLFipW"></script>
 
 <div class="container">
-    <div class="row">
-        <?php 
-        Auth::getUserAuth();
-        ?>
-        <div class="col-md-4">
-            <a href="?login=Facebook" class="btn btn-block btn-social btn-facebook"><span class="fa fa-facebook"></span>Iniciar sesion con Facebook</a>
-            <a href="?login=Google" class="btn btn-block btn-social btn-google"><span class="fa fa-google"></span>Iniciar sesion con Google</a>
-            <a href="?login=Twitter" class="btn btn-block btn-social btn-twitter"><span class="fa fa-twitter"></span>Iniciar sesion con Twitter</a>
-        </div>
-    </div>
-</div>
+       <div class="row">
+        <?php if (Auth::isLogin()): ?>
+          <h2>Hola <?php echo $_SESSION['user']['name'] ?></h2>
+          <a href="logout.php">Cerrar Sesion</a>
+        <?php else: ?>
+          <?php
+            Auth::getUserAuth();
+           ?>
+          <div class="col-md-4">
+            <a href="?login=Facebook" class="btn btn-block btn-social btn-facebook"><span class="fa fa-facebook"></span> Inicia sesion con Facebook</a>
+            <a href="?login=Google" class="btn btn-block btn-social btn-google"><span class="fa fa-google"></span> Inicia sesion con Google</a>
+            <a href="?login=Twitter" class="btn btn-block btn-social btn-twitter"><span class="fa fa-twitter"></span> Inicia sesion con Twitter</a>
+          </div>
+        <?php endif; ?>
 
+       </div>
+     </div>
 
 <div class="fb-login-button" data-width="200" data-size="small" data-button-type="login_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="false"></div>
 

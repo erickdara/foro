@@ -3,7 +3,8 @@
 
 $config = [
 
-    'callback' => "http://localhost/Foro/App/Auth/callback.php",
+     'callback' => "http://localhost/Foro/App/Auth/callback.php",
+    //'callback' => "http://localhost/Foro/App/Auth/Auth.php",
 
 
    'providers' => [

@@ -15,9 +15,9 @@ try {
     /**
      * Feed configuration array to Hybridauth.
      */
-    $hybridauth = new Hybridauth($config);
+    $adapter = $hybridauth = new Hybridauth($config);
 
-    $adapter;
+
 
     /**
      * Initialize session storage.
@@ -41,13 +41,15 @@ try {
 
     if ($provider = $storage->get('provider')) {
         $adapter = $hybridauth->authenticate($provider);
+        // $userProfile = $adapter->getUserProfile(); 
+        // print_r($userProfile);
         $storage->set('provider', null);
     }
 
     //TODO: Se debe revisar error al consultar el perfil del usuario
     // $userProfile = $adapter->getUserProfile(); 
 
-    // print_r($userProfile);
+   
 
     /**
      * This will erase the current user authentication data from session, and any further
