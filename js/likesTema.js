@@ -15,29 +15,3 @@ $(document).ready(function () {
         });
     });
 });
-
-
-// $(document).ready(function(){
-//     $('.likeTema').click(function(){
-//         var id = $(this).attr('id');
-
-
-//         $.ajax({
-//             type: 'POST',
-//             url:'../likes.php',
-//             data:{id:id},
-//             dataType: 'json',
-
-//             success:function(data){
-//                 var totalLikes = datoLikeTema['likes'];
-//                 $("#likeTema_"+id).text(totalLikes);
-//             },
-
-//             beforeSend: function(xhr){xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded")}
-//         });
-
-        
-          
-
-//     });
-// });

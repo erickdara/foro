@@ -1,17 +1,17 @@
 <?php
-include('tema.php');
+include('utils.php');
 include('config.php');
 
 session_start();
 $idUsuario = $_SESSION["id"];
-$tema = new tema();
+$util = new Utils();
 
 if($_GET['idTema'] && $idUsuario){
-   $likesUnlikesTema = $tema -> getLikesUnlikesTema($_GET['idTema']);
-   $liketema = $tema -> getLikeTema($_GET['idTema']);
+   $likesUnlikesTema = $util -> getLikesUnlikesTema($_GET['idTema']);
+   $liketema = $util -> getLikeTema($_GET['idTema']);
 
    if($_GET['vote_type'] == 1){ //voto positivo
-      if($tema -> isUserAlreadyVoted($idUsuario, $_GET['idTema']) == 0){
+      if($util -> isUserAlreadyVoted($idUsuario, $_GET['idTema']) == 0){
          $likesUnlikesTema['likes'] += 1;
          $likesUnlikesTema['unlikes'] = 0;
          $liketema['tipoLike'] = true;
@@ -22,9 +22,9 @@ if($_GET['idTema'] && $idUsuario){
             'unlikes' => $likesUnlikesTema['unlikes'],
             'tipoLike' => $liketema['tipoLike'],
          );
-         $likesUnlikesTema = $tema->updateLikeTema($LikeTemaData); 
+         $util->updateLikeTema($LikeTemaData); 
       }else{ //si ya votó y se valida si es me gusta o no me gusta
-         if($tema -> validateTrueLike($idUsuario, $_GET['idTema']) != 0){ //Si es diferente a cero, es me gusta 
+         if($util -> validateTrueLike($idUsuario, $_GET['idTema']) != 0){ //Si es diferente a cero, es me gusta 
             $likesUnlikesTema['likes'] -= 1; 
             $LikeTemaData = array(
             'idTema' => $_GET['idTema'],
@@ -32,10 +32,11 @@ if($_GET['idTema'] && $idUsuario){
             'likes' => $likesUnlikesTema['likes'],
             'unlikes' => $likesUnlikesTema['unlikes'],
          ); 
-         $tema -> ifUserVotedToDelete($LikeTemaData);
-         $tema -> updateLikes($LikeTemaData);
-         }else{
-
+         $util -> ifUserVotedToDelete($LikeTemaData);
+         $util -> updateLikes($LikeTemaData);
+         }else{ // ya le dio no me gusta y se va a dar megusta
+           // if($util -> isUserAlreadyVoted($idUsuario, $_GET['idTema']) == 0){
+              
             $likesUnlikesTema['likes'] += 1;
             $likesUnlikesTema['unlikes'] = 0;
             $liketema['tipoLike'] = true;
@@ -46,14 +47,15 @@ if($_GET['idTema'] && $idUsuario){
             'unlikes' => $likesUnlikesTema['unlikes'],
             'tipoLike' => $liketema['tipoLike'],
          );
-         $tema -> ifUserVotedToDelete($LikeTemaData);
-         $likesUnlikesTema = $tema->updateLikeTema($LikeTemaData); 
+         $util -> ifUserVotedToDelete($LikeTemaData);
+         $util->updateLikeTema($LikeTemaData); 
+            //}
          }
           
       }
 
    } else if ($_GET['vote_type'] == 0){// voto negativo
-      if($tema -> isUserAlreadyVoted($idUsuario, $_GET['idTema']) == 0){
+      if($util -> isUserAlreadyVoted($idUsuario, $_GET['idTema']) == 0){
          $likesUnlikesTema['unlikes'] += 1;
          $likesUnlikesTema['likes'] = 0;
          $liketema['tipoLike'] = false;
@@ -65,9 +67,9 @@ if($_GET['idTema'] && $idUsuario){
             'tipoLike' => $liketema['tipoLike'],
 
          );
-         $likesUnlikesTema = $tema->updateLikeTema($LikeTemaData);
+         $util->updateLikeTema($LikeTemaData);
       }else{
-         if($tema -> validateTrueUnlike($idUsuario, $_GET['idTema']) != 0){
+         if($util -> validateTrueUnlike($idUsuario, $_GET['idTema']) != 0){
             $likesUnlikesTema['unlikes'] -= 1;
             $LikeTemaData = array(
             'idTema' => $_GET['idTema'],
@@ -75,8 +77,8 @@ if($_GET['idTema'] && $idUsuario){
             'likes' => $likesUnlikesTema['likes'],
             'unlikes' => $likesUnlikesTema['unlikes'],
          ); 
-         $tema -> ifUserVotedToDelete($LikeTemaData);
-         $tema -> updateLikes($LikeTemaData);
+         $util -> ifUserVotedToDelete($LikeTemaData);
+         $util -> updateLikes($LikeTemaData);
          }else{
             $likesUnlikesTema['unlikes'] += 1;
             $likesUnlikesTema['likes'] = 0;
@@ -88,8 +90,8 @@ if($_GET['idTema'] && $idUsuario){
             'unlikes' => $likesUnlikesTema['unlikes'],
             'tipoLike' => $liketema['tipoLike'],
          );
-            $tema -> ifUserVotedToDelete($LikeTemaData);
-            $likesUnlikesTema = $tema->updateLikeTema($LikeTemaData); 
+            $util -> ifUserVotedToDelete($LikeTemaData);
+            $util->updateLikeTema($LikeTemaData); 
          }
       }
    }
@@ -97,7 +99,7 @@ if($_GET['idTema'] && $idUsuario){
    
    
     
-       if($likesUnlikesTema != 0) {
+       if($likesUnlikesTema) {
            $response = array(
                'likes' => $likesUnlikesTema['likes'],
                'unlikes' => $likesUnlikesTema['unlikes'],

@@ -5,9 +5,9 @@ session_start();
 
 // Check if the user is already logged in, if yes then redirect him to welcome page
 //if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-  //header("location: index.php");
- // exit;
- //}
+//header("location: index.php");
+// exit;
+//}
 
 // Include config file
 require_once "../config.php";
@@ -132,8 +132,8 @@ if (!empty($login_err)) {
             </div>
 
             <div class="col-md-6 col-sm- 4 d-flex align-items-center justify-content-end">
-                <img style="width: 40px; height: 30px;" class="img img-busqueda" src="../img/busqueda.png" alt="">
-                <input type="text" style="background-color: rgb(7, 26, 57);" class="input-busqueda text-light" placeholder="Búsqueda">
+                <i class='bx bx-search bx-sm' style='color:#fffbfb'></i>&nbsp;&nbsp;&nbsp;
+                <input type="text" style="background-color: rgb(7, 26, 57); border: 0;" class="input-busqueda text-light" placeholder="Búsqueda">
             </div>
         </div>
     </div>
@@ -141,9 +141,9 @@ if (!empty($login_err)) {
 <div class="l-navbar" id="nav-bar">
     <nav class="nav">
         <div>
-            
+
             <div class="nav_list">
-            <a href="#" class="nav_logo" data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">Iniciar Sesion</span> </a>
+                <a href="#" class="nav_logo" data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">Iniciar Sesion</span> </a>
                 <a href="#" class="nav_link active" data-bs-toggle="modal" data-bs-target="#registerModal"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Registrarse</span> </a>
                 <a href="#" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Comunidad Assist</span> </a>
                 <a href="#" class="nav_link">
@@ -153,12 +153,51 @@ if (!empty($login_err)) {
     </nav>
 </div>
 <!--Container Main start-->
+<?php
+$totalC = "SELECT COUNT(*) AS totalComentarios FROM comentario";
+
+$resultTotalC = mysqli_query($link, $totalC);
+$rowTotalC = mysqli_fetch_array($resultTotalC);
+
+$totalR = "SELECT COUNT(*) AS totalRespuestas FROM respuesta";
+
+$resultTotalR = mysqli_query($link, $totalR);
+$rowTotalR = mysqli_fetch_array($resultTotalR);
+?>
 <div class="height-100 bg-light">
     <div class="container">
+        <div class="row d-flex justify-content-end">
+            <div class="col-md-5 mt-3 d-flex justify-content-end">
+                <div class="card info">
+                    <div class="row card-body d-flex">
+                        <div class="col num-commentary pt-2">
+                            <h6 class="text-center titulo">COMENTARIOS</h6>
+                            <h6 class="text-center text-light"><?php echo $rowTotalC['totalComentarios']; ?></h6>
+                        </div>
+                        <div class="col num-answer pt-2">
+                            <h6 class="text-center titulo">RESPUESTAS</h6>
+                            <h6 class="text-center text-light"><?php echo $rowTotalR['totalRespuestas']; ?></h6>
+                        </div>
+                    </div>
+                </div>
+            </div>            
+            <div class="col-md-5 d-flex align-items-end justify-content-center">
+                <div class="row tema">
+                    <button type="button" class="btn d-flex justify-content-between align-items-center"  data-bs-toggle="modal" data-bs-target="#validateModal">
+                        <div class="col-md-6 d-flex justify-content-end btn">
+                            <img class="img img-add-tema" src="../img/agregar.png" alt="">
+                        </div>
+                        <div class="col-md-6 d-flex justify-content-center btn">
+                            <h5 class="text-center text-add-tema text-nowrap">CREAR TEMA</h5>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
         <div class="row mt-4 d-flex justify-content-start">
 
             <?php
-            $query = "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, r.tipoRol, t.tituloTema, t.describeTema, DATE_FORMAT(t.created_at, \"%M %d de %Y\") AS fecha
+            $query = "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, r.tipoRol, t.tituloTema, t.describeTema, t.likes, t.unlikes, DATE_FORMAT(t.created_at, \"%M %d de %Y\") AS fecha
                   FROM tema t 
                   INNER JOIN usuario u ON t.idUsuario = u.idUsuario 
                   INNER JOIN rol r ON u.idRol = r.idRol
@@ -189,9 +228,9 @@ if (!empty($login_err)) {
                         </div>
                         <div class="row mt-4">
                             <?php
-                            $idTemaC = $row['idTema']; 
+                            $idTemaC = $row['idTema'];
                             $queryCountComentario = "SELECT COUNT(*) AS com FROM comentario c WHERE c.idTema = '$idTemaC' ";
-                            $resultCount = mysqli_query($link,$queryCountComentario);
+                            $resultCount = mysqli_query($link, $queryCountComentario);
                             $rowCountComentario = mysqli_fetch_array($resultCount);
                             ?>
                             <div class="col-md-4 d-flex d-wrap">
@@ -201,40 +240,38 @@ if (!empty($login_err)) {
                                 <!--<p style="color: rgb(7, 26, 57); font-size: 12px;"><b>Comentarios del tema: 1 comentario</b></p>-->
                             </div>
                             <?php
-                                
+
                             ?>
-                            
-                                <form  action="likes.php" method="POST" class="col-md-5 d-flex d-wrap"  style="font-size: 12px;">
-                                <input type="hidden" name="idTemaLike" value="<?php echo $row['idTema'];?>">
+
+                            <form action="likes.php" method="POST" class="col-md-5 d-flex d-wrap" style="font-size: 12px;">
+                                <input type="hidden" name="idTemaLike" value="<?php echo $row['idTema']; ?>">
                                 <div class="d-flex justify-content-between">
                                     <div>
-                                        <button class="btn-outline-light">
-                                            <input type="hidden" name="meGustaTema" value="1">
-                                            <input type="image" src="../img/agregar.png" style="width: 20px; height: 15px;">
-                                        </button>
+                                        <a  data-bs-toggle="modal" data-bs-target="#validateModal"  class="btn">
+                                            <i class='bx bx-like' style="color:rgb(0, 253, 93);"></i>
+                                        </a>
                                     </div>
-                                    <div>
+                                    <div class="d-flex align-items-end">
                                         <b>
-                                            <p class="text-nowrap" style="color: rgb(0, 253, 93);">Me gusta:1</p>
+                                            <p class="text-nowrap" style="color: rgb(0, 253, 93);">Me gusta: <?php echo $row['likes'] ?></p>
                                         </b>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-between">
                                     <div>
-                                        <button class="btn-outline-light">
-                                            <input type="hidden" name="noGustaTema" value="1">
-                                            <input type="image" src="../img/agregar.png" style="width: 20px; height: 15px;">
-                                        </button>
+                                        <a data-bs-toggle="modal" data-bs-target="#validateModal"  class="btn">
+                                            <i class='bx bx-dislike' style="color:rgb(255, 22, 22);"></i>
+                                        </a>
                                     </div>
-                                    <div>
+                                    <div class="d-flex align-items-end">
                                         <b>
-                                            <p class="text-nowrap" style="font-size: 12px; color: rgb(255, 22, 22);">No me gusta:0</p>
+                                            <p class="text-nowrap" style="font-size: 12px; color: rgb(255, 22, 22);">No me gusta: <?php echo $row['unlikes'] ?></p>
                                         </b>
                                     </div>
                                 </div>
-                                </form>
-                           
-                           <!-- <div class="col-md-2">
+                            </form>
+
+                            <!-- <div class="col-md-2">
                                 <div class="d-flex justify-content-center">
                                     <div class="d-flex justify-content-between">
                                         <img style="width: 20px; height: 15px;" src="../img/agregar.png" alt="">
@@ -252,84 +289,84 @@ if (!empty($login_err)) {
                         </div>
 
                         <form action="comentar.php" method="POST">
-                           <div class="row collapse mt-4" id="collapseComentar">
+                            <div class="row collapse mt-4" id="collapseComentar">
                                 <div class="col-md-10">
                                     <div class="mb-3">
                                         <input type="text" name="describeComentario" class="form-control" placeholder="Escribe un comentario...">
-                                    </div> 
+                                    </div>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="hidden" name="idTema" value="<?php echo $row['idTema']?>">
+                                    <input type="hidden" name="idTema" value="<?php echo $row['idTema'] ?>">
                                     <input name="comentario" type="submit" class="btn btn-danger" value="Comentar">
                                 </div>
                             </div>
                         </form>
-                         
+
                         <?php
-                          $idTema = $row['idTema'];
-                          $queryComentario = "SELECT c.idComentario, c.idTema, c.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, c.describeComentario, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
+                        $idTema = $row['idTema'];
+                        $queryComentario = "SELECT c.idComentario, c.idTema, c.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, c.describeComentario, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
                           FROM comentario c 
                           INNER JOIN tema t ON c.idTema = t.idTema
                           INNER JOIN usuario u ON c.idUsuario = u.idUsuario 
                           WHERE C.idTema = '$idTema'
                           ORDER BY c.idComentario DESC";
 
-                          $resultComentario = mysqli_query($link, $queryComentario);
-                          while($rowComentario = mysqli_fetch_array($resultComentario)){
+                        $resultComentario = mysqli_query($link, $queryComentario);
+                        while ($rowComentario = mysqli_fetch_array($resultComentario)) {
                         ?>
-                        <div class="row collapse titulo-comentario mt-3" id="tema<?php echo $row['idTema'] ?>">
-                            <div class="col-md-12 mt-3">
-                                <h5><b>Comentarios anteriores</b></h5>
-                            </div>
-                            <div class="row d-flex justify-content-between mt-4">
-                                <div class="col-md-3 mt-2 d-flex justify-content-center">
+                            <div class="row collapse titulo-comentario mt-3" id="tema<?php echo $row['idTema'] ?>">
+                                <div class="col-md-12 mt-3">
+                                    <h5><b>Comentarios anteriores</b></h5>
+                                </div>
+                                <div class="row d-flex justify-content-between mt-4">
+                                    <div class="col-md-3 mt-2 d-flex justify-content-center">
                                         <img class="img-user img-fluid" src="../img/user.png" alt="">
-                                </div>
-                                <div class="col-md-9 container-commentary">
-                                    <p class="mt-2"><?php echo $rowComentario['describeComentario']?></p>
-                                </div>
-                            </div>
-                            <div class="row mt-2 ">
-                                <div class="col-md-3 d-flex justify-content-center">
-                                <h5><?php echo $rowComentario['nombres']?></h5>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 d-flex justify-content-end">
-                                    <div class="d-flex justify-content-between">
-                                        <div>
-                                            <button class="btn-outline-light">
-                                                <img style="width: 20px; height: 15px;" src="../img/agregar.png" alt="">
-                                            </button>
-                                        </div>
-                                        <div>
-                                            <b>
-                                                <p class="text-nowrap" style="font-size: 12px; color: rgb(0, 253, 93);">Me gusta:1</p>
-                                            </b>
-                                        </div>
                                     </div>
-                                    <div class="d-flex justify-content-between">
-                                        <div>
-                                            <button class="btn-outline-light">
-                                                <img style="width: 20px; height: 15px;" src="../img/agregar.png" alt="">
-                                            </button>
-                                        </div>
-                                        <div>
-                                            <b>
-                                                <p class="text-nowrap" style="font-size: 12px; color: rgb(255, 22, 22);">No me gusta:0</p>
-                                            </b>
-                                        </div>
+                                    <div class="col-md-9 container-commentary">
+                                        <p class="mt-2"><?php echo $rowComentario['describeComentario'] ?></p>
                                     </div>
                                 </div>
-                                <div class="col-md-6 d-flex justify-content-end">
-                                    <button class="btn btn-vermas">
-                                        responder comentario
-                                    </button>
+                                <div class="row mt-2 ">
+                                    <div class="col-md-3 d-flex justify-content-center">
+                                        <h5><?php echo $rowComentario['nombres'] ?></h5>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 d-flex justify-content-end">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <button class="btn-outline-light">
+                                                    <img style="width: 20px; height: 15px;" src="../img/agregar.png" alt="">
+                                                </button>
+                                            </div>
+                                            <div>
+                                                <b>
+                                                    <p class="text-nowrap" style="font-size: 12px; color: rgb(0, 253, 93);">Me gusta:1</p>
+                                                </b>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <button class="btn-outline-light">
+                                                    <img style="width: 20px; height: 15px;" src="../img/agregar.png" alt="">
+                                                </button>
+                                            </div>
+                                            <div>
+                                                <b>
+                                                    <p class="text-nowrap" style="font-size: 12px; color: rgb(255, 22, 22);">No me gusta:0</p>
+                                                </b>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 d-flex justify-content-end">
+                                        <button class="btn btn-vermas">
+                                            responder comentario
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         <?php
-                          }
+                        }
                         ?>
 
                     </div>
@@ -341,57 +378,85 @@ if (!empty($login_err)) {
     </div>
 </div>
 <!--Container Main end-->
-
-<!--Modal Register -->
-<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-           <div class="modal-content">
-              <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+<!-- modal validateModal -->
+<div class="modal fade" id="validateModal" tabindex="-1" aria-labelledby="validateModal" aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-danger"> 
+        <h5 class="modal-title text-light" id="exampleModalLabel" style="padding-left: 40%;">Aviso</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-      <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <div class="form-group">
-                <label>Nombres</label>
-                <input type="text" name="nombres" class="form-control">
-                <span class="invalid-feedback"><?php //echo $username_err; ?></span>
-            </div>
-            <div class="form-group">
-                <label>Apellidos</label>
-                <input type="text" name="apellidos" class="form-control" value="">
-                <span class="invalid-feedback"><?php //echo $username_err; ?></span>
-            </div>
-            <div class="form-group">
-                <label>Correo</label>
-                <input type="text" name="username" class="form-control <?php //echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php // echo $username; ?>">
-                <span class="invalid-feedback"><?php // echo $username_err; ?></span>
-            </div>
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" name="password" class="form-control <?php //echo (!empty($password_err)) ? 'is-invalid' : ''; ?>" value="<?php // echo $password; ?>">
-                <span class="invalid-feedback"><?php // echo $password_err; ?></span>
-            </div>
-            <div class="form-group">
-                <label>Confirm Password</label>
-                <input type="password" name="confirm_password" class="form-control <?php //echo (!empty($confirm_password_err)) ? 'is-invalid' : ''; ?>" value="<?php // echo $confirm_password; ?>">
-                <span class="invalid-feedback"><?php // echo $confirm_password_err; ?></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Submit">
-                <input type="reset" class="btn btn-secondary ml-2" value="Reset">
-            </div>
-            <p>Already have an account? <a href="login.php">Login here</a>.</p>
-        </form>
+      <div class="modal-body text-center">
+        ¡Tienes que iniciar sesion para poder interactuar en el foro!
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
       </div>
-         </div>
-       </div>
     </div>
-    <!-- Fin Modal Register -->
+  </div>
+</div>
+<!-- fin validateModal -->
+<!--Modal Register -->
+<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                    <div class="form-group">
+                        <label>Nombres</label>
+                        <input type="text" name="nombres" class="form-control">
+                        <span class="invalid-feedback"><?php //echo $username_err; 
+                                                        ?></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Apellidos</label>
+                        <input type="text" name="apellidos" class="form-control" value="">
+                        <span class="invalid-feedback"><?php //echo $username_err; 
+                                                        ?></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Correo</label>
+                        <input type="text" name="username" class="form-control <?php //echo (!empty($username_err)) ? 'is-invalid' : ''; 
+                                                                                ?>" value="<?php // echo $username; 
+                                                                                                                                                    ?>">
+                        <span class="invalid-feedback"><?php // echo $username_err; 
+                                                        ?></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" name="password" class="form-control <?php //echo (!empty($password_err)) ? 'is-invalid' : ''; 
+                                                                                    ?>" value="<?php // echo $password; 
+                                                                                                                                                        ?>">
+                        <span class="invalid-feedback"><?php // echo $password_err; 
+                                                        ?></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input type="password" name="confirm_password" class="form-control <?php //echo (!empty($confirm_password_err)) ? 'is-invalid' : ''; 
+                                                                                            ?>" value="<?php // echo $confirm_password; 
+                                                                                                                                                                        ?>">
+                        <span class="invalid-feedback"><?php // echo $confirm_password_err; 
+                                                        ?></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-primary" value="Submit">
+                        <input type="reset" class="btn btn-secondary ml-2" value="Reset">
+                    </div>
+                    <p>Already have an account? <a href="login.php">Login here</a>.</p>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fin Modal Register -->
 
 </body>
 
@@ -427,7 +492,7 @@ if (!empty($login_err)) {
     </div>
     <!-- Fin Modal Login -->
 
-    
+
 
 
 

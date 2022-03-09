@@ -37,14 +37,14 @@ require_once "../config.php";
         </div>
         <div class="col-md-12 d-flex justify-content-start">
             <div class="col-md-6 col-sm-2 pb-1">
-                <a href="index.html" type="button" class="btn text-light btn-nav">Temas</a>
-                <a href="actividad.html" type="button" class="btn text-light btn-nav">Actividad Reciente</a>
+                <a href="index.php" type="button" class="btn text-light btn-nav">Temas</a>
+                <a href="../actividad.php" type="button" class="btn text-light btn-nav">Actividad Reciente</a>
                 <a href="comentarios.html" type="button" class="btn text-light btn-nav">Comentarios</a>
             </div>
 
             <div class="col-md-6 col-sm- 4 d-flex align-items-center justify-content-end">
-                <img style="width: 40px; height: 30px;" class="img img-busqueda" src="../img/busqueda.png" alt="img busqueda">
-                <input type="text" style="background-color: rgb(7, 26, 57);" class="input-busqueda text-light" placeholder="Búsqueda">
+                <i class='bx bx-search bx-sm' style='color:#fffbfb'></i>&nbsp;&nbsp;&nbsp;
+                <input type="text" style="background-color: rgb(7, 26, 57); border: 0;" class="input-busqueda text-light" placeholder="Búsqueda">
             </div>
         </div>
     </div>
@@ -73,14 +73,12 @@ require_once "../config.php";
 <!--Container Main start-->
 <?php
     $idUsuario = $_SESSION['id'];
-    $totalC = "SELECT COUNT(idUsuario) AS totalComentarios FROM comentario c
-    WHERE c.idUsuario != '$idUsuario';";
+    $totalC = "SELECT COUNT(*) AS totalComentarios FROM comentario";
 
     $resultTotalC = mysqli_query($link,$totalC);
     $rowTotalC = mysqli_fetch_array($resultTotalC);
 
-    $totalR = "SELECT COUNT(idUsuario) AS totalRespuestas FROM respuesta r
-    WHERE r.idUsuario = '$idUsuario';";
+    $totalR = "SELECT COUNT(*) AS totalRespuestas FROM respuesta";
 
     $resultTotalR = mysqli_query($link,$totalR);
     $rowTotalR = mysqli_fetch_array($resultTotalR);
@@ -197,25 +195,25 @@ require_once "../config.php";
                                 <input type="hidden" name="idTemaLike" value="<?php echo $row['idTema'];?>">
                                 <div class="d-flex justify-content-between">
                                     <div>
-                                        <button class="btn-outline-light likeTema" data-vote-type="1" id="like_<?php echo $row['idTema']?>">
-                                            <input type="image" src="../img/agregar.png" style="width: 20px; height: 15px;">
-                                        </button>
+                                        <a class="likeTema btn" data-vote-type="1" id="like_<?php echo $row['idTema']?>">
+                                        <i class='bx bx-like' style="color:rgb(0, 253, 93);"></i>
+                                        </a>
                                     </div>
-                                    <div>
+                                    <div class="d-flex align-items-end">
                                         <b>
-                                            <p id="likeTema_<?php echo $row['idTema']; ?>" class="text-nowrap" style="color: rgb(0, 253, 93);">Me gusta: <span class="counter" id="likeCount_<?php echo $row['idTema'] ?>"></span></p>
+                                            <p id="likeTema_<?php echo $row['idTema']; ?>" class="text-nowrap" style="color: rgb(0, 253, 93);">Me gusta: <span class="counter" id="likeCount_<?php echo $row['idTema'] ?>"><?php echo $row['likes'] ?></span></p>
                                         </b>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-between">
                                     <div>
-                                        <button class="btn-outline-light likeTema" data-vote-type="0" id="unlike_<?php echo $row['idTema']?>" >
-                                            <input type="image" src="../img/agregar.png" style="width: 20px; height: 15px;">
-                                        </button>
+                                        <a class="likeTema btn" data-vote-type="0" id="unlike_<?php echo $row['idTema']?>">
+                                            <i class='bx bx-dislike' style="color:rgb(255, 22, 22);"></i>
+                                        </a>
                                     </div>
-                                    <div>
+                                    <div class="d-flex align-items-end">
                                         <b>
-                                            <p id="unlikeTema_<?php echo $row['idTema']; ?>" class="text-nowrap" style="font-size: 12px; color: rgb(255, 22, 22);">No me gusta: <span class="counter" id="unlikeCount_<?php echo $row['unlikes'] ?>"></span></p>
+                                            <p id="unlikeTema_<?php echo $row['idTema']; ?>" class="text-nowrap" style="font-size: 12px; color: rgb(255, 22, 22);">No me gusta: <span class="counter" id="unlikeCount_<?php echo $row['idTema'] ?>"><?php echo $row['unlikes'] ?></span></p>
                                         </b>
                                     </div>
                                 </div>
@@ -329,7 +327,6 @@ require_once "../config.php";
 </div>
 <!--Container Main end-->
 
-</body>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="../js/mainFunctions.js"></script>
