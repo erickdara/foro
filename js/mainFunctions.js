@@ -76,6 +76,6 @@ function modalLogin() {
         modalBodyInput.value = recipient;
     });
 
-    var myAlert = document.getElementById('myAlert')
-    var bsAlert = new bootstrap.Alert(myAlert)
+    var myAlert = document.getElementById("myAlert");
+    var bsAlert = new bootstrap.Alert(myAlert);
 }
