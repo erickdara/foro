@@ -156,7 +156,7 @@ if (!empty($login_err)) {
             
             <div class="nav_list">
             <a href="#" class="nav_logo" data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">Iniciar Sesion</span> </a>
-                <a href="#" class="nav_link active" data-bs-toggle="modal" data-bs-target="#exampleModalregister"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Registrarse</span> </a>
+            <a href="#" class="nav_link active" data-bs-toggle="modal" data-bs-target="#modalRegisterForm"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Registrarse</span> </a>
                 <a href="#" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Comunidad Assist</span> </a>
                 <a href="#" class="nav_link">
             </div>
@@ -240,6 +240,61 @@ if (!empty($login_err)) {
                 </div>
             </div>
             <!-- Fin del modal-->
+
+             <!--Start Register Modal -->
+<div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    <?php require "registerUser.php" ?>
+  aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Registrarse</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <!-- <span aria-hidden="true">&times;</span> -->
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+      <!-- <form action="registerUser.php" method="post"> -->
+        <div class="md-form mb-4">
+            <i class="fas fa-user prefix grey-text"></i>
+          <label data-error="wrong" data-success="right" for="orangeForm-name">Nombre</label>
+          <input type="text" id="username" name="username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
+          <span class="invalid-feedback"><?php echo $username_err; ?></span>
+        </div>
+        <div class="md-form mb-4">
+          <i class="fas fa-envelope prefix grey-text"></i>
+          <label data-error="wrong" data-success="right" for="email">Correo</label>
+          <input type="email" id="mail" name="mail" class="form-control <?php echo (!empty($mail_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $mail; ?>">
+          <span class="invalid-feedback"><?php echo $mail_err; ?></span>
+        </div>
+
+        <div class="md-form mb-4">
+          <i class="fas fa-lock prefix grey-text"></i>
+          <label data-error="wrong" data-success="right" for="orangeForm-pass">Contraseña</label>
+          <input type="password" id="password" name="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $password; ?>">
+          <span class="invalid-feedback"><?php echo $password_err; ?></span>
+        </div>
+
+        <div class="md-form mb-4">
+        <i class="fa-solid fa-key"></i>
+          <!-- <i class="fas fa-lock prefix grey-text"></i> -->
+          <label data-error="wrong" data-success="right" for="orangeForm-pass">Confirm password</label>
+          <input type="password" id="confirm_password" name="confirm_password" class="form-control <?php echo (!empty($confirm_password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $confirm_password; ?>">
+          <span class="invalid-feedback"><?php echo $confirm_password_err; ?>
+        </div>
+
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="button" onclick="registerUser()" class="btn">Registrar</button>
+        <!-- </form> -->
+      </div>
+    </div>
+  </div>
+ ?></div>
+
+            <!--End Register Modal -->
+
+
             <?php
             $query = "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, r.tipoRol, t.tituloTema, t.describeTema, DATE_FORMAT(t.created_at, \"%M %d de %Y\") AS fecha
                   FROM tema t 
@@ -445,17 +500,19 @@ if (!empty($login_err)) {
             <div class="modal-body">
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                     <div class="mb-3">
+                        <i class="fas fa-envelope prefix grey-text"></i>
                         <label for="correo usuario" class="col-form-label">Correo:</label>
-                        <input type="text" name="username" class="form-control" <?php echo $usuCorreo; ?>>
-                        <span class="invalid-feedback"><?php echo $username_err; ?></span>
+                        <input type="text" name="mail" class="form-control" <?php echo $usuCorreo; ?>>
+                        <span class="invalid-feedback"><?php echo $mail_err; ?></span>
                     </div>
                     <div class="mb-3">
+                        <i class="fas fa-lock prefix grey-text"></i>
                         <label for="password" class="col-form-label">Contraseña:</label>
                         <input type="password" name="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>">
                         <span class="invalid-feedback"><?php echo $password_err; ?></span>
                     </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer d-flex justify-content-center">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <!-- <button type="button" class="btn btn-primary">Send message</button> -->
                 <input type="submit" class="btn btn-primary" value="Login">
