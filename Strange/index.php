@@ -1,109 +1,3 @@
-<?php
-setlocale(LC_ALL, "es_ES");
-// Initialize the session
-session_start();
-
-// Check if the user is already logged in, if yes then redirect him to welcome page
-//if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-//header("location: index.php");
-// exit;
-//}
-
-// Include config file
-require_once "../config.php";
-
-// Define variables and initialize with empty values
-$usuCorreo = $usuPassword = "";
-$username_err = $password_err = $login_err = "";
-
-// Processing form data when form is submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    // Check if username is empty
-    if (empty(trim($_POST['username']))) {
-        $username_err = "Please enter username.";
-    } else {
-        $usuCorreo = trim($_POST['username']);
-    }
-
-    // Check if password is empty
-    if (empty(trim($_POST['password']))) {
-        $password_err = "Please enter your password.";
-    } else {
-        $usuPassword = trim($_POST['password']);
-    }
-
-    // Validate credentials
-    if (empty($username_err) && empty($password_err)) {
-        // Prepare a select statement
-        $sql = "SELECT idUsuario, usuCorreo, usuPassword FROM usuario WHERE usuCorreo = ?";
-
-        if ($stmt = mysqli_prepare($link, $sql)) {
-            // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "s", $param_username);
-
-            // Set parameters
-            $param_username = $usuCorreo;
-
-            // Attempt to execute the prepared statement
-            if (mysqli_stmt_execute($stmt)) {
-                // Store result
-                mysqli_stmt_store_result($stmt);
-
-                // Check if username exists, if yes then verify password
-                if (mysqli_stmt_num_rows($stmt) == 1) {
-                    echo "Estoy encontrando resultados de la consulta";
-                    // Bind result variables
-                    mysqli_stmt_bind_result($stmt, $idUsuario, $usuCorreo, $hashed_password);
-                    if (mysqli_stmt_fetch($stmt)) {
-
-                        if (password_verify($usuPassword, $hashed_password)) {
-                            echo "Estoy entrando a la validación de la password";
-                            // Password is correct, so start a new session
-                            session_start();
-
-                            // Store data in session variables
-                            $_SESSION["loggedin"] = true;
-                            $_SESSION["id"] = $idUsuario;
-                            $_SESSION["username"] = $usuCorreo;
-
-                            // Redirect user to welcome page
-                            header("location: ../User/index.php");
-                        } else {
-                            // Password is not valid, display a generic error message
-                            $login_err = "Invalid username orrr password.";
-                        }
-                    }
-                } else {
-                    // Username doesn't exist, display a generic error message
-                    $login_err = "Invalid username or password.";
-                }
-            } else {
-                echo "Oops! Something went wrong. Please try again later.";
-            }
-
-            // Close statement
-            // mysqli_stmt_close($stmt);
-        }
-    }
-
-    // Close connection
-    //mysqli_close($link);
-}
-?>
-
-
-
-
-<?php
-if (!empty($login_err)) {
-    echo '<div class="alert alert-danger">' . $login_err . '</div>';
-}
-?>
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -153,7 +47,7 @@ if (!empty($login_err)) {
         <div>
 
             <div class="nav_list">
-                <a href="#" class="nav_logo" data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">Iniciar Sesion</span> </a>
+                <a href="#" class="nav_logo" data-bs-toggle="modal" data-bs-target="#loginModal"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">Iniciar Sesion</span> </a>
                 <a href="#" class="nav_link active" data-bs-toggle="modal" data-bs-target="#registerModal"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Registrarse</span> </a>
                 <a href="#" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Comunidad Assist</span> </a>
                 <a href="#" class="nav_link">
@@ -164,6 +58,8 @@ if (!empty($login_err)) {
 </div>
 <!--Container Main start-->
 <?php
+require_once "../config.php";
+
 $totalC = "SELECT COUNT(*) AS totalComentarios FROM comentario";
 
 $resultTotalC = mysqli_query($link, $totalC);
@@ -388,12 +284,66 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
     </div>
 </div>
 <!--Container Main end-->
+
+<!--Start Register Modal -->
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    <?php require_once "../registerUser.php" ?>
+  aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Registrarse</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <!-- <span aria-hidden="true">&times;</span> -->
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+      <!-- <form action="registerUser.php" method="post"> -->
+        <div class="md-form mb-4">
+            <i class="fas fa-user prefix grey-text"></i>
+          <label data-error="wrong" data-success="right" for="orangeForm-name">Nombre</label>
+          <input type="text" id="username" name="username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
+          <span class="invalid-feedback"><?php echo $username_err; ?></span>
+        </div>
+        <div class="md-form mb-4">
+          <i class="fas fa-envelope prefix grey-text"></i>
+          <label data-error="wrong" data-success="right" for="email">Correo</label>
+          <input type="email" id="mail" name="mail" class="form-control <?php echo (!empty($mail_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $mail; ?>">
+          <span class="invalid-feedback"><?php echo $mail_err; ?></span>
+        </div>
+
+        <div class="md-form mb-4">
+          <i class="fas fa-lock prefix grey-text"></i>
+          <label data-error="wrong" data-success="right" for="orangeForm-pass">Contraseña</label>
+          <input type="password" id="password" name="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $password; ?>">
+          <span class="invalid-feedback"><?php echo $password_err; ?></span>
+        </div>
+
+        <div class="md-form mb-4">
+        <i class="fa-solid fa-key"></i>
+          <!-- <i class="fas fa-lock prefix grey-text"></i> -->
+          <label data-error="wrong" data-success="right" for="orangeForm-pass">Confirm password</label>
+          <input type="password" id="confirm_password" name="confirm_password" class="form-control <?php echo (!empty($confirm_password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $confirm_password; ?>">
+          <span class="invalid-feedback"><?php echo $confirm_password_err; ?>
+        </div>
+
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="button" onclick="registerUser()" class="btn">Registrar</button>
+        <!-- </form> -->
+      </div>
+    </div>
+  </div>
+ ?></div>
+
+            <!--End Register Modal -->
+
 <!-- modal validateModal -->
 <div class="modal fade" id="validateModal" tabindex="-1" aria-labelledby="validateModal" aria-hidden="true">
   <div class="modal-dialog modal-sm modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header bg-danger"> 
-        <h5 class="modal-title text-light" id="exampleModalLabel" style="padding-left: 40%;">Aviso</h5>
+        <h5 class="modal-title text-light" id="loginModalLabel" style="padding-left: 40%;">Aviso</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body text-center">
@@ -406,67 +356,7 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
   </div>
 </div>
 <!-- fin validateModal -->
-<!--Modal Register -->
-<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                    <div class="form-group">
-                        <label>Nombres</label>
-                        <input type="text" name="nombres" class="form-control">
-                        <span class="invalid-feedback"><?php //echo $username_err; 
-                                                        ?></span>
-                    </div>
-                    <div class="form-group">
-                        <label>Apellidos</label>
-                        <input type="text" name="apellidos" class="form-control" value="">
-                        <span class="invalid-feedback"><?php //echo $username_err; 
-                                                        ?></span>
-                    </div>
-                    <div class="form-group">
-                        <label>Correo</label>
-                        <input type="text" name="username" class="form-control <?php //echo (!empty($username_err)) ? 'is-invalid' : ''; 
-                                                                                ?>" value="<?php // echo $username; 
-                                                                                                                                                    ?>">
-                        <span class="invalid-feedback"><?php // echo $username_err; 
-                                                        ?></span>
-                    </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" name="password" class="form-control <?php //echo (!empty($password_err)) ? 'is-invalid' : ''; 
-                                                                                    ?>" value="<?php // echo $password; 
-                                                                                                                                                        ?>">
-                        <span class="invalid-feedback"><?php // echo $password_err; 
-                                                        ?></span>
-                    </div>
-                    <div class="form-group">
-                        <label>Confirm Password</label>
-                        <input type="password" name="confirm_password" class="form-control <?php //echo (!empty($confirm_password_err)) ? 'is-invalid' : ''; 
-                                                                                            ?>" value="<?php // echo $confirm_password; 
-                                                                                                                                                                        ?>">
-                        <span class="invalid-feedback"><?php // echo $confirm_password_err; 
-                                                        ?></span>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" class="btn btn-primary" value="Submit">
-                        <input type="reset" class="btn btn-secondary ml-2" value="Reset">
-                    </div>
-                    <p>Already have an account? <a href="login.php">Login here</a>.</p>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Fin Modal Register -->
+
 
 </body>
   <!-- container social network -->
@@ -480,27 +370,32 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
 
 <!-- Modal Login -->
 
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Modal Login -->
+
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <?php require_once '../loginUser.php'?>
     <div class="modal-dialog modal-sm modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel" data-bs-toggle="modal" data-bs-target="#exampleModal">INICIAR SESIÓN</h5>
+                <h5 class="modal-title" id="loginModalLabel" data-bs-toggle="modal" data-bs-target="#loginModal">INICIAR SESIÓN</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                     <div class="mb-3">
+                        <i class="fas fa-envelope prefix grey-text"></i>
                         <label for="correo usuario" class="col-form-label">Correo:</label>
-                        <input type="text" name="username" class="form-control" <?php echo $usuCorreo; ?>>
-                        <span class="invalid-feedback"><?php echo $username_err; ?></span>
+                        <input type="text" name="mail" class="form-control" <?php echo $usuCorreo; ?>>
+                        <span class="invalid-feedback"><?php echo $mail_err; ?></span>
                     </div>
                     <div class="mb-3">
+                        <i class="fas fa-lock prefix grey-text"></i>
                         <label for="password" class="col-form-label">Contraseña:</label>
                         <input type="password" name="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>">
                         <span class="invalid-feedback"><?php echo $password_err; ?></span>
                     </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer d-flex justify-content-center">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <!-- <button type="button" class="btn btn-primary">Send message</button> -->
                 <input type="submit" class="btn btn-primary" value="Login">
@@ -509,10 +404,6 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
         </div>
     </div>
     <!-- Fin Modal Login -->
-
-
-
-
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="../js/mainFunctions.js"></script>
