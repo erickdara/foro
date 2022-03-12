@@ -97,13 +97,13 @@ class Actividad{
     <div class="height-100 bg-light">
         <div class="container mt-2">
         <?php
-            $queryTema = mysqli_query($link, "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, t.tituloTema, t.describeTema, DATE_FORMAT(t.created_at, \"%d %m %Y %H %i %s\") AS fecha, likes, unlikes
+            $queryTema = mysqli_query($link, "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, t.tituloTema, t.describeTema, DATE_FORMAT(t.created_at, \"%d-%m-%Y %H:%i:%s\") AS fecha, likes, unlikes
             FROM tema t 
             INNER JOIN usuario u ON t.idUsuario = u.idUsuario 
             INNER JOIN rol r ON u.idRol = r.idRol
             ORDER BY t.created_at DESC");
 
-            $queryDateNow = mysqli_query($link, "SELECT DATE_FORMAT(now(),\"%d %m %Y %H %i %s\") as dateNow");
+            $queryDateNow = mysqli_query($link, "SELECT DATE_FORMAT(now(),\"%d-%m-%Y %H:%i:%s\") as dateNow");
             $dateNow = mysqli_fetch_array($queryDateNow);
             while ($rowTema = mysqli_fetch_array($queryTema)) {
             ?>
@@ -116,7 +116,7 @@ class Actividad{
                             <div class="col-md-9 mt-3 mb-2 d-flex align-items-center">
                                 <div class="card-body">
                                     <h5 class="card-title"><b style="color: rgb(7, 26, 57);"><?php echo $rowTema['nombres'] . " creo el tema "; ?></b><b style="color: rgb(255 50 59);"><?php echo $rowTema['tituloTema'] ?></b></h5>
-                                    <p class="card-text"><small class="text-muted"><?php echo $util->get_time_ago($rowTema['fecha'], $dateNow['dateNow']); ?></small></p>
+                                    <p class="card-text"><small class="text-muted"><?php echo $util->get_time_ago($rowTema['fecha'])." ".$rowTema['fecha']." " ?></small></p>
                                 </div>
                             </div>
                         </div>

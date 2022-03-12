@@ -143,42 +143,77 @@ class Utils{
     
  
 
-    public function get_time_ago($date, $now){
+    // public function get_time_ago($date, $now){
 
-        $dateNow = explode(" ",$now); 
-        $dateCreate = explode(" ",$date);
+    //     $dateNow = explode(" ",$now); 
+    //     $dateCreate = explode(" ",$date);
 
-        $dayDifference = $dateNow[0] - $dateCreate[0]; //day difference
-        $monthDifference = $dateNow[1] - $dateCreate[1]; //month difference
-        $yearDifference = $dateNow[2] - $dateCreate[2]; //year difference
-        $hourDifference = $dateNow[3] - $dateCreate[3]; //hour difference
-        $minuteDifference = $dateNow[4] - $dateCreate[4]; //minute difference 
-        $secondDifference = $dateNow[5] - $dateCreate[5]; //second difference
+    //     $dayDifference = $dateNow[0] - $dateCreate[0]; //day difference
+    //     $monthDifference = $dateNow[1] - $dateCreate[1]; //month difference
+    //     $yearDifference = $dateNow[2] - $dateCreate[2]; //year difference
+    //     $hourDifference = $dateNow[3] - $dateCreate[3]; //hour difference
+    //     $minuteDifference = $dateNow[4] - $dateCreate[4]; //minute difference 
+    //     $secondDifference = $dateNow[5] - $dateCreate[5]; //second difference
 
-        $month = array("enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre");
+    //     $month = array("enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre");
 
-        if($dayDifference == 0 && $monthDifference == 0 && $yearDifference == 0){ //if it is fulfilled it was the same day
-            if($hourDifference >= 1){ //if it is greater than one, it is hours
-                return "Hace aproximadamente ".$hourDifference." hora(s).";
-            }else{
-                if($minuteDifference >= 1){ //if it is greater than one it is minutes
-                    return "Hace aproximadamente ".$minuteDifference." minuto(s).";
-                }else{
-                    return "Hace aproximadamente ".$secondDifference." segundo(s)."; //otherwise seconds
-                }
-            }
-        }else if($dayDifference != 0 && $dayDifference < 8 && $monthDifference == 0 && $yearDifference == 0){//If this condition is met, it oscillates within 7 days.
-                return "Hace aproximadamente ".$dayDifference." día(s)";
-        }else {
-                if($yearDifference >= 1){
-                    return "Publicado el ".$dateCreate[0]." de ".$month[$dateCreate[1]-1]." del ".$dateCreate[2]; 
-                }else{
-                    return "Publicado el ".$dateCreate[0]." de ".$month[$dateCreate[1]-1];
-                }
+    //     if($dayDifference == 0 && $monthDifference == 0 && $yearDifference == 0){ //if it is fulfilled it was the same day
+    //         if($hourDifference >= 1){ //if it is greater than one, it is hours
+    //             return "Hace aproximadamente ".$hourDifference." hora(s).";
+    //         }else{
+    //             if($minuteDifference >= 1){ //if it is greater than one it is minutes
+    //                 return "Hace aproximadamente ".$minuteDifference." minuto(s).";
+    //             }else{
+    //                 return "Hace aproximadamente ".$secondDifference." segundo(s)."; //otherwise seconds
+    //             }
+    //         }
+    //     }else if($dayDifference != 0 && $dayDifference < 8 && $monthDifference == 0 && $yearDifference == 0){//If this condition is met, it oscillates within 7 days.
+    //             return "Hace aproximadamente ".$dayDifference." día(s)";
+    //     }else {
+    //             if($yearDifference >= 1){
+    //                 return "Publicado el ".$dateCreate[0]." de ".$month[$dateCreate[1]-1]." del ".$dateCreate[2]; 
+    //             }else{
+    //                 return "Publicado el ".$dateCreate[0]." de ".$month[$dateCreate[1]-1];
+    //             }
                 
-        }
+    //     }
 
+    // }
+
+    function fechaunix($time){
+        $unix = strtotime($time);
+        if($unix){
+            return $unix;
+        }else{
+            return "no se puede";
+        }
+        
     }
+    function get_time_ago( $time )
+{
+    $timeNow = strtotime($time);
+    $time_difference = time() - $timeNow;
+
+    if( $time_difference < 1 ) { return 'less than 1 second ago'; }
+    $condition = array( 12 * 30 * 24 * 60 * 60 =>  'year',
+                30 * 24 * 60 * 60       =>  'month',
+                24 * 60 * 60            =>  'day',
+                60 * 60                 =>  'hour',
+                60                      =>  'minute',
+                1                       =>  'second'
+    );
+
+    foreach( $condition as $secs => $str )
+    {
+        $d = $time_difference / $secs;
+
+        if( $d >= 1 )
+        {
+            $t = round( $d );
+            return 'about ' . $t . ' ' . $str . ( $t > 1 ? 's' : '' ) . ' ago';
+        }
+    }
+}
 
 }
 

@@ -157,9 +157,12 @@ function buscar(buscar) {
         type: "GET",
         url: "../buscador.php",
         data: parametros,
-        dataType: "dataType",
         success: function(data) {
-            document.getElementById("datos_buscador").innerHTML = data;
+            $(data).insertBefore("#datos_buscador");
+            $('#buscar').on("focusout", function () {
+                location.reload();
+            });
+            // document.getElementById("datos_buscador").innerHTML = data;
         },
     });
 }
