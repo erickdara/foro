@@ -1,27 +1,10 @@
 <?php
-setlocale(LC_ALL, "es_ES");
-// Initialize the session
-//session_start();
 
 // Takes raw data from the request
 $json = file_get_contents('php://input');
 
 // Converts it into a PHP object
 $data = json_decode($json);
-
-// echo 'request post: '.json_encode($_POST);
-// echo 'lo que recibo del json enviado post'.$data;
-
-// $mail = $_POST['mail'] ;
-// $pass = $_POST['password'];
-
-// echo 'sacando de $POST: '.$mail.' '.$pass;
-
-//Check if the user is already logged in, if yes then redirect him to welcome page
-// if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-// header("location: User/index.php");
-// exit;
-// }
 
 // Include config file
 require_once "config.php";
@@ -88,15 +71,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                             echo json_encode($response);
 
-                            // Redirect user to welcome page
-                            //header("location: User/index.php");
-                            error_reporting(E_ALL | E_WARNING | E_NOTICE);
-                            ini_set('display_errors', TRUE);
+                            // error_reporting(E_ALL | E_WARNING | E_NOTICE);
+                            // ini_set('display_errors', TRUE);
+                            // // Redirect user to welcome page
+                            // $host  = $_SERVER['HTTP_HOST'];
+                            // $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+                            // $extra = 'User/index.php';
+                            // header("Location: http://$host$uri/$extra");
 
-
-                            flush();
-                            header("Location: User/index.php");
-                            die('should have redirected by now');
+                            // flush();
+                            // header("Location: User/index.php");
                         } else {
                             // Password is not valid, display a generic error message
                             $login_err = "Invalid username or password.";
@@ -117,11 +101,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Close connection
     mysqli_close($link);
-}
-?>
-
-<?php
-if (!empty($login_err)) {
-    echo '<div class="alert alert-danger">' . $login_err . '</div>';
 }
 ?>

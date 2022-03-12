@@ -104,7 +104,7 @@ function loginUser() {
                     ` exitoso 
          </div>`;
                 $(inf).insertBefore(".container").delay(5000).fadeOut();
-                location.replace("User/index.php");
+                window.location.href = "http://localhost/Foro/User/index.php";
             },
         });
     });

@@ -371,7 +371,7 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
 <!-- Modal Login -->
 
 <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-<?php include 'loginUser.php'; ?>
+<?php require_once 'loginUser.php'; ?>
     <div class="modal-dialog modal-sm modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
