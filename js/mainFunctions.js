@@ -79,3 +79,74 @@ function modalLogin() {
     var myAlert = document.getElementById("myAlert");
     var bsAlert = new bootstrap.Alert(myAlert);
 }
+
+// register USER
+function loginUser() {
+    $(document).ready(function() {
+        // get values
+        var mail = $("#correo").val();
+        var password = $("#pass").val();
+
+        $.ajax({
+            type: "post",
+            url: "loginUser.php",
+            data: { mail: mail, password: password },
+
+            success: function(response) {
+                $("#loginModal").modal("hide");
+
+                const result = JSON.parse(response);
+
+                var inf =
+                    `<div class="alert alert-success" id="login-info" role="alert">
+    Registro con el correo: ` +
+                    mail +
+                    ` exitoso 
+         </div>`;
+                $(inf).insertBefore(".container").delay(5000).fadeOut();
+                location.replace("User/index.php");
+            },
+        });
+    });
+}
+
+// register USER
+function registerUser() {
+    // get values
+    var username = $("#username").val();
+    var mail = $("#mail").val();
+    var password = $("#password").val();
+    var confirm_password = $("#confirm_password").val();
+
+    // agregar registros
+    $.post(
+        "registerUser.php", {
+            username: username,
+            mail: mail,
+            password: password,
+            confirm_password: confirm_password,
+        },
+        function(data, status) {
+            // close the popup
+            $("#registerModal").modal("hide");
+
+            var inf =
+                `<div class="alert alert-success" id="login-info" role="alert">
+            Registro con el correo: ` +
+                mail +
+                ` exitoso 
+                 </div>`;
+
+            $(inf).insertBefore(".container").delay(5000).fadeOut();
+            //alert("Data: " + data + "\nStatus: " + status);
+
+            // alert("Usuario:" + mail + "registrado con exito");
+
+            // borrar campos
+            $("#username").val("");
+            $("#mail").val("");
+            $("#password").val("");
+            $("#confirm_password").val("");
+        }
+    );
+}

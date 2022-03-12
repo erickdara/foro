@@ -8,10 +8,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $describeTema = $_POST['describeTema'];
 
     session_start();
-    if(isset($_SESSION['id'])){
+    if(isset($_SESSION['rol'])){
+        $idRol = $_SESSION['rol'];
         $idUsuario = $_SESSION['id'];
 
-        if($idUsuario != 2){
+        if($idRol != 1){
             echo "Tiene que ser administrador para publicar un tema.";
         }else{
             

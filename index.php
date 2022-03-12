@@ -203,7 +203,7 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                                 </div>
                                 <div class="col-md-2">
                                     <input type="hidden" name="idTema" value="<?php echo $row['idTema'] ?>">
-                                    <input name="comentario" type="submit" class="btn btn-danger" value="Comentar">
+                                    <input name="comentario" type="submit" class="btn btn-danger" value="Comentar"/>
                                 </div>
                             </div>
                         </form>
@@ -383,20 +383,20 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                     <div class="mb-3">
                         <i class="fas fa-envelope prefix grey-text"></i>
                         <label for="correo usuario" class="col-form-label">Correo:</label>
-                        <input type="text" name="mail" class="form-control" <?php echo $usuCorreo; ?>>
+                        <input type="text" id="correo" name="mail" class="form-control" <?php echo $usuCorreo; ?>>
                         <span class="invalid-feedback"><?php echo $mail_err; ?></span>
                     </div>
                     <div class="mb-3">
                         <i class="fas fa-lock prefix grey-text"></i>
                         <label for="password" class="col-form-label">Contraseña:</label>
-                        <input type="password" name="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>">
+                        <input type="password" id="pass" name="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>">
                         <span class="invalid-feedback"><?php echo $password_err; ?></span>
                     </div>
             </div>
             <div class="modal-footer d-flex justify-content-center">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <!-- <button type="button" class="btn btn-primary">Send message</button> -->
-                <input type="submit" class="btn btn-primary" value="Login">
+                <input type="button" onclick="loginUser()" class="btn btn-primary" value="Login">
                 </form>
             </div>
         </div>
