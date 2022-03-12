@@ -151,15 +151,19 @@ function registerUser() {
     );
 }
 
-function buscar(buscar){
-    var parametros = {"buscar":buscar};
+function buscar(buscar) {
+    var parametros = { buscar: buscar };
     $.ajax({
         type: "GET",
         url: "../buscador.php",
         data: parametros,
         dataType: "dataType",
-        success: function (data) {
+        success: function(data) {
             document.getElementById("datos_buscador").innerHTML = data;
-        }
+        },
     });
-}    
+}
+
+$("#loginAlert").click(function() {
+    $("#loginModal").modal("show");
+});
