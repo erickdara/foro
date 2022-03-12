@@ -11,9 +11,9 @@ if($_GET['idTema'] && $idUsuario){
    $liketema = $util -> getLikeTema($_GET['idTema']);
 
    if($_GET['vote_type'] == 1){ //voto positivo
-      if($util -> isUserAlreadyVoted($idUsuario, $_GET['idTema']) == 0){
+      if($util -> isUserAlreadyVotedTema($idUsuario, $_GET['idTema']) == 0){
          $likesUnlikesTema['likes'] += 1;
-         $likesUnlikesTema['unlikes'] = 0;
+         $likesUnlikesTema['unlikes'] = $likesUnlikesTema['unlikes'];
          $liketema['tipoLike'] = true;
          $LikeTemaData = array(
             'idTema' => $_GET['idTema'],
@@ -38,7 +38,7 @@ if($_GET['idTema'] && $idUsuario){
            // if($util -> isUserAlreadyVoted($idUsuario, $_GET['idTema']) == 0){
               
             $likesUnlikesTema['likes'] += 1;
-            $likesUnlikesTema['unlikes'] = 0;
+            $likesUnlikesTema['unlikes'] -= 1;
             $liketema['tipoLike'] = true;
             $LikeTemaData = array(
             'idTema' => $_GET['idTema'],
@@ -55,9 +55,9 @@ if($_GET['idTema'] && $idUsuario){
       }
 
    } else if ($_GET['vote_type'] == 0){// voto negativo
-      if($util -> isUserAlreadyVoted($idUsuario, $_GET['idTema']) == 0){
+      if($util -> isUserAlreadyVotedTema($idUsuario, $_GET['idTema']) == 0){
          $likesUnlikesTema['unlikes'] += 1;
-         $likesUnlikesTema['likes'] = 0;
+         $likesUnlikesTema['likes'] = $likesUnlikesTema['likes'];
          $liketema['tipoLike'] = false;
          $LikeTemaData = array(
             'idTema' => $_GET['idTema'],
@@ -81,7 +81,7 @@ if($_GET['idTema'] && $idUsuario){
          $util -> updateLikes($LikeTemaData);
          }else{
             $likesUnlikesTema['unlikes'] += 1;
-            $likesUnlikesTema['likes'] = 0;
+            $likesUnlikesTema['likes'] -= 1;
             $liketema['tipoLike'] = false;
             $LikeTemaData = array(
             'idTema' => $_GET['idTema'],
@@ -96,87 +96,16 @@ if($_GET['idTema'] && $idUsuario){
       }
    }
    
-   
-   
     
        if($likesUnlikesTema) {
-           $response = array(
+           $responseT = array(
                'likes' => $likesUnlikesTema['likes'],
                'unlikes' => $likesUnlikesTema['unlikes'],
                'idTema' => $_GET['idTema']          
            );
-           echo json_encode($response);
+           echo json_encode($responseT);
          }
-
 }
-        
+      
 
-//  require_once('config.php');
-
-//  var_dump($_GET);
-//  var_dump($_REQUEST);
-//  session_start();
-//  if ($_SERVER["REQUEST_METHOD"] == "POST") {
-//  $idUsuario = $_SESSION['id'];
-//  $idTema = $_POST["id"];
-
-
- //query the user's like in a thread
-
- 
-//  if ($stmt = mysqli_prepare($link, $query)) {
-//         mysqli_stmt_bind_param($stmt, "ss", $param_idTema, $param_idUsuario);
-//         $param_idTema = $idTema;
-//         $param_idUsuario = $idUsuario;
-//         echo $query;
-//       if (mysqli_stmt_execute($stmt)) {
-        
-//       }
-//  }
-
-//         $resultQuery = mysqli_query($link, "SELECT * FROM liketema WHERE idTema = '".$idTema."' AND idUsuario = '".$idUsuario."'");
-//         $count= mysqli_fetch_array($resultQuery);
-//         $total = $count[0];
-//         echo "Total rows: " . $total;
-
- //Run the query
-
-
- //Check that the user has not liked
-//  if($total == 0){
-//     echo "count = ". $count;
-//     $idTema = $_POST['id'];
-
-//     $insertLikeTema = "INSERT INTO liketema (idLike,idTema,idUsuario,created_at) VALUES (idLike,'".$idTema."','".$idUsuario."', now());";
-//     echo $insertLikeTema;
-//     $insertoLikeTema = mysqli_query($link,$insertLikeTema);
-
-//     $updateLikes = "UPDATE tema SET likes = likes + 1 WHERE idTema = '$idTema'";
-//     $updatedLikes = mysqli_query($link,$updateLikes);
-//  } else { //if the user already liked it
-
-//     $deleteLikeTema = "DELETE FROM liketema WHERE idTema = '".$idTema."' AND idUsuario = '".$idUsuario."'";
-//     $deletedLikeTema = mysqli_query($link,$deleteLikeTema);
-
-//     $updateLikes = "UPDATE tema SET likes = likes - 1 WHERE idTema = '".$idTema."'";
-//     $updatedLikes = mysqli_query($link,$updateLikes);
-//  }
-
-//  $countLikes = "SELECT likes FROM tema WHERE idTema = '".$idTema."'";
-//  $resultCount = mysqli_query($link,$countLikes);
-//  $likes = mysqli_fetch_array($resultCount);
-//  $totalLikes = $likes['likes'];
-
-//  if($total == 0){
-//     $totalLikes = $totalLikes++;
-//  }else{
-//    $totalLikes = $totalLikes--;
-//  }
-
-//  $datoLikeTema = array('likes' => $totalLikes);
-
-//  echo json_encode($datoLikeTema);
-//  }else{
-//    echo "no llega el post";
-//  }
 ?>

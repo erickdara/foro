@@ -9,6 +9,8 @@ class Utils{
     private $database  = 'databaseforo';    
     private $temaTable = 'tema';
     private $likeTemaTable = 'liketema';
+    private $comentarioTable = 'comentario';
+    private $likeComentarioTable = 'likecomentario';
     private $dbConnect = false;
 
     public function __construct(){
@@ -22,28 +24,8 @@ class Utils{
         }
      }
 
-    public function isUserAlreadyVoted($idUsuario, $idTema){
-        
+    public function isUserAlreadyVotedTema($idUsuario, $idTema){
         $query = "SELECT idLike, idTema, idUsuario, created_at FROM liketema WHERE idUsuario = '".$idUsuario."' AND idTema = '".$idTema."'";
-        $result = mysqli_query($this -> dbConnect, $query);
-        return $result -> num_rows;
-    }
-
-
-    public function validateTrueLike($idUsuario, $idTema){
-        $query = "SELECT * FROM liketema WHERE idUsuario = '".$idUsuario."' AND idTema = '".$idTema."' AND tipoLike = '".TRUE."'";
-        $result = mysqli_query($this -> dbConnect, $query);
-        return $result -> num_rows;
-    }
-
-    public function validateFalseLike($idUsuario, $idTema){
-        $query = "SELECT * FROM liketema WHERE idUsuario = '".$idUsuario."' AND idTema = '".$idTema."' AND tipoLike = '".FALSE."'";
-        $result = mysqli_query($this -> dbConnect, $query);
-        return $result -> num_rows;
-    }
-    
-    public function validateTrueUnlike($idUsuario, $idTema){
-        $query = "SELECT * FROM liketema WHERE idUsuario = '".$idUsuario."' AND idTema = '".$idTema."' AND tipoLike = '".FALSE."'";
         $result = mysqli_query($this -> dbConnect, $query);
         return $result -> num_rows;
     }
@@ -59,15 +41,27 @@ class Utils{
         }
     }
 
-    public function getLikesUnlikesTema($idTema){
-        $sqlQuery = 'SELECT idTema, idUsuario, likes, unlikes FROM '.$this->temaTable." WHERE idTema = '".$idTema."'";
-        $result = mysqli_query($this->dbConnect, $sqlQuery);
-        $row = $result->fetch_array(MYSQLI_ASSOC);
-        return  $row;
-    }   
+    public function validateTrueLike($idUsuario, $idTema){
+        $query = "SELECT * FROM liketema WHERE idUsuario = '".$idUsuario."' AND idTema = '".$idTema."' AND tipoLike = '".TRUE."'";
+        $result = mysqli_query($this -> dbConnect, $query);
+        return $result -> num_rows;
+    }
+
+    public function validateTrueUnlike($idUsuario, $idTema){
+        $query = "SELECT * FROM liketema WHERE idUsuario = '".$idUsuario."' AND idTema = '".$idTema."' AND tipoLike = '".FALSE."'";
+        $result = mysqli_query($this -> dbConnect, $query);
+        return $result -> num_rows;
+    }
 
     public function getLikeTema($idTema){
         $sqlQuery = 'SELECT idLike, idTema, idUsuario, tipoLike, created_at FROM '.$this->likeTemaTable." WHERE idTema = '".$idTema."'";
+        $result = mysqli_query($this->dbConnect, $sqlQuery);
+        $row = $result->fetch_array(MYSQLI_ASSOC);
+        return  $row;
+    }  
+
+    public function getLikesUnlikesTema($idTema){
+        $sqlQuery = 'SELECT idTema, idUsuario, likes, unlikes FROM '.$this->temaTable." WHERE idTema = '".$idTema."'";
         $result = mysqli_query($this->dbConnect, $sqlQuery);
         $row = $result->fetch_array(MYSQLI_ASSOC);
         return  $row;
@@ -83,6 +77,71 @@ class Utils{
         $updateQuery = "UPDATE ".$this->temaTable." SET likes = '".$likeTemaData['likes']."', unlikes = '".$likeTemaData['unlikes']."' WHERE idTema = '".$likeTemaData['idTema']."'";
         $resultUpdate = mysqli_query($this->dbConnect, $updateQuery);
     }
+
+    //Métodos de likes unlikes comentarios
+
+    public function isUserAlreadyVotedComment($idUser, $idComment){
+        
+        $query = "SELECT idLike, idComentario, idUsuario, created_at FROM likecomentario WHERE idUsuario = '".$idUser."' AND idComentario = '".$idComment."'";
+        $result = mysqli_query($this -> dbConnect, $query);
+        return $result -> num_rows;
+    }
+
+    public function updateLikeComment($likeCommentData){
+        $queryUpdate = "UPDATE ".$this -> comentarioTable." SET likes = '".$likeCommentData['likes']."' , unlikes = '".$likeCommentData['unlikes']."' WHERE idComentario = '".$likeCommentData['idComentario']."'";
+        mysqli_query($this -> dbConnect, $queryUpdate);
+
+        $sqlLikeQuery = "INSERT INTO ".$this->likeComentarioTable." (idLike, idComentario, idUsuario,tipoLike, created_at) VALUES ('', '".$likeCommentData['idComentario']."', '".$likeCommentData['idUsuario']."', '".$likeCommentData['tipoLike']."', now())";
+        if($sqlLikeQuery) {
+            mysqli_query($this->dbConnect, $sqlLikeQuery);  
+            return true;
+        }
+    }
+
+    // public function validateFalseLike($idUsuario, $idTema){
+    //     $query = "SELECT * FROM liketema WHERE idUsuario = '".$idUsuario."' AND idTema = '".$idTema."' AND tipoLike = '".FALSE."'";
+    //     $result = mysqli_query($this -> dbConnect, $query);
+    //     return $result -> num_rows;
+    // }
+
+    public function validateTrueLikeComment($idUser, $idComment){
+        $query = "SELECT * FROM likecomentario WHERE idUsuario = '".$idUser."' AND idComentario = '".$idComment."' AND tipoLike = '".TRUE."'";
+        $result = mysqli_query($this -> dbConnect, $query);
+        return $result -> num_rows;
+    }
+
+    public function validateTrueUnlikeComment($idUser, $idComment){
+        $query = "SELECT * FROM likecomentario WHERE idUsuario = '".$idUser."' AND idComentario = '".$idComment."' AND tipoLike = '".FALSE."'";
+        $result = mysqli_query($this -> dbConnect, $query);
+        return $result -> num_rows;
+    }
+
+    public function getLikeComentario($idComment){
+        $sqlQuery = 'SELECT idLike, idComentario, idUsuario, tipoLike, created_at FROM '.$this->likeComentarioTable." WHERE idComentario = '".$idComment."'";
+        $result = mysqli_query($this->dbConnect, $sqlQuery);
+        $row = $result->fetch_array(MYSQLI_ASSOC);
+        return  $row;
+    }  
+
+    public function getLikesUnlikesComment($idComment){
+        $sqlQuery = 'SELECT idComentario, idTema, idUsuario, likes, unlikes FROM '.$this->comentarioTable." WHERE idComentario = '".$idComment."'";
+        $result = mysqli_query($this->dbConnect, $sqlQuery);
+        $row = $result->fetch_array(MYSQLI_ASSOC);
+        return  $row;
+    }   
+
+    public function ifUserVotedToDeleteLikeComentario($likeCommentData){
+        $sqlQuery = "DELETE FROM ".$this->likeComentarioTable." WHERE idUsuario = '".$likeCommentData['idUsuario']."' AND idComentario = '".$likeCommentData['idComentario']."'";
+        $result = mysqli_query($this -> dbConnect, $sqlQuery);
+        return true;
+    }
+
+    public function updateLikesComentario($likeCommentData){
+        $updateQuery = "UPDATE ".$this->comentarioTable." SET likes = '".$likeCommentData['likes']."', unlikes = '".$likeCommentData['unlikes']."' WHERE idComentario = '".$likeCommentData['idComentario']."'";
+        $resultUpdate = mysqli_query($this->dbConnect, $updateQuery);
+    }
+    
+ 
 
     public function get_time_ago($date, $now){
 

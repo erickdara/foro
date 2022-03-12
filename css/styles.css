@@ -234,6 +234,11 @@ a {
     border-top: dotted;
 }
 
+.comentario{
+    box-shadow: 2px 5px 15px #999;
+    border-bottom: 0px;
+}
+
 .tema-informacion {
     box-shadow: 2px 2px 15px #999;
 }
@@ -270,3 +275,10 @@ a {
     width: 90%;
 }
 
+.colorLike{
+    background-color: rgba(0, 253, 93, 0.159);
+}
+
+.colorUnlike{
+    background-color: rgba(255, 22, 22, 0.152);
+}

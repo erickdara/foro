@@ -150,3 +150,16 @@ function registerUser() {
         }
     );
 }
+
+function buscar(buscar){
+    var parametros = {"buscar":buscar};
+    $.ajax({
+        type: "GET",
+        url: "../buscador.php",
+        data: parametros,
+        dataType: "dataType",
+        success: function (data) {
+            document.getElementById("datos_buscador").innerHTML = data;
+        }
+    });
+}    

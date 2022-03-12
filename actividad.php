@@ -3,6 +3,44 @@ require_once('config.php');
 include('utils.php');
 
 $util = new utils();
+
+class Actividad{
+    
+    public function actividad($tipoInteraccion){
+        include('config.php');
+        require_once('utils.php');
+        $util = new Utils();
+        $queryTema = mysqli_query($link, "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, t.tituloTema, t.describeTema, DATE_FORMAT(t.created_at, \"%d %m %Y %H %i %s\") AS fecha, likes, unlikes
+            FROM tema t 
+            INNER JOIN usuario u ON t.idUsuario = u.idUsuario 
+            INNER JOIN rol r ON u.idRol = r.idRol
+            ORDER BY t.created_at DESC");
+        $queryDateNow = mysqli_query($link, "SELECT DATE_FORMAT(now(),\"%d %m %Y %H %i %s\") as dateNow");
+        $dateNow = mysqli_fetch_array($queryDateNow);
+        switch($tipoInteraccion){
+            case "tema":
+                while($rowTema = mysqli_fetch_array($queryTema)){
+                    $fecha = $util-> get_time_ago($rowTema['fecha'], $dateNow['dateNow']);
+                    return "<div class=\"row d-flex justify-content-center\">
+                        <div class=\"card actividad-info\">
+                            <div class=\"row d-flex justify-content-center\" style=\"width: 90%;\">
+                                <div class=\"col-md-3 mt-3 mb-1\">
+                                    <img src=\"img/user.png\" class=\" rounded mx-auto d-block\" alt=\"...\">
+                                </div>
+                            <div class=\"col-md-9 mt-3 mb-2 d-flex align-items-center\">
+                                <div class=\"card-body\">
+                                    <h5 class=\"card-title\"><b style=\"color: rgb(7, 26, 57);\"><?php echo $rowTema\['nombres'] . \" creo el tema \"; ?></b><b style=\"color: rgb(255 50 59);\"><?php echo $rowTema\['tituloTema'] ?></b></h5>
+                            <p class=\"card-text\"><small class=\"text-muted\"><?php echo $fecha ?></small></p>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>";
+                }
+        }
+}
+
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -58,8 +96,7 @@ $util = new utils();
 
     <div class="height-100 bg-light">
         <div class="container mt-2">
-
-            <?php
+        <?php
             $queryTema = mysqli_query($link, "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, t.tituloTema, t.describeTema, DATE_FORMAT(t.created_at, \"%d %m %Y %H %i %s\") AS fecha, likes, unlikes
             FROM tema t 
             INNER JOIN usuario u ON t.idUsuario = u.idUsuario 

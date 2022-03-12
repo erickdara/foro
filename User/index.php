@@ -39,12 +39,12 @@ require_once "../config.php";
             <div class="col-md-6 col-sm-2 pb-1">
                 <a href="index.php" type="button" class="btn text-light btn-nav">Temas</a>
                 <a href="../actividad.php" type="button" class="btn text-light btn-nav">Actividad Reciente</a>
-                <a href="comentarios.html" type="button" class="btn text-light btn-nav">Comentarios</a>
+                <a href="../comentario.php" type="button" class="btn text-light btn-nav">Comentarios</a>
             </div>
 
             <div class="col-md-6 col-sm- 4 d-flex align-items-center justify-content-end">
                 <i class='bx bx-search bx-sm' style='color:#fffbfb'></i>&nbsp;&nbsp;&nbsp;
-                <input type="text" style="background-color: rgb(7, 26, 57); border: 0;" class="input-busqueda text-light" placeholder="Búsqueda">
+                <input type="text" id="buscar" name="buscar" onkeyup="buscar($('#buscar').val())" style="background-color: rgb(7, 26, 57); border: 0;" class="input-busqueda text-light" placeholder="Búsqueda">
             </div>
         </div>
     </div>
@@ -85,6 +85,9 @@ require_once "../config.php";
 ?>
 <div class="height-100 bg-light">
     <div class="container">
+            <div id="datos_buscador" class="row mt-2">
+                
+            </div>  
         <div class="row d-flex justify-content-end">
             <div class="col-md-5 mt-3 d-flex justify-content-end">
                 <div class="card info">
@@ -252,7 +255,7 @@ require_once "../config.php";
                          
                         <?php
                           $idTema = $row['idTema'];
-                          $queryComentario = "SELECT c.idComentario, c.idTema, c.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, c.describeComentario, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
+                          $queryComentario = "SELECT c.idComentario, c.idTema, c.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, c.describeComentario, c.likes, c.unlikes, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
                           FROM comentario c 
                           INNER JOIN tema t ON c.idTema = t.idTema
                           INNER JOIN usuario u ON c.idUsuario = u.idUsuario 
@@ -283,25 +286,25 @@ require_once "../config.php";
                                 <div class="col-md-6 d-flex justify-content-end">
                                     <div class="d-flex justify-content-between">
                                         <div>
-                                            <button class="btn-outline-light like" id="">
-                                                <img style="width: 20px; height: 15px;" src="../img/agregar.png" alt="">
-                                            </button>
+                                            <a class="likeComentario btn" data-vote-type="1" id="like_<?php echo $rowComentario['idComentario']?>">
+                                                <i class='bx bx-like' style="color:rgb(0, 253, 93);"></i>
+                                            </a>
                                         </div>
                                         <div>
                                             <b>
-                                                <p class="text-nowrap" style="font-size: 12px; color: rgb(0, 253, 93);">Me gusta:1</p>
+                                            <p id="likeComentario_<?php echo $rowComentario['idComentario']?>" class="text-nowrap mt-2" style="font-size: 12px; color: rgb(0, 253, 93);">Me gusta:<span class="counter" id="likeCount_<?php echo $rowComentario['idComentario'] ?>">&nbsp;<?php echo $rowComentario['likes'] ?></span></p>
                                             </b>
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-between">
                                         <div>
-                                            <button class="btn-outline-light">
-                                                <img style="width: 20px; height: 15px;" src="../img/agregar.png" alt="">
-                                            </button>
+                                            <a class="likeComentario btn" data-vote-type="0" id="unlike_<?php echo $rowComentario['idComentario']?>">
+                                                <i class='bx bx-dislike' style="color:rgb(255, 22, 22);"></i>
+                                            </a>
                                         </div>
                                         <div>
                                             <b>
-                                                <p class="text-nowrap" style="font-size: 12px; color: rgb(255, 22, 22);">No me gusta:0</p>
+                                            <p id="unlikeComentario_<?php echo $rowComentario['idComentario']; ?>" class="text-nowrap mt-2" style="font-size: 12px; color: rgb(255, 22, 22);">No me gusta:<span class="counter" id="unlikeCount_<?php echo $rowComentario['idComentario'] ?>">&nbsp;<?php echo $rowComentario['unlikes'] ?></span></p>
                                             </b>
                                         </div>
                                     </div>
@@ -330,7 +333,7 @@ require_once "../config.php";
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="../js/mainFunctions.js"></script>
-    <script type="text/javascript" src="../js/likesTema.js"></script>
+    <script type="text/javascript" src="../js/likes.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 
 </html>
