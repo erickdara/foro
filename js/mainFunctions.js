@@ -165,5 +165,5 @@ function buscar(buscar) {
 }
 
 $("#loginAlert").click(function() {
-    $("#loginModal").modal("show");
+    $("#registerModal").modal("show");
 });

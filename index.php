@@ -350,7 +350,7 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
         ¡Tienes que iniciar sesion para poder interactuar en el foro!
       </div>
       <div class="modal-footer d-flex justify-content-center">
-        <button type="button" class="btn btn-info" id="loginAlert" data-bs-dismiss="modal">Login</button>
+        <button type="button" class="btn btn-info" id="loginAlert" data-bs-dismiss="modal">Registro</button>
       </div>
     </div>
   </div>
