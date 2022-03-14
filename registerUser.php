@@ -103,8 +103,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Check input errors before inserting in database
     if (empty($username_err) && empty($mail_err)  && empty($confirm_password_err)) {
 
-         $username = $_POST['username'];
-         $mail = $_POST['mail'];
+         $username = $_POST['usernames'];
+         $mail = $_POST['email'];
         // $confirm_password = $_POST['confirm_password'];
         // Prepare an insert statement
         $sql = "INSERT INTO usuario (usuNombres, idRol, usuCorreo, usuPassword) VALUES ('$username',1,?, ?)";

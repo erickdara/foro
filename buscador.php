@@ -12,7 +12,7 @@ $num = mysqli_num_rows($buscador);
 <h5 class="card-tittle">Resultados encontrados (<?php echo $num?>)</h5>
 
 <?php
-while($result = mysqli_fetch_array($buscador)){?>
+while($result = mysqli_fetch_assoc($buscador)){?>
     <div class="card tema-informacion mt-2 mb-3">
                     <div class="card-body">
                         <div class="row">

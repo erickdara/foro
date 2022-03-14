@@ -303,33 +303,46 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
         <div class="md-form mb-4">
             <i class="fas fa-user prefix grey-text"></i>
           <label data-error="wrong" data-success="right" for="orangeForm-name">Nombre</label>
-          <input type="text" id="username" name="username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
+          <input type="text" id="usernames" name="username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
           <span class="invalid-feedback"><?php echo $username_err; ?></span>
+          <h6 id="usercheck" style="color: red;" >
+                    **Username is missing
+              </h6>
         </div>
         <div class="md-form mb-4">
           <i class="fas fa-envelope prefix grey-text"></i>
           <label data-error="wrong" data-success="right" for="email">Correo</label>
-          <input type="email" id="mail" name="mail" class="form-control <?php echo (!empty($mail_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $mail; ?>">
+          <input type="email" id="email" name="email" class="form-control <?php echo (!empty($mail_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $mail; ?>">
           <span class="invalid-feedback"><?php echo $mail_err; ?></span>
+          <small id="emailvalid" class="form-text
+                text-muted invalid-feedback">
+                    Your email must be a valid email
+            </small>
         </div>
 
         <div class="md-form mb-4">
           <i class="fas fa-lock prefix grey-text"></i>
           <label data-error="wrong" data-success="right" for="orangeForm-pass">Contraseña</label>
-          <input type="password" id="password" name="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $password; ?>">
+          <input type="password" id="password" name="pass" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $password; ?>">
           <span class="invalid-feedback"><?php echo $password_err; ?></span>
+          <h6 id="passcheck" style="color: red;">
+                **Please Fill the password
+              </h6>
         </div>
 
         <div class="md-form mb-4">
         <i class="fa-solid fa-key"></i>
           <!-- <i class="fas fa-lock prefix grey-text"></i> -->
           <label data-error="wrong" data-success="right" for="orangeForm-pass">Confirm password</label>
-          <input type="password" id="confirm_password" name="confirm_password" class="form-control <?php echo (!empty($confirm_password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $confirm_password; ?>">
-          <span class="invalid-feedback"><?php echo $confirm_password_err; ?>
+          <input type="password" id="conpassword" name="username" class="form-control <?php echo (!empty($confirm_password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $confirm_password; ?>">
+          <span class="invalid-feedback"><?php echo $confirm_password_err; ?></span>
+          <h6 id="conpasscheck" style="color: red;">
+                  **Password didn't match
+              </h6>
         </div>
       </div>
       <div class="modal-footer d-flex justify-content-center">
-        <button type="button" onclick="registerUser()" class="btn">Registrar</button>
+        <input type="submit" id="submitbtn" class="btn btn-success" value="Registrar"></input>
         <!-- </form> -->
       </div>
     </div>

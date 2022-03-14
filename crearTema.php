@@ -18,8 +18,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             $query = "INSERT INTO tema (idTema, idUsuario, tituloTema, describeTema, created_at) 
             VALUES (idTema, '$idUsuario', '$tituloTema', '$describeTema', now());";
-
+            
             $resultQuery = mysqli_query($link,$query);
+
+            $llamado = mysqli_query($link,"SELECT idTema, created_at FROM tema ORDER BY created_at DESC LIMIT 1");
+            $resultLlamado = mysqli_fetch_array($llamado);
+            $id_sub = $resultLlamado['idTema'];
+
+            $queryNot = "INSERT INTO notificacion (idNotificacion, idUsuario1, idUsuario2, tipoNotificacion, general, id_pub, created_at) 
+            VALUES (idNotificacion,'$idUsuario',0,'ha creado el tema', TRUE,'$id_sub',now())";
+            
+            $resultQueryNot = mysqli_query($link,$queryNot);
             header("Location: ./User/index.php");
 
         if(!$resultQuery){

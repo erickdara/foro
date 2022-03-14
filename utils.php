@@ -191,16 +191,16 @@ class Utils{
     }
     function get_time_ago( $time )
 {
-    $timeNow = strtotime($time);
-    $time_difference = time() - $timeNow;
+    $timeCreate = strtotime($time);
+    $time_difference = (time() - $timeCreate) - 21600;
 
     if( $time_difference < 1 ) { return 'less than 1 second ago'; }
-    $condition = array( 12 * 30 * 24 * 60 * 60 =>  'year',
-                30 * 24 * 60 * 60       =>  'month',
-                24 * 60 * 60            =>  'day',
-                60 * 60                 =>  'hour',
-                60                      =>  'minute',
-                1                       =>  'second'
+    $condition = array( 12 * 30 * 24 * 60 * 60 =>  'año',
+                30 * 24 * 60 * 60       =>  'mes',
+                24 * 60 * 60            =>  'día',
+                60 * 60                 =>  'hora',
+                60                      =>  'minuto',
+                1                       =>  'segundo'
     );
 
     foreach( $condition as $secs => $str )
@@ -210,7 +210,7 @@ class Utils{
         if( $d >= 1 )
         {
             $t = round( $d );
-            return 'about ' . $t . ' ' . $str . ( $t > 1 ? 's' : '' ) . ' ago';
+            return 'Hace aproximadamente ' . $t . ' ' . $str . ( $t > 1 ? 's' : '' ) . '';
         }
     }
 }

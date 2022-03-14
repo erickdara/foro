@@ -1,46 +1,5 @@
 <?php
 require_once('config.php');
-include('utils.php');
-
-$util = new utils();
-
-class Actividad{
-    
-    public function actividad($tipoInteraccion){
-        include('config.php');
-        require_once('utils.php');
-        $util = new Utils();
-        $queryTema = mysqli_query($link, "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, t.tituloTema, t.describeTema, DATE_FORMAT(t.created_at, \"%d %m %Y %H %i %s\") AS fecha, likes, unlikes
-            FROM tema t 
-            INNER JOIN usuario u ON t.idUsuario = u.idUsuario 
-            INNER JOIN rol r ON u.idRol = r.idRol
-            ORDER BY t.created_at DESC");
-        $queryDateNow = mysqli_query($link, "SELECT DATE_FORMAT(now(),\"%d %m %Y %H %i %s\") as dateNow");
-        $dateNow = mysqli_fetch_array($queryDateNow);
-        switch($tipoInteraccion){
-            case "tema":
-                while($rowTema = mysqli_fetch_array($queryTema)){
-                    $fecha = $util-> get_time_ago($rowTema['fecha'], $dateNow['dateNow']);
-                    return "<div class=\"row d-flex justify-content-center\">
-                        <div class=\"card actividad-info\">
-                            <div class=\"row d-flex justify-content-center\" style=\"width: 90%;\">
-                                <div class=\"col-md-3 mt-3 mb-1\">
-                                    <img src=\"img/user.png\" class=\" rounded mx-auto d-block\" alt=\"...\">
-                                </div>
-                            <div class=\"col-md-9 mt-3 mb-2 d-flex align-items-center\">
-                                <div class=\"card-body\">
-                                    <h5 class=\"card-title\"><b style=\"color: rgb(7, 26, 57);\"><?php echo $rowTema\['nombres'] . \" creo el tema \"; ?></b><b style=\"color: rgb(255 50 59);\"><?php echo $rowTema\['tituloTema'] ?></b></h5>
-                            <p class=\"card-text\"><small class=\"text-muted\"><?php echo $fecha ?></small></p>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                    </div>";
-                }
-        }
-}
-
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -53,7 +12,7 @@ class Actividad{
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
     <link rel="stylesheet" type="text/css" href="css/styles.css">
 
-    <title>Actividad reciente</title>
+    <title>Comunidad de Assist</title>
 </head>
 
 <body>
@@ -96,32 +55,34 @@ class Actividad{
 
     <div class="height-100 bg-light">
         <div class="container">
+        <div class="row d-flex justify-content-center mt-2">
+            <div class="card actividad-info mt-4 mb-4">
         <?php
-            $queryNot = mysqli_query($link, "SELECT n.idNotificacion, n.idUsuario1, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, n.idUsuario2, n.tipoNotificacion,DATE_FORMAT(n.created_at, \"%d-%m-%Y %H:%i:%s\") AS fecha
-            FROM notificacion n 
-            INNER JOIN usuario u ON n.idUsuario1 = u.idUsuario 
-            ORDER BY n.created_at DESC");
+            $queryUser = mysqli_query($link, "SELECT u.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) as nombres, r.tipoRol FROM usuario u 
+            INNER JOIN rol r ON u.idRol = r.idRol 
+            ORDER BY u.idRol");
 
-            while ($rowNot = mysqli_fetch_array($queryNot)) {
+            while ($rowUser = mysqli_fetch_array($queryUser)) {
             ?>
-                <div class="row d-flex justify-content-center">
-                    <div class="card actividad-info mt-2">
+                
                         <div class="row d-flex justify-content-center" style="width: 90%;">
                             <div class="col-md-3 mt-3 mb-1">
                                 <img src="img/user.png" class=" rounded mx-auto d-block" alt="...">
                             </div>
                             <div class="col-md-9 mt-3 mb-2 d-flex align-items-center">
                                 <div class="card-body">
-                                    <h5 class="card-title"><b style="color: rgb(7, 26, 57);"><?php echo $rowNot['nombres'] ." ".$rowNot['tipoNotificacion']; ?></b><b style="color: rgb(255 50 59);"><?php echo $rowTema['tituloTema'] ?></b></h5>
-                                    <p class="card-text"><small class="text-muted"><?php echo $util->get_time_ago($rowTema['fecha']) ?></small></p>
+                                    <h5 class="card-title"><b style="color: rgb(7, 26, 57);"><?php echo $rowUser['nombres'] ." (".$rowUser['tipoRol'].")"; ?></b></h5>
+                                    <p class="card-text"><small class="text-muted"></small></p>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                        <hr size="3" style="border-top: rgb(7, 26, 57);">
+                   
             <?php
             }
             ?>
+                    </div>
+                </div>
         </div>
     </div>
 
