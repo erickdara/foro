@@ -1,41 +1,3 @@
-/* document.addEventListener("DOMContentLoaded", function(event) {
-    const showNavbar = (toggleId, navId, bodyId, headerId) => {
-        const toggle = document.getElementById(toggleId),
-            nav = document.getElementById(navId),
-            bodypd = document.getElementById(bodyId),
-            headerpd = document.getElementById(headerId);
-
-        // Validate that all variables exist
-        if (toggle && nav && bodypd && headerpd) {
-            toggle.addEventListener("click", () => {
-                // show navbar
-                nav.classList.toggle("showMenu");
-                // change icon
-                toggle.classList.toggle("bx-x");
-                // add padding to body
-                bodypd.classList.toggle("body-pd");
-                // add padding to header
-                headerpd.classList.toggle("body-pd");
-            });
-        }
-    }; */
-
-/*     showNavbar("header-toggle", "nav-bar", "body-pd", "header");
-
-    /*===== LINK ACTIVE =====*/
-/* const linkColor = document.querySelectorAll(".nav_link");
-
-    function colorLink() {
-        if (linkColor) {
-            linkColor.forEach((l) => l.classList.remove("active"));
-            this.classList.add("active");
-        }
-    }
-    linkColor.forEach((l) => l.addEventListener("click", colorLink));
-
-    // Your code to run since DOM is loaded and ready
-}); */
-
 $("#nav-bar").mouseover(function() {
     //alert("Estoy entrando al evento mouseover");
     $("#nav-bar").toggleClass("showMenu").delay(1000);
@@ -159,7 +121,7 @@ function buscar(buscar) {
         data: parametros,
         success: function(data) {
             $(data).insertBefore("#datos_buscador");
-            $('#buscar').on("focusout", function () {
+            $("#buscar").on("focusout", function() {
                 location.reload();
             });
             // document.getElementById("datos_buscador").innerHTML = data;
@@ -172,125 +134,129 @@ $("#loginAlert").click(function() {
 });
 
 // Document is ready
-$(document).ready(function () {
-	
+$(document).ready(function() {
     // Validate Username
-        $('#usercheck').hide();
-        let usernameError = true;
-        $('#usernames').keyup(function () {
-            validateUsername();
-        });
-        
-        function validateUsername() {
-        let usernameValue = $('#usernames').val();
-        if (usernameValue.length == '') {
-        $('#usercheck').show();
+    $("#usercheck").hide();
+    let usernameError = true;
+    $("#usernames").keyup(function() {
+        validateUsername();
+    });
+
+    function validateUsername() {
+        let usernameValue = $("#usernames").val();
+        if (usernameValue.length == "") {
+            $("#usercheck").show();
             usernameError = false;
             return false;
-        }
-        else if((usernameValue.length < 3)||
-                (usernameValue.length > 10)) {
-            $('#usercheck').show();
-            $('#usercheck').html
-    ("**length of username must be between 3 and 10");
+        } else if (usernameValue.length < 3 || usernameValue.length > 10) {
+            $("#usercheck").show();
+            $("#usercheck").html("**length of username must be between 3 and 10");
             usernameError = false;
             return false;
+        } else {
+            $("#usercheck").hide();
         }
-        else {
-            $('#usercheck').hide();
-        }
-        }
-    
+    }
+
     // Validate Email
-       
-        $('#email').blur(function (e) { 
-            e.preventDefault();
-            let regex =
-        /^([_\-\.0-9a-zA-Z]+)@([_\-\.0-9a-zA-Z]+)\.([a-zA-Z]){2,7}$/;
+
+    $("#email").blur(function(e) {
+        e.preventDefault();
+        let regex = /^([_\-\.0-9a-zA-Z]+)@([_\-\.0-9a-zA-Z]+)\.([a-zA-Z]){2,7}$/;
         let s = email.value;
-        if(regex.test(s)){
-            email.classList.remove(
-                    'is-invalid');
+        if (regex.test(s)) {
+            email.classList.remove("is-invalid");
             emailError = true;
-            }
-            else{
-                email.classList.add(
-                    'is-invalid');
-                emailError = false;
-            }
-        });
-        
-
-        
-        
-    // Validate Password
-        $('#passcheck').hide();
-        let passwordError = true;
-        $('#password').keyup(function () {
-            validatePassword();
-        });
-
-        function validatePassword() {
-            let passwordValue =
-                $('#password').val();
-            if (passwordValue.length == '') {
-                $('#passcheck').show();
-                passwordError = false;
-                return false;
-            }
-            if ((passwordValue.length < 3)||
-                (passwordValue.length > 10)) {
-                $('#passcheck').show();
-                $('#passcheck').html
-    ("**length of your password must be between 3 and 10");
-                $('#passcheck').css("color", "red");
-                passwordError = false;
-                return false;
-            } else {
-                $('#passcheck').hide();
-            }
+        } else {
+            email.classList.add("is-invalid");
+            emailError = false;
         }
-            
+    });
+
+    // Validate Password
+    $("#passcheck").hide();
+    let passwordError = true;
+    $("#password").keyup(function() {
+        validatePassword();
+    });
+
+    function validatePassword() {
+        let passwordValue = $("#password").val();
+        if (passwordValue.length == "") {
+            $("#passcheck").show();
+            passwordError = false;
+            return false;
+        }
+        if (passwordValue.length < 3 || passwordValue.length > 10) {
+            $("#passcheck").show();
+            $("#passcheck").html(
+                "**length of your password must be between 3 and 10"
+            );
+            $("#passcheck").css("color", "red");
+            passwordError = false;
+            return false;
+        } else {
+            $("#passcheck").hide();
+        }
+    }
+
     // Validate Confirm Password
     function validateConfirmPassword() {
-        let confirmPasswordValue =
-            $('#conpassword').val();
-        let passwordValue =
-            $('#password').val();
+        let confirmPasswordValue = $("#conpassword").val();
+        let passwordValue = $("#password").val();
         if (passwordValue != confirmPasswordValue) {
-            $('#conpasscheck').show();
-            $('#conpasscheck').html(
-                "**Password didn't Match");
-            $('#conpasscheck').css(
-                "color", "red");
+            $("#conpasscheck").show();
+            $("#conpasscheck").html("**Password didn't Match");
+            $("#conpasscheck").css("color", "red");
             confirmPasswordError = false;
             return false;
         } else {
-            $('#conpasscheck').hide();
+            $("#conpasscheck").hide();
         }
     }
-        $('#conpasscheck').hide();
-        let confirmPasswordError = true;
-        $('#conpassword').keyup(function () {
-            validateConfirmPassword();
-        });
-
-        
-    // Submit button
-        $('#submitbtn').click(function () {
-            validateUsername();
-            validatePassword();
-            validateConfirmPassword();
-            // validateEmail();
-            if ((usernameError == true) &&
-                (passwordError == true) &&
-                (confirmPasswordError == true)) {
-                registerUser();
-                return true;
-            } else {
-                return false;
-            }
-        });
+    $("#conpasscheck").hide();
+    let confirmPasswordError = true;
+    $("#conpassword").keyup(function() {
+        validateConfirmPassword();
     });
 
-    
+    // Submit button
+    $("#submitbtn").click(function() {
+        validateUsername();
+        validatePassword();
+        validateConfirmPassword();
+        // validateEmail();
+        if (
+            usernameError == true &&
+            passwordError == true &&
+            confirmPasswordError == true
+        ) {
+            registerUser();
+            return true;
+        } else {
+            return false;
+        }
+    });
+});
+
+$("#likeTema").click(function() {
+    $("#likeTema").toggleClass("bxs-like");
+});
+
+$("#unlikeTema").click(function() {
+    $("#unlikeTema").toggleClass("bxs-like");
+});
+
+// $("#logModal").click(function() {
+//     $("#loginModal").modal("show");
+//     setTimeout(function() {
+//         createRecaptcha();
+//     }, 100);
+// });
+
+function createRecaptcha() {
+    grecaptcha.render("captcha", {
+        sitekey: "6LfZh9UeAAAAAGoCYH8PZoqKbYpo6lKDLqhWPDei",
+        theme: "light",
+    });
+}

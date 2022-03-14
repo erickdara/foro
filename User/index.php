@@ -199,7 +199,7 @@ require_once "../config.php";
                                 <div class="d-flex justify-content-between">
                                     <div>
                                         <a class="likeTema btn" data-vote-type="1" id="like_<?php echo $row['idTema']?>">
-                                        <i class='bx bx-like' style="color:rgb(0, 253, 93);"></i>
+                                        <i class='bx bx-like' style="color:rgb(0, 253, 93);" id="likeTema"></i>
                                         </a>
                                     </div>
                                     <div class="d-flex align-items-end">
@@ -211,7 +211,7 @@ require_once "../config.php";
                                 <div class="d-flex justify-content-between">
                                     <div>
                                         <a class="likeTema btn" data-vote-type="0" id="unlike_<?php echo $row['idTema']?>">
-                                            <i class='bx bx-dislike' style="color:rgb(255, 22, 22);"></i>
+                                            <i class='bx bx-dislike' style="color:rgb(255, 22, 22);" id="unlikeTema"></i>
                                         </a>
                                     </div>
                                     <div class="d-flex align-items-end">

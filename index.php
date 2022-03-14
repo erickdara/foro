@@ -1,3 +1,40 @@
+<?php
+/**
+ * Build a simple HTML page with multiple providers.
+ */
+
+include 'hybridauth/src/autoload.php';
+include 'App/Auth/config.php';
+
+use Hybridauth\Hybridauth;
+
+$hybridauth = new Hybridauth($config);
+$adapters = $hybridauth->getConnectedAdapters();
+?>
+<div>
+<ul>
+    <?php foreach ($hybridauth->getProviders() as $name) : ?>
+        <?php if (!isset($adapters[$name])) : ?>
+            <li>
+                <a href="<?php print $config['callback'] . "?provider={$name}"; ?>">
+                    Sign in with <strong><?php print $name; ?></strong>
+                </a>
+            </li>
+        <?php endif; ?>
+    <?php endforeach; ?>
+</ul>
+</div>
+<?php require_once 'registerSocial.php'?>
+<?php foreach ($adapters as $name => $adapter) : ?>
+<?php print_r($adapter->getUserProfile())?>
+<?php echo ''.$name; 
+$data = $adapter->getUserProfile();
+$register = new RegisterSocial();
+$register -> insertUser($data, $name);
+?>
+<?php endforeach; ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,10 +42,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
     <link rel="stylesheet" type="text/css" href="css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
+    <script src="https://www.google.com/recaptcha/api.js"></script>
     
 
     <!-- sidebar social network -->
@@ -47,7 +86,7 @@
         <div>
 
             <div class="nav_list">
-                <a href="#" class="nav_logo" data-bs-toggle="modal" data-bs-target="#loginModal"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">Iniciar Sesion</span> </a>
+                <a href="#" class="nav_logo" data-bs-toggle="modal" data-bs-target="#loginModal" id="logModal"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">Iniciar Sesion</span> </a>
                 <a href="#" class="nav_link active" data-bs-toggle="modal" data-bs-target="#registerModal"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Registrarse</span> </a>
                 <a href="#" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Comunidad Assist</span> </a>
                 <a href="#" class="nav_link">
@@ -154,7 +193,7 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                                 <div class="d-flex justify-content-between">
                                     <div>
                                         <a  data-bs-toggle="modal" data-bs-target="#validateModal"  class="btn">
-                                            <i class='bx bx-like' style="color:rgb(0, 253, 93);"></i>
+                                            <i class='bx bx-like' style="color:rgb(0, 253, 93);" id="likeTema"></i>
                                         </a>
                                     </div>
                                     <div class="d-flex align-items-end">
@@ -377,6 +416,7 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
     <!-- container social network -->
 <!--Container Main end-->
 <script>$('#share-bar').share({
+    pageUrl: 'http://foro-assist.com',
     position: 'right',
     animate: true
 });</script>    
@@ -405,9 +445,20 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                         <input type="password" id="pass" name="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>">
                         <span class="invalid-feedback"><?php echo $password_err; ?></span>
                     </div>
+
+                    <a href="#" class="fa fa-facebook"></a>
             </div>
             <div class="modal-footer d-flex justify-content-center">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+            
+  <!--               
+            <button class="g-recaptcha" 
+            data-sitekey="6LfZh9UeAAAAAGoCYH8PZoqKbYpo6lKDLqhWPDei" 
+            data-callback='onSubmit' 
+            data-action='submit'>Submit</button> -->
+
+
+                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <!-- <button type="button" class="btn btn-primary">Send message</button> -->
                 <input type="button" onclick="loginUser()" class="btn btn-primary" value="Login">
                 </form>

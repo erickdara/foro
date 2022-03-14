@@ -65,7 +65,7 @@ try {
     /**
      * Redirects user to home page (i.e., index.php in our case)
      */
-    HttpClient\Util::redirect('http://localhost/Foro/App/Auth/index.php');
+    HttpClient\Util::redirect('http://localhost/Foro/index.php');
 } catch (Exception $e) {
     echo $e->getMessage();
 }
