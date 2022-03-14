@@ -13,26 +13,26 @@ $adapters = $hybridauth->getConnectedAdapters();
 ?>
 <div>
 <ul>
-    <?php foreach ($hybridauth->getProviders() as $name) : ?>
-        <?php if (!isset($adapters[$name])) : ?>
+    <?php foreach ($hybridauth->getProviders() as $name): ?>
+        <?php if (!isset($adapters[$name])): ?>
             <li>
-                <a href="<?php print $config['callback'] . "?provider={$name}"; ?>">
-                    Sign in with <strong><?php print $name; ?></strong>
+                <a href="<?php print $config['callback'] . "?provider={$name}";?>">
+                    Sign in with <strong><?php print $name;?></strong>
                 </a>
             </li>
-        <?php endif; ?>
-    <?php endforeach; ?>
+        <?php endif;?>
+    <?php endforeach;?>
 </ul>
 </div>
 <?php require_once 'registerSocial.php'?>
-<?php foreach ($adapters as $name => $adapter) : ?>
+<?php foreach ($adapters as $name => $adapter): ?>
 <?php print_r($adapter->getUserProfile())?>
-<?php echo ''.$name; 
+<?php echo '' . $name;
 $data = $adapter->getUserProfile();
 $register = new RegisterSocial();
-$register -> insertUser($data, $name);
+$register->insertUser($data, $name);
 ?>
-<?php endforeach; ?>
+<?php endforeach;?>
 
 
 <!DOCTYPE html>
@@ -42,13 +42,13 @@ $register -> insertUser($data, $name);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
     <link rel="stylesheet" type="text/css" href="css/styles.css">
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://www.google.com/recaptcha/api.js"></script>
-    
+
 
     <!-- sidebar social network -->
     <link type="text/css" href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
@@ -125,7 +125,7 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                         </div>
                     </div>
                 </div>
-            </div>            
+            </div>
             <div class="col-md-5 d-flex align-items-end justify-content-center">
                 <div class="row tema">
                     <button type="button" class="btn d-flex justify-content-between align-items-center"  data-bs-toggle="modal" data-bs-target="#validateModal">
@@ -142,15 +142,15 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
         <div class="row mt-4 d-flex justify-content-start">
 
             <?php
-            $query = "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, r.tipoRol, t.tituloTema, t.describeTema, t.likes, t.unlikes, DATE_FORMAT(t.created_at, \"%M %d de %Y\") AS fecha
-                  FROM tema t 
-                  INNER JOIN usuario u ON t.idUsuario = u.idUsuario 
+$query = "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, r.tipoRol, t.tituloTema, t.describeTema, t.likes, t.unlikes, DATE_FORMAT(t.created_at, \"%M %d de %Y\") AS fecha
+                  FROM tema t
+                  INNER JOIN usuario u ON t.idUsuario = u.idUsuario
                   INNER JOIN rol r ON u.idRol = r.idRol
                   ORDER BY t.idTema DESC";
 
-            $resultQuery = mysqli_query($link, $query);
-            while ($row = mysqli_fetch_array($resultQuery)) {
-            ?>
+$resultQuery = mysqli_query($link, $query);
+while ($row = mysqli_fetch_array($resultQuery)) {
+    ?>
                 <div class="card tema-informacion mt-2 mb-3">
                     <div class="card-body">
                         <div class="row">
@@ -173,11 +173,11 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                         </div>
                         <div class="row mt-4">
                             <?php
-                            $idTemaC = $row['idTema'];
-                            $queryCountComentario = "SELECT COUNT(*) AS com FROM comentario c WHERE c.idTema = '$idTemaC' ";
-                            $resultCount = mysqli_query($link, $queryCountComentario);
-                            $rowCountComentario = mysqli_fetch_array($resultCount);
-                            ?>
+$idTemaC = $row['idTema'];
+    $queryCountComentario = "SELECT COUNT(*) AS com FROM comentario c WHERE c.idTema = '$idTemaC' ";
+    $resultCount = mysqli_query($link, $queryCountComentario);
+    $rowCountComentario = mysqli_fetch_array($resultCount);
+    ?>
                             <div class="col-md-4 d-flex d-wrap">
                                 <p class="mt-1" style="color: rgb(7, 26, 57); font-size: 15px;"><b>Comentarios del tema:</b></p>
                                 <b class="btn btn-comentarios" type="button" data-bs-toggle="collapse" data-bs-target="#tema<?php echo $row['idTema'] ?>" aria-expanded="false" aria-controls="collapseExample" style="color: rgb(7, 26, 57); font-size: 13px; font-weight: bold;"><?php echo $rowCountComentario['com'] . " Comentario(s)" ?></b>
@@ -186,7 +186,7 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                             </div>
                             <?php
 
-                            ?>
+    ?>
 
                             <form action="likes.php" method="POST" class="col-md-5 d-flex d-wrap" style="font-size: 12px;">
                                 <input type="hidden" name="idTemaLike" value="<?php echo $row['idTema']; ?>">
@@ -248,17 +248,17 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                         </form>
 
                         <?php
-                        $idTema = $row['idTema'];
-                        $queryComentario = "SELECT c.idComentario, c.idTema, c.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, c.describeComentario, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
-                          FROM comentario c 
+$idTema = $row['idTema'];
+    $queryComentario = "SELECT c.idComentario, c.idTema, c.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, c.describeComentario, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
+                          FROM comentario c
                           INNER JOIN tema t ON c.idTema = t.idTema
-                          INNER JOIN usuario u ON c.idUsuario = u.idUsuario 
+                          INNER JOIN usuario u ON c.idUsuario = u.idUsuario
                           WHERE C.idTema = '$idTema'
                           ORDER BY c.idComentario DESC";
 
-                        $resultComentario = mysqli_query($link, $queryComentario);
-                        while ($rowComentario = mysqli_fetch_array($resultComentario)) {
-                        ?>
+    $resultComentario = mysqli_query($link, $queryComentario);
+    while ($rowComentario = mysqli_fetch_array($resultComentario)) {
+        ?>
                             <div class="row collapse titulo-comentario mt-3" id="tema<?php echo $row['idTema'] ?>">
                                 <div class="col-md-12 mt-3">
                                     <h5><b>Comentarios anteriores</b></h5>
@@ -311,14 +311,14 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                                 </div>
                             </div>
                         <?php
-                        }
-                        ?>
+}
+    ?>
 
                     </div>
                 </div>
             <?php
-            }
-            ?>
+}
+?>
         </div>
     </div>
 </div>
@@ -326,8 +326,8 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
 
 <!--Start Register Modal -->
 <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-    <?php require_once "registerUser.php" ?>
-    
+    <?php require_once "registerUser.php"?>
+
   aria-hidden="true">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
@@ -394,7 +394,7 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
 <div class="modal fade" id="validateModal" tabindex="-1" aria-labelledby="validateModal" aria-hidden="true">
   <div class="modal-dialog modal-sm modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header bg-danger"> 
+      <div class="modal-header bg-danger">
         <h5 class="modal-title text-light" id="loginModalLabel" style="padding-left: 40%;">Aviso</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -419,12 +419,12 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
     pageUrl: 'http://foro-assist.com',
     position: 'right',
     animate: true
-});</script>    
+});</script>
 
 <!-- Modal Login -->
 
 <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-<?php require_once 'loginUser.php'; ?>
+<?php require_once 'loginUser.php';?>
     <div class="modal-dialog modal-sm modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -450,11 +450,11 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
             </div>
             <div class="modal-footer d-flex justify-content-center">
 
-            
-  <!--               
-            <button class="g-recaptcha" 
-            data-sitekey="6LfZh9UeAAAAAGoCYH8PZoqKbYpo6lKDLqhWPDei" 
-            data-callback='onSubmit' 
+
+  <!--
+            <button class="g-recaptcha"
+            data-sitekey="6LfZh9UeAAAAAGoCYH8PZoqKbYpo6lKDLqhWPDei"
+            data-callback='onSubmit'
             data-action='submit'>Submit</button> -->
 
 

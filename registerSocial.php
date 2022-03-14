@@ -49,7 +49,7 @@ class RegisterSocial
                         $idUsuario = $idUsuario;
 
                         //TODO: Enviar estas variables por parametro para una función que realize el insert de user-social
-                        $querySocial = "INSERT INTO user_social(id, user_id, social_id, service) VALUES ('','$idUsuario','$identifier','mail')";
+                        $querySocial = "INSERT INTO user_social(id, user_id, social_id, service) VALUES ('','$idUsuario','$identifier','$mail')";
                         $result = mysqli_query($conn, $querySocial);
 
                     }
