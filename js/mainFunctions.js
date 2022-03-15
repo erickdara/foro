@@ -89,46 +89,46 @@ function registerUser() {
             confirm_password: confirm_password,
         },
         function(data, status) {
-            console.log('lo que llega de data:  '+data);
-            console.log('lo que llega de status:  '+status);
+            console.log("lo que llega de data:  " + data);
+            console.log("lo que llega de status:  " + status);
             // close the popup
             $("#registerModal").modal("hide");
             var dato = data;
-            var response = 'This e-mail is already taken.';
+            var response = "This e-mail is already taken.";
             var compare = response.localeCompare(dato);
             console.log(compare);
-            if(compare > 0){
+            if (compare > 0) {
                 var inf =
-                `<div class="alert alert-danger" id="login-info" role="alert">
+                    `<div class="alert alert-danger" id="login-info" role="alert">
                 El correo: ` +
-                mail +
-                ` ya está registrado en el sistema. 
+                    mail +
+                    ` ya está registrado en el sistema. 
                  </div>`;
 
-            $(inf).insertBefore(".container").delay(5000).fadeOut();
+                $(inf).insertBefore(".container").delay(5000).fadeOut();
 
                 $("#usernames").val("");
                 $("#email").val("");
                 $("#password").val("");
                 $("#conpassword").val("");
-            }else{
+            } else {
                 var inf =
-                `<div class="alert alert-success" id="login-info" role="alert">
+                    `<div class="alert alert-success" id="login-info" role="alert">
             Registro con el correo: ` +
-                mail +
-                ` exitoso 
+                    mail +
+                    ` exitoso 
                  </div>`;
 
-            $(inf).insertBefore(".container").delay(5000).fadeOut();
-            //alert("Data: " + data + "\nStatus: " + status);
+                $(inf).insertBefore(".container").delay(5000).fadeOut();
+                //alert("Data: " + data + "\nStatus: " + status);
 
-            // alert("Usuario:" + mail + "registrado con exito");
+                // alert("Usuario:" + mail + "registrado con exito");
 
-            // borrar campos
-            $("#usernames").val("");
-            $("#email").val("");
-            $("#password").val("");
-            $("#conpassword").val("");
+                // borrar campos
+                $("#usernames").val("");
+                $("#email").val("");
+                $("#password").val("");
+                $("#conpassword").val("");
             }
         }
     );
@@ -261,7 +261,7 @@ $(document).ready(function() {
             registerUser();
             return true;
         } else {
-            alert('no registra');
+            alert("no registra");
             return false;
         }
     });
@@ -288,3 +288,8 @@ function createRecaptcha() {
         theme: "light",
     });
 }
+
+$(".provider").each(function(index, element) {
+    // element == this
+    $(element).attr("id", "provider" + index);
+});
