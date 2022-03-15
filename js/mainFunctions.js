@@ -89,10 +89,30 @@ function registerUser() {
             confirm_password: confirm_password,
         },
         function(data, status) {
+            console.log('lo que llega de data:  '+data);
+            console.log('lo que llega de status:  '+status);
             // close the popup
             $("#registerModal").modal("hide");
+            var dato = data;
+            var response = 'This e-mail is already taken.';
+            var compare = response.localeCompare(dato);
+            console.log(compare);
+            if(compare > 0){
+                var inf =
+                `<div class="alert alert-danger" id="login-info" role="alert">
+                El correo: ` +
+                mail +
+                ` ya está registrado en el sistema. 
+                 </div>`;
 
-            var inf =
+            $(inf).insertBefore(".container").delay(5000).fadeOut();
+
+                $("#usernames").val("");
+                $("#email").val("");
+                $("#password").val("");
+                $("#conpassword").val("");
+            }else{
+                var inf =
                 `<div class="alert alert-success" id="login-info" role="alert">
             Registro con el correo: ` +
                 mail +
@@ -109,6 +129,7 @@ function registerUser() {
             $("#email").val("");
             $("#password").val("");
             $("#conpassword").val("");
+            }
         }
     );
 }
@@ -155,6 +176,8 @@ $(document).ready(function() {
             return false;
         } else {
             $("#usercheck").hide();
+            usernameError = true;
+            return true;
         }
     }
 
@@ -197,6 +220,8 @@ $(document).ready(function() {
             return false;
         } else {
             $("#passcheck").hide();
+            passwordError = true;
+            return true;
         }
     }
 
@@ -212,6 +237,8 @@ $(document).ready(function() {
             return false;
         } else {
             $("#conpasscheck").hide();
+            confirmPasswordError = true;
+            return true;
         }
     }
     $("#conpasscheck").hide();
@@ -234,6 +261,7 @@ $(document).ready(function() {
             registerUser();
             return true;
         } else {
+            alert('no registra');
             return false;
         }
     });

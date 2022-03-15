@@ -27,7 +27,7 @@ require_once('config.php');
                 <div class="col-md-6 col-sm-2 pb-1">
                     <a href="./User/index.php" type="button" class="btn text-light btn-nav">Temas</a>
                     <a href="actividad.php" type="button" class="btn text-light btn-nav">Actividad Reciente</a>
-                    <a href="comentarios.html" type="button" class="btn text-light btn-nav">Comentarios</a>
+                    <a href="comentario.php" type="button" class="btn text-light btn-nav">Comentarios</a>
                 </div>
 
                 <div class="col-md-6 col-sm- 4 d-flex align-items-center justify-content-end">
@@ -43,13 +43,13 @@ require_once('config.php');
                 <div class="">
                     <img class="imgLogo" style="margin-left: 0.6rem; margin-bottom: 1rem; border-radius: 50%;" src="../img/logo.jpg" width="27%" height="17%" alt="">
                 </div>
-                <a href="#" class=""> <img style="margin-left: 1rem; margin-bottom: 1rem; margin-right: 1rem;" class="" width="20%" height="14%" src="<?php echo $rowImg['usuImagen']; ?>" alt=""> <span class="nav_logo-name">Perfil</span> </a>
+                <a href="perfil.php" class=""> <img style="margin-left: 1rem; margin-bottom: 1rem; margin-right: 1rem;" class="" width="20%" height="14%" src="<?php echo $rowImg['usuImagen']; ?>" alt=""> <span class="nav_logo-name">Perfil</span> </a>
                 <a href="#" class="nav_link active"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Notificaciones</span> </a>
-                <a href="#" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Comunidad Assist</span> </a>
+                <a href="comunidadAssist.php" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Comunidad Assist</span> </a>
                 <a href="#" class="nav_link">
             </div>
 
-            <a href="../logout.php" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">Cerrar sesión</span> </a>
+            <a href="logout.php" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">Cerrar sesión</span> </a>
         </nav>
     </div>
 
@@ -58,11 +58,12 @@ require_once('config.php');
         <div class="row d-flex justify-content-center mt-2">
             <div class="card actividad-info mt-4 mb-4">
         <?php
-            $queryUser = mysqli_query($link, "SELECT u.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) as nombres, r.tipoRol FROM usuario u 
+            $queryUser = mysqli_query($link, "SELECT u.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) as nombres, r.idRol, r.tipoRol FROM usuario u 
             INNER JOIN rol r ON u.idRol = r.idRol 
             ORDER BY u.idRol");
 
             while ($rowUser = mysqli_fetch_array($queryUser)) {
+            $rol = $rowUser['idRol'] == 1 ? '(Administrador)' : ''; 
             ?>
                 
                         <div class="row d-flex justify-content-center" style="width: 90%;">
@@ -71,7 +72,7 @@ require_once('config.php');
                             </div>
                             <div class="col-md-9 mt-3 mb-2 d-flex align-items-center">
                                 <div class="card-body">
-                                    <h5 class="card-title"><b style="color: rgb(7, 26, 57);"><?php echo $rowUser['nombres'] ." (".$rowUser['tipoRol'].")"; ?></b></h5>
+                                    <h5 class="card-title"><b style="color: rgb(7, 26, 57);"><?php echo $rowUser['nombres'] ." $rol"?></b></h5>
                                     <p class="card-text"><small class="text-muted"></small></p>
                                 </div>
                             </div>

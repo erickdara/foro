@@ -109,6 +109,14 @@
   background: #E3A129;
 }
 
+.fab{
+  margin-top: 0.5rem;
+}
+
+.fas{
+  margin-top: 0.5rem;
+}
+
 @media (max-width: 680px) {
   #share-bar {
     bottom: 0;

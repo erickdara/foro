@@ -3,15 +3,16 @@ require_once 'config.php';
 
 class RegisterSocial
 {
-    public function insertUser($data, $name)
+    public function insertUser($data, $provider)
     {
         echo 'El identifier: ' . $data->{'identifier'};
         echo 'El correo: ' . $data->{'emailVerified'};
 
+        $provider = $provider;
         $identifier = $data->{'identifier'};
         $mail = $data->{'emailVerified'};
         // var_dump($data);
-        echo 'El nombre provedor: ' . $name;
+        echo 'El nombre provedor: ' . $provider;
 
         $conn = mysqli_connect("localhost", "root", "", "databaseforo");
         if (mysqli_connect_errno()) {
@@ -49,7 +50,7 @@ class RegisterSocial
                         $idUsuario = $idUsuario;
 
                         //TODO: Enviar estas variables por parametro para una función que realize el insert de user-social
-                        $querySocial = "INSERT INTO user_social(id, user_id, social_id, service, created_at) VALUES ('','$idUsuario','$identifier','$mail',now())";
+                        $querySocial = "INSERT INTO user_social(id, user_id, social_id, service, created_at) VALUES ('','$idUsuario','$identifier','$provider',now())";
                         $result = mysqli_query($conn, $querySocial);
 
                     }

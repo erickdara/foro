@@ -61,9 +61,9 @@ require_once "../config.php";
             <div class="">
             <img class="imgLogo" style="margin-left: 0.6rem; margin-bottom: 1rem; border-radius: 50%;" src="../img/logo.jpg" width="27%" height="17%" alt="">  
             </div>
-            <a href="#" class="" > <img style="margin-left: 1rem; margin-bottom: 1rem; margin-right: 1rem;" class=""  width="20%" height="14%" src="<?php echo $rowImg['usuImagen'];?>" alt=""> <span class="nav_logo-name">Perfil</span> </a>
+            <a href="../perfil.php" class="" > <img style="margin-left: 1rem; margin-bottom: 1rem; margin-right: 1rem;" class=""  width="20%" height="14%" src="<?php echo $rowImg['usuImagen'];?>" alt=""> <span class="nav_logo-name">Perfil</span> </a>
                 <a href="#" class="nav_link active"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Notificaciones</span> </a>
-                <a href="#" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Comunidad Assist</span> </a>
+                <a href="../comunidadAssist.php" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Comunidad Assist</span> </a>
                 <a href="#" class="nav_link">
             </div>
         
