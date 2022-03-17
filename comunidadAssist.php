@@ -37,13 +37,34 @@ require_once('config.php');
             </div>
         </div>
     </header>
+    <?php
+        $queryUser = mysqli_query($link, "SELECT u.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) as nombres, u.usuImagen, r.idRol, r.tipoRol FROM usuario u 
+        INNER JOIN rol r ON u.idRol = r.idRol 
+        ORDER BY u.idRol");
+
+        $rowUser = mysqli_fetch_array($queryUser);
+    ?>
     <div class="l-navbar" id="nav-bar">
         <nav class="nav">
             <div class="nav_list">
                 <div class="">
                     <img class="imgLogo" style="margin-left: 0.6rem; margin-bottom: 1rem; border-radius: 50%;" src="../img/logo.jpg" width="27%" height="17%" alt="">
                 </div>
-                <a href="perfil.php" class=""> <img style="margin-left: 1rem; margin-bottom: 1rem; margin-right: 1rem;" class="" width="20%" height="14%" src="<?php echo $rowImg['usuImagen']; ?>" alt=""> <span class="nav_logo-name">Perfil</span> </a>
+                <div style="column-gap: 2rem;width: 1.5rem; height: 1.6rem; margin-left: 1.5rem;" class="d-flex mb-4">
+                    <?php
+                                if($rowUser['usuImagen'] != null){
+                            ?>
+                                    <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowUser['usuImagen']); ?>" style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="100%" height="100%" class="rounded-circle" alt="Imagen de usuario">
+                            <?php   
+                            }else{?>
+                                <img src="img/user.jpeg"  style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="100%" height="100%" class="rounded-circle" alt="Imagen de usuario">
+                            <?php
+                            }
+                            ?> 
+                    <a href="perfil.php" class="d-flex" >        
+                        <span class="nav_logo-name">Perfil</span>
+                    </a>
+                </div>
                 <a href="#" class="nav_link active"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Notificaciones</span> </a>
                 <a href="comunidadAssist.php" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Comunidad Assist</span> </a>
                 <a href="#" class="nav_link">
@@ -58,17 +79,24 @@ require_once('config.php');
         <div class="row d-flex justify-content-center mt-2">
             <div class="card actividad-info mt-4 mb-4">
         <?php
-            $queryUser = mysqli_query($link, "SELECT u.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) as nombres, r.idRol, r.tipoRol FROM usuario u 
-            INNER JOIN rol r ON u.idRol = r.idRol 
-            ORDER BY u.idRol");
-
             while ($rowUser = mysqli_fetch_array($queryUser)) {
             $rol = $rowUser['idRol'] == 1 ? '(Administrador)' : ''; 
             ?>
                 
                         <div class="row d-flex justify-content-center" style="width: 90%;">
-                            <div class="col-md-3 mt-3 mb-1">
-                                <img src="img/user.png" class=" rounded mx-auto d-block" alt="...">
+                            <div class="col-md-3 mt-3">
+                                <div class="d-flex justify-content-end align-items-center">
+                                    <?php
+                                        if($rowUser['usuImagen'] != null){
+                                    ?>
+                                            <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowUser['usuImagen']); ?>" style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="40%" height="40%" class="img-thumbnail img-perfil rounded-circle" alt="Imagen de usuario">
+                                    <?php   
+                                    }else{?>
+                                        <img src="img/user.jpeg"  style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="40%" height="40%" class="img-thumbnail img-perfil rounded-circle" alt="Imagen de usuario">
+                                    <?php
+                                    }
+                                    ?> 
+                                </div>
                             </div>
                             <div class="col-md-9 mt-3 mb-2 d-flex align-items-center">
                                 <div class="card-body">

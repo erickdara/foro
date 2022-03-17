@@ -25,10 +25,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $resultLlamado = mysqli_fetch_array($llamado);
             $id_sub = $resultLlamado['idTema'];
 
-            $queryNot = "INSERT INTO notificacion (idNotificacion, idUsuario1, idUsuario2, tipoNotificacion, general, id_pub, created_at) 
-            VALUES (idNotificacion,'$idUsuario',0,'ha creado el tema', TRUE,'$id_sub',now())";
-            
-            $resultQueryNot = mysqli_query($link,$queryNot);
             header("Location: ./User/index.php");
 
         if(!$resultQuery){

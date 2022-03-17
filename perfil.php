@@ -124,7 +124,7 @@ if(isset($_POST["submit"])){
     <nav class="nav">  
             <div class="nav_list">
             <div class="">   
-            <!-- <img class="imgLogo" style="margin-left: 0.6rem; margin-bottom: 1rem; border-radius: 50%;" src="../img/logo.jpg" width="27%" height="17%" alt="">   -->
+            <img class="imgLogo" style="margin-left: 0.6rem; margin-bottom: 1rem; border-radius: 50%;" src="img/logo.jpg" width="27%" height="17%" alt="">  
             </div>
             <div style="column-gap: 2rem;width: 1.5rem; height: 1.6rem; margin-left: 1.5rem;" class="d-flex mb-4">
             <?php
@@ -157,7 +157,7 @@ if(isset($_POST["submit"])){
         <div class="card perfil-info mt-4" style="width: 50rem;">
             <?php 
                  if(!empty($response)) { ?>
-                    <div id="validateImage" class="response perfil-<?php echo $response["type"]; ?> mt-2 text-center">
+                    <div class="response perfil-<?php echo $response["type"]; ?> mt-2 text-center">
                         <?php echo $response["message"]; ?>
                     </div>           
             <?php }?>

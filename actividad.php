@@ -92,7 +92,7 @@ class Actividad{
         <nav class="nav">
             <div class="nav_list">
                 <div class="">
-                    <img class="imgLogo" style="margin-left: 0.6rem; margin-bottom: 1rem; border-radius: 50%;" src="../img/logo.jpg" width="27%" height="17%" alt="">
+                    <img class="imgLogo" style="margin-left: 0.6rem; margin-bottom: 1rem; border-radius: 50%;" src="img/logo.jpg" width="27%" height="17%" alt="">
                 </div>
                 <div style="column-gap: 2rem;width: 1.5rem; height: 1.6rem; margin-left: 1.5rem;" class="d-flex mb-4">
                 <?php
@@ -120,24 +120,39 @@ class Actividad{
 
     <div class="height-100 bg-light">
         <div class="container">
+         
         <?php
-            $queryNot = mysqli_query($link, "SELECT n.idNotificacion, n.idUsuario1, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, n.idUsuario2, n.tipoNotificacion,DATE_FORMAT(n.created_at, \"%d-%m-%Y %H:%i:%s\") AS fecha
-            FROM notificacion n 
-            INNER JOIN usuario u ON n.idUsuario1 = u.idUsuario 
-            ORDER BY n.created_at DESC");
+            $queryTema = mysqli_query($link, "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, t.tituloTema, t.describeTema, u.usuImagen, DATE_FORMAT(t.created_at, \"%d-%m-%Y %H:%i:%s\") AS fecha, likes, unlikes
+            FROM tema t 
+            INNER JOIN usuario u ON t.idUsuario = u.idUsuario 
+            INNER JOIN rol r ON u.idRol = r.idRol
+            ORDER BY t.created_at DESC");
 
-            while ($rowNot = mysqli_fetch_array($queryNot)) {
+            $queryDateNow = mysqli_query($link, "SELECT DATE_FORMAT(now(),\"%d %m %Y %H %i %s\") as dateNow");
+            $dateNow = mysqli_fetch_array($queryDateNow);
+            while ($rowTema = mysqli_fetch_array($queryTema)) {
             ?>
                 <div class="row d-flex justify-content-center">
-                    <div class="card actividad-info mt-2">
+                    <div class="card actividad-info">
                         <div class="row d-flex justify-content-center" style="width: 90%;">
                             <div class="col-md-3 mt-3 mb-1">
-                                <img src="img/user.png" class=" rounded mx-auto d-block" alt="...">
+                                <div class="d-flex justify-content-center" >
+                                    <?php
+                                        if($rowTema['usuImagen'] != null){
+                                    ?>
+                                            <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowTema['usuImagen']); ?>" style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="50%" height="50%" class="rounded-circle" alt="Imagen de usuario">
+                                    <?php   
+                                    }else{?>
+                                        <img src="img/user.png"  style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="50%" height="50%" class="rounded-circle" alt="Imagen de usuario">
+                                    <?php
+                                    }
+                                    ?> 
+                                    </div>
                             </div>
                             <div class="col-md-9 mt-3 mb-2 d-flex align-items-center">
                                 <div class="card-body">
-                                    <h5 class="card-title"><b style="color: rgb(7, 26, 57);"><?php echo $rowNot['nombres'] ." ".$rowNot['tipoNotificacion']; ?></b><b style="color: rgb(255 50 59);"><?php echo $rowTema['tituloTema'] ?></b></h5>
-                                    <p class="card-text"><small class="text-muted"><?php echo $util->get_time_ago($rowTema['fecha']) ?></small></p>
+                                    <h5 class="card-title"><b style="color: rgb(7, 26, 57);"><?php echo $rowTema['nombres'] . " creo el tema "; ?></b><b style="color: rgb(255 50 59);"><?php echo $rowTema['tituloTema'] ?></b></h5>
+                                    <p class="card-text"><small class="text-muted"><?php echo $util->get_time_ago($rowTema['fecha'])?></small></p>
                                 </div>
                             </div>
                         </div>
@@ -146,6 +161,7 @@ class Actividad{
             <?php
             }
             ?>
+            
         </div>
     </div>
 
