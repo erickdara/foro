@@ -293,3 +293,5 @@ $(".provider").each(function(index, element) {
     // element == this
     $(element).attr("id", "provider" + index);
 });
+
+$('#validateImage').delay(5000).fadeOut();

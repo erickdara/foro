@@ -246,6 +246,10 @@ a {
     box-shadow: 2px 10px 15px #999;
 }
 
+.perfil-info{
+    box-shadow: 2px 2px 15px #999;
+}
+
 .img-busqueda {
     width: 30px;
     height: 30px;
@@ -287,6 +291,21 @@ a {
     color: white;
 }
 
+.img-perfil{
+    /* border-radius: 50%; */
+    border: 2px solid rgb(255 50 59);
+}
+
+.perfil-error {
+    background: #fdcdcd;
+    border: #ecc0c1 1px solid;
+}
+
+.perfil-success {
+    background: #c5f3c3;
+    border: #bbe6ba 1px solid;
+}
+
 
 /* div#social {
     display: none;
@@ -312,7 +331,6 @@ a {
 }
 
 .fa-twitter {
-    background: #55ACEE;
     color: white;
 }
 

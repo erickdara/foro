@@ -50,18 +50,35 @@ require_once "../config.php";
     </div>
 </header>
 <?php
-   $idImg = $_SESSION['id'];
-   $queryImg = "SELECT usuImagen FROM usuario WHERE idUsuario = '$idImg'";
-   $resultImg = mysqli_query($link,$queryImg);
-   $rowImg = mysqli_fetch_array($resultImg);
+    $idUsuario = $_SESSION['id'];
+
+    $queryUser = mysqli_query($link,"SELECT u.idUsuario, CONCAT(u.usuNombres,\" \",u.usuApellidos) AS nombres, r.idRol, r.tipoRol, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
+    FROM usuario u 
+    INNER JOIN rol r ON u.idRol = r.idRol
+    WHERE u.idUsuario = '$idUsuario'");
+    $rowUser = mysqli_fetch_array($queryUser);
 ?>
 <div class="l-navbar" id="nav-bar">
     <nav class="nav">  
             <div class="nav_list">
             <div class="">
-            <img class="imgLogo" style="margin-left: 0.6rem; margin-bottom: 1rem; border-radius: 50%;" src="../img/logo.jpg" width="27%" height="17%" alt="">  
+            <img class="imgLogo" style="margin-left: 0.6rem; margin-bottom: 1rem; border-radius: 50%;" src="" width="27%" height="17%" alt="">  
             </div>
-            <a href="../perfil.php" class="" > <img style="margin-left: 1rem; margin-bottom: 1rem; margin-right: 1rem;" class=""  width="20%" height="14%" src="<?php echo $rowImg['usuImagen'];?>" alt=""> <span class="nav_logo-name">Perfil</span> </a>
+            <div style="column-gap: 2rem;width: 1.5rem; height: 1.6rem; margin-left: 1.5rem;" class="d-flex mb-4">
+                    <?php
+                        if($rowUser['usuImagen'] != null){
+                    ?>
+                            <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowUser['usuImagen']); ?>" style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="100%" height="100%" class="rounded-circle" alt="Imagen de usuario">
+                    <?php   
+                    }else{?>
+                        <img src="../img/user.png"  style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="100%" height="100%" class="rounded-circle" alt="Imagen de usuario">
+                    <?php
+                    }
+                    ?> 
+            <a href="../perfil.php" class="d-flex" >        
+                <span class="nav_logo-name">Perfil</span>
+            </a>
+            </div>
                 <a href="#" class="nav_link active"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Notificaciones</span> </a>
                 <a href="../comunidadAssist.php" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Comunidad Assist</span> </a>
                 <a href="#" class="nav_link">
@@ -255,12 +272,13 @@ require_once "../config.php";
                          
                         <?php
                           $idTema = $row['idTema'];
-                          $queryComentario = "SELECT c.idComentario, c.idTema, c.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, c.describeComentario, c.likes, c.unlikes, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
+                          $queryComentario = "SELECT c.idComentario, c.idTema, c.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, c.describeComentario, c.likes, c.unlikes, u.usuImagen, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
                           FROM comentario c 
                           INNER JOIN tema t ON c.idTema = t.idTema
                           INNER JOIN usuario u ON c.idUsuario = u.idUsuario 
                           WHERE C.idTema = '$idTema'
                           ORDER BY c.idComentario DESC";
+
 
                           $resultComentario = mysqli_query($link, $queryComentario);
                           while($rowComentario = mysqli_fetch_array($resultComentario)){
@@ -269,9 +287,23 @@ require_once "../config.php";
                             <div class="col-md-12 mt-3">
                                 <h5><b>Comentarios anteriores</b></h5>
                             </div>
+                            <?php
+                                
+                            ?>
                             <div class="row d-flex justify-content-between mt-4">
-                                <div class="col-md-3 mt-2 d-flex justify-content-center">
-                                        <img class="img-user img-fluid" src="../img/user.png" alt="">
+                                <div class="col-md-3 mt-2">
+                                <div class="d-flex justify-content-center" style="width: 100%; height: 100%;">
+                                    <?php
+                                        if($rowComentario['usuImagen'] != null){
+                                    ?>
+                                            <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowComentario['usuImagen']); ?>" style="object-fit: cover; object-position: center;" width="60%" height="60%" class="img-thumbnail img-perfil rounded-circle" alt="Imagen de usuario">
+                                    <?php   
+                                    }else{?>
+                                        <img src="../img/user.png"  style="object-fit: cover; object-position: center;" width="60%" height="60%" class="img-thumbnail img-perfil rounded-circle" alt="Imagen de usuario">
+                                    <?php
+                                    }
+                                    ?>
+                                </div>
                                 </div>
                                 <div class="col-md-9 container-commentary">
                                     <p class="mt-2"><?php echo $rowComentario['describeComentario']?></p>
