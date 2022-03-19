@@ -176,11 +176,11 @@ while ($row = mysqli_fetch_array($resultQuery)) {
                         </div>
                         <div class="row mt-4">
                             <?php
-$idTemaC = $row['idTema'];
-    $queryCountComentario = "SELECT COUNT(*) AS com FROM comentario c WHERE c.idTema = '$idTemaC' ";
-    $resultCount = mysqli_query($link, $queryCountComentario);
-    $rowCountComentario = mysqli_fetch_array($resultCount);
-    ?>
+                            $idTemaC = $row['idTema'];
+                                $queryCountComentario = "SELECT COUNT(*) AS com FROM comentario c WHERE c.idTema = '$idTemaC' ";
+                                $resultCount = mysqli_query($link, $queryCountComentario);
+                                $rowCountComentario = mysqli_fetch_array($resultCount);
+                                ?>
                             <div class="col-md-4 d-flex d-wrap">
                                 <p class="mt-1" style="color: rgb(7, 26, 57); font-size: 15px;"><b>Comentarios del tema:</b></p>
                                 <b class="btn btn-comentarios" type="button" data-bs-toggle="collapse" data-bs-target="#tema<?php echo $row['idTema'] ?>" aria-expanded="false" aria-controls="collapseExample" style="color: rgb(7, 26, 57); font-size: 13px; font-weight: bold;"><?php echo $rowCountComentario['com'] . " Comentario(s)" ?></b>
@@ -251,77 +251,175 @@ $idTemaC = $row['idTema'];
                         </form>
 
                         <?php
-$idTema = $row['idTema'];
-    $queryComentario = "SELECT c.idComentario, c.idTema, c.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, c.describeComentario, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
-                          FROM comentario c
-                          INNER JOIN tema t ON c.idTema = t.idTema
-                          INNER JOIN usuario u ON c.idUsuario = u.idUsuario
-                          WHERE C.idTema = '$idTema'
-                          ORDER BY c.idComentario DESC";
+                            $idTema = $row['idTema'];
+                            $queryComentario = "SELECT c.idComentario, c.idTema, c.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, c.describeComentario, u.usuImagen, c.likes, c.unlikes, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
+                                                FROM comentario c
+                                                INNER JOIN tema t ON c.idTema = t.idTema
+                                                INNER JOIN usuario u ON c.idUsuario = u.idUsuario
+                                                WHERE C.idTema = '$idTema'
+                                                ORDER BY c.idComentario DESC";
 
-    $resultComentario = mysqli_query($link, $queryComentario);
-    while ($rowComentario = mysqli_fetch_array($resultComentario)) {
-        ?>
+                                $resultComentario = mysqli_query($link, $queryComentario);
+                                while ($rowComentario = mysqli_fetch_array($resultComentario)) {
+                            ?>
                             <div class="row collapse titulo-comentario mt-3" id="tema<?php echo $row['idTema'] ?>">
                                 <div class="col-md-12 mt-3">
                                     <h5><b>Comentarios anteriores</b></h5>
                                 </div>
                                 <div class="row d-flex justify-content-between mt-4">
-                                    <div class="col-md-3 mt-2 d-flex justify-content-center">
-                                        <img class="img-user img-fluid" src="img/user.png" alt="">
+                                        <div class="col-md-3 mt-2 ">
+                                            <div class="d-flex justify-content-center" style="width: 100%; height: 100%;">
+                                                <?php
+                                                    if($rowComentario['usuImagen'] != null){
+                                                ?>
+                                                        <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowComentario['usuImagen']); ?>" style="object-fit: cover; object-position: center;" width="60%" height="60%" class="img-thumbnail img-perfil rounded-circle" alt="Imagen de usuario">
+                                                <?php   
+                                                }else{?>
+                                                    <img src="img/user.png"  style="object-fit: cover; object-position: center;" width="60%" height="60%" class="img-thumbnail img-perfil rounded-circle" alt="Imagen de usuario">
+                                                <?php
+                                                }
+                                                ?>
+                                        </div>
                                     </div>
                                     <div class="col-md-9 container-commentary">
                                         <p class="mt-2"><?php echo $rowComentario['describeComentario'] ?></p>
                                     </div>
                                 </div>
                                 <div class="row mt-2 ">
-                                    <div class="col-md-3 d-flex justify-content-center">
+                                    <div class="col-md-3 mt-1 d-flex justify-content-center">
                                         <h5><?php echo $rowComentario['nombres'] ?></h5>
                                     </div>
                                 </div>
+                                <?php
+                                    $idComentario = $rowComentario['idComentario']; 
+                                    $queryCountRespuesta = "SELECT COUNT(*) AS res FROM respuesta r WHERE r.idComentario = '$idComentario' ";
+                                    $resultCount = mysqli_query($link,$queryCountRespuesta);
+                                    $rowCountRespuesta = mysqli_fetch_array($resultCount);
+                                ?>
                                 <div class="row">
-                                    <div class="col-md-6 d-flex justify-content-end">
+                                    <div class="col-md-4 d-flex d-wrap">
+                                        <p class="mt-1" style="color: rgb(7, 26, 57); font-size: 15px;"><b>Respuestas:</b></p>
+                                        <b class="btn btn-comentarios" type="button" data-bs-toggle="collapse" data-bs-target="#comentario<?php echo $rowComentario['idComentario'] ?>" aria-expanded="false" aria-controls="collapseExample" style="color: rgb(7, 26, 57); font-size: 13px; font-weight: bold;"><?php echo $rowCountRespuesta['res'] . " Respuesta(s)" ?></b>
+                                    </div>
+                                    <div class="col-md-4 d-flex justify-content-end">
                                         <div class="d-flex justify-content-between">
                                             <div>
-                                                <button class="btn-outline-light">
-                                                    <img style="width: 20px; height: 15px;" src="img/agregar.png" alt="">
-                                                </button>
+                                                <a class="likeComentario btn" data-vote-type="1" id="like_<?php echo $rowComentario['idComentario']?>">
+                                                    <i class='bx bx-like' style="color:rgb(0, 253, 93);"></i>
+                                                </a>
                                             </div>
                                             <div>
                                                 <b>
-                                                    <p class="text-nowrap" style="font-size: 12px; color: rgb(0, 253, 93);">Me gusta:1</p>
+                                                    <p id="likeComentario_<?php echo $rowComentario['idComentario']?>" class="text-nowrap mt-2" style="font-size: 12px; color: rgb(0, 253, 93);">Me gusta:<span class="counter" id="likeCount_<?php echo $rowComentario['idComentario'] ?>">&nbsp;<?php echo $rowComentario['likes'] ?></span></p>
                                                 </b>
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-between">
                                             <div>
-                                                <button class="btn-outline-light">
-                                                    <img style="width: 20px; height: 15px;" src="img/agregar.png" alt="">
-                                                </button>
+                                                <a class="likeComentario btn" data-vote-type="0" id="unlike_<?php echo $rowComentario['idComentario']?>">
+                                                    <i class='bx bx-dislike' style="color:rgb(255, 22, 22);"></i>
+                                                </a>
                                             </div>
                                             <div>
                                                 <b>
-                                                    <p class="text-nowrap" style="font-size: 12px; color: rgb(255, 22, 22);">No me gusta:0</p>
+                                                <p id="unlikeComentario_<?php echo $rowComentario['idComentario']; ?>" class="text-nowrap mt-2" style="font-size: 12px; color: rgb(255, 22, 22);">No me gusta:<span class="counter" id="unlikeCount_<?php echo $rowComentario['idComentario'] ?>">&nbsp;<?php echo $rowComentario['unlikes'] ?></span></p>
                                                 </b>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 d-flex justify-content-end">
+                                    <div class="col-md-4 d-flex justify-content-end">
                                         <button class="btn btn-vermas">
                                             responder comentario
                                         </button>
                                     </div>
                                 </div>
                             </div>
+
+                            <?php
+                                $idComentario = $rowComentario['idComentario'];
+                                $queryRespuesta = "SELECT r.idRespuesta, r.idComentario, r.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, r.describeRespuesta, r.likes, r.unlikes, u.usuImagen, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
+                                FROM respuesta r
+                                INNER JOIN comentario c ON r.idComentario = c.idComentario
+                                INNER JOIN usuario u ON r.idUsuario = u.idUsuario 
+                                WHERE r.idComentario = '$idComentario'
+                                ORDER BY r.idRespuesta DESC";
+
+
+                          $resultRespuesta = mysqli_query($link, $queryRespuesta);
+                          while($rowRespuesta = mysqli_fetch_array($resultRespuesta)){
+                        ?>
+                        
+                        <!-- Collapse respuestas -->
+                        
+                        <div class="row collapse mt-3" id="comentario<?php echo $rowComentario['idComentario'] ?>">
+                            <div class="col-md-12 mt-3">
+                                <h5><b>Respuesta anterior</b></h5>
+                            </div>
+                            <div class="row d-flex justify-content-between mt-4">
+                                <div class="col-md-3 mt-2">
+                                <div class="d-flex justify-content-center mb-2" style="width: 100%; height: 100%;">
+                                    <?php
+                                        if($rowRespuesta['usuImagen'] != null){
+                                    ?>
+                                            <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowRespuesta['usuImagen']); ?>" style="object-fit: cover; object-position: center;" width="60%" height="60%" class="img-thumbnail img-perfil rounded-circle" alt="Imagen de usuario">
+                                    <?php   
+                                    }else{?>
+                                        <img src="../img/user.png"  style="object-fit: cover; object-position: center;" width="60%" height="60%" class="img-thumbnail img-perfil rounded-circle" alt="Imagen de usuario">
+                                    <?php
+                                    }
+                                    ?>
+                                </div>
+                                </div>
+                                <div class="col-md-9 container-commentary">
+                                    <p class="mt-2"><?php echo $rowRespuesta['describeRespuesta']?></p>
+                                </div>
+                            </div>
+                            <div class="row mt-2 ">
+                                <div class="col-md-3 mt-1 d-flex justify-content-center">
+                                    <h5><?php echo $rowRespuesta['nombres']?></h5>
+                                </div>
+                                <div class="col-md-4 d-flex justify-content-end">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <a class="likeRespuesta btn" data-vote-type="1" id="like_<?php echo $rowRespuesta['idRespuesta']?>">
+                                                <i class='bx bx-like' style="color:rgb(0, 253, 93);"></i>
+                                            </a>
+                                        </div>
+                                        <div>
+                                            <b>
+                                            <p id="likeRespuesta_<?php echo $rowRespuesta['idRespuesta']?>" class="text-nowrap mt-2" style="font-size: 12px; color: rgb(0, 253, 93);">Me gusta:<span class="counter" id="likeCount_<?php echo $rowRespuesta['idRespuesta'] ?>">&nbsp;<?php echo $rowRespuesta['likes'] ?></span></p>
+                                            </b>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <a class="likeRespuesta btn" data-vote-type="0" id="unlike_<?php echo $rowRespuesta['idRespuesta']?>">
+                                                <i class='bx bx-dislike' style="color:rgb(255, 22, 22);"></i>
+                                            </a>
+                                        </div>
+                                        <div>
+                                            <b>
+                                            <p id="unlikeRespuesta_<?php echo $rowRespuesta['idRespuesta']; ?>" class="text-nowrap mt-2" style="font-size: 12px; color: rgb(255, 22, 22);">No me gusta:<span class="counter" id="unlikeCount_<?php echo $rowRespuesta['idRespuesta'] ?>">&nbsp;<?php echo $rowRespuesta['unlikes'] ?></span></p>
+                                            </b>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                         
+
+                        <?php            
+                          }
+                        ?>
+
                         <?php
-}
-    ?>
+                        }
+                        ?>
 
                     </div>
                 </div>
             <?php
-}
-?>
+            }
+            ?>
         </div>
     </div>
 </div>
