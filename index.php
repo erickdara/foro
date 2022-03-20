@@ -517,10 +517,12 @@ if ($rowRespuesta['usuImagen'] != null) {
 </div>
 <!-- fin validateModal -->
 
+<!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-6236821402b458e6"></script>
 
 </body>
   <!-- container social network -->
-  <div id="share-bar"></div>
+  <!-- <div id="share-bar"></div> -->
     <!-- container social network -->
 <!--Container Main end-->
 <script>$('#share-bar').share({
