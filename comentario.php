@@ -1,5 +1,5 @@
 <?php
-include('config.php');
+include 'config.php';
 session_start();
 ?>
 <!DOCTYPE html>
@@ -38,33 +38,45 @@ session_start();
         </div>
     </header>
     <?php
+// Check if the user is already logged in, if yes then redirect him to welcome page
+if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     $idUsuario = $_SESSION['id'];
-
-    $queryUser = mysqli_query($link,"SELECT u.idUsuario, CONCAT(u.usuNombres,\" \",u.usuApellidos) AS nombres, r.idRol, r.tipoRol, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
-    FROM usuario u 
+    $queryUser = mysqli_query($link, "SELECT u.idUsuario, CONCAT(u.usuNombres,\" \",u.usuApellidos) AS nombres, r.idRol, r.tipoRol, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
+    FROM usuario u
     INNER JOIN rol r ON u.idRol = r.idRol
     WHERE u.idUsuario = '$idUsuario'");
-    $rowUser = mysqli_fetch_array($queryUser);
-    $rol = $rowUser['idRol'] == 1 ? 'Administrador' : 'Usuario'; 
-    ?>
+} else {
+    $queryUser = mysqli_query($link, "SELECT CONCAT(u.usuNombres,\" \",u.usuApellidos) AS nombres, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
+    FROM usuario u");
+    //INNER JOIN rol r ON u.idRol = r.idRol");
+}
+
+$rowUser = mysqli_fetch_array($queryUser);
+if (isset($rowUser['idRol']) == null) {
+    $rol = 'User';
+} else {
+    $rol = $rowUser['idRol'] == 1 ? 'Administrador' : 'Usuario';
+    $rol = $rowUser['idRol'] == null ? 'User' : '';
+}
+?>
     <div class="l-navbar" id="nav-bar">
             <nav class="nav">
                 <div class="nav_list">
-                    <div class="">
+                    <div class="" id="imageProfile">
                         <img class="imgLogo" style="margin-left: 0.6rem; margin-bottom: 1rem; border-radius: 50%;" src="img/logo.jpg" width="27%" height="17%" alt="">
                     </div>
-                    <div style="column-gap: 2rem;width: 1.5rem; height: 1.6rem; margin-left: 1.5rem;" class="d-flex mb-4">
+                    <div id="renderImage" style="column-gap: 2rem;width: 1.5rem; height: 1.6rem; margin-left: 1.5rem;" class="d-flex mb-4">
                                 <?php
-                                    if($rowUser['usuImagen'] != null){
-                                ?>
+if ($rowUser['usuImagen'] != null) {
+    ?>
                                         <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowUser['usuImagen']); ?>" style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="100%" height="100%" class="rounded-circle" alt="Imagen de usuario">
-                                <?php   
-                                }else{?>
+                                <?php
+} else {?>
                                     <img src="img/user.png"  style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="100%" height="100%" class="rounded-circle" alt="Imagen de usuario">
                                 <?php
-                                }
-                                ?> 
-                        <a href="perfil.php" class="d-flex" >        
+}
+?>
+                        <a href="perfil.php" class="d-flex" >
                             <span class="nav_logo-name">Perfil</span>
                         </a>
                     </div>
@@ -79,61 +91,61 @@ session_start();
         <div class="height-100 bg-light">
             <div class="container mt-4">
                 <div class="row mb-4">
-                </div> 
-                <div class="row card comentario mb-4">     
+                </div>
+                <div class="row card comentario mb-4">
             <?php
-                          $queryComentario = "SELECT c.idComentario, c.idTema, c.idUsuario, t.tituloTema, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, c.describeComentario, c.likes, c.unlikes, u.usuImagen, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
-                          FROM comentario c 
+$queryComentario = "SELECT c.idComentario, c.idTema, c.idUsuario, t.tituloTema, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, c.describeComentario, c.likes, c.unlikes, u.usuImagen, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
+                          FROM comentario c
                           INNER JOIN tema t ON c.idTema = t.idTema
-                          INNER JOIN usuario u ON c.idUsuario = u.idUsuario 
+                          INNER JOIN usuario u ON c.idUsuario = u.idUsuario
                           ORDER BY c.created_at DESC";
 
-                          $resultComentario = mysqli_query($link, $queryComentario);
-                          while($rowComentario = mysqli_fetch_array($resultComentario)){
-                        ?>
-                        
-                
+$resultComentario = mysqli_query($link, $queryComentario);
+while ($rowComentario = mysqli_fetch_array($resultComentario)) {
+    ?>
+
+
                             <div class="row d-flex justify-content-between mt-4">
                                 <div class="col-md-3 mt-2">
                                     <div class="d-flex justify-content-center" >
                                 <?php
-                                    if($rowComentario['usuImagen'] != null){
-                                ?>
+if ($rowComentario['usuImagen'] != null) {
+        ?>
                                         <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowComentario['usuImagen']); ?>" style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="50%" height="50%" class="rounded-circle" alt="Imagen de usuario">
-                                <?php   
-                                }else{?>
+                                <?php
+} else {?>
                                     <img src="img/user.png"  style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="50%" height="50%" class="rounded-circle" alt="Imagen de usuario">
                                 <?php
-                                }
-                                ?> 
+}
+    ?>
                                 </div>
                                 </div>
                                 <div class="col-md-9 container-commentary">
-                                    <p class="mt-2"><?php echo $rowComentario['describeComentario']?></p>
+                                    <p class="mt-2"><?php echo $rowComentario['describeComentario'] ?></p>
                                 </div>
                             </div>
                             <div class="row mt-2 ">
                                 <div class="col-md-3 d-flex justify-content-center">
-                                <h5><?php echo $rowComentario['nombres']?></h5>
+                                <h5><?php echo $rowComentario['nombres'] ?></h5>
                                 </div>
                             </div>
                             <div class="row mb-2">
                                 <div class="col-md-6 d-flex justify-content-end">
                                     <div class="d-flex justify-content-between">
                                         <div>
-                                            <a class="likeComment btn" data-vote-type="1" id="like_<?php echo $rowComentario['idComentario']?>">
+                                            <a class="likeComment btn" data-vote-type="1" id="like_<?php echo $rowComentario['idComentario'] ?>">
                                                 <i class='bx bx-like' style="color:rgb(0, 253, 93);"></i>
                                             </a>
                                         </div>
                                         <div class="d-flex align-items-end">
                                             <b>
-                                                <p id="likeComentario_<?php echo $rowComentario['idComentario']?>" class="text-nowrap mt-2" style="font-size: 12px; color: rgb(0, 253, 93);">Me gusta:&nbsp;<span class="counter" id="likeCount_<?php echo $rowComentario['idComentario'] ?>"><?php echo $rowComentario['likes'] ?></span></p>
+                                                <p id="likeComentario_<?php echo $rowComentario['idComentario'] ?>" class="text-nowrap mt-2" style="font-size: 12px; color: rgb(0, 253, 93);">Me gusta:&nbsp;<span class="counter" id="likeCount_<?php echo $rowComentario['idComentario'] ?>"><?php echo $rowComentario['likes'] ?></span></p>
                                             </b>
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-between">
                                         <div>
-                                            <a class="likeComment btn" data-vote-type="0" id="unlike_<?php echo $rowComentario['idComentario']?>">
+                                            <a class="likeComment btn" data-vote-type="0" id="unlike_<?php echo $rowComentario['idComentario'] ?>">
                                                 <i class='bx bx-dislike' style="color:rgb(255, 22, 22);"></i>
                                             </a>
                                         </div>
@@ -145,17 +157,17 @@ session_start();
                                     </div>
                                 </div>
                                 <div class="col-md-6 d-flex justify-content-end">
-                                    <h5><b style="color: rgb(7, 26, 57);">Tema: </b> <b style="color: rgb(255 50 59);"><?php echo $rowComentario['tituloTema']?></b></h5>
+                                    <h5><b style="color: rgb(7, 26, 57);">Tema: </b> <b style="color: rgb(255 50 59);"><?php echo $rowComentario['tituloTema'] ?></b></h5>
                                 </div>
                             </div>
                         <?php
-                          }
-                        ?>
+}
+?>
                         </div>
             </div>
-        </div>   
+        </div>
 
-    
+
 </body>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="./js/mainFunctions.js"></script>

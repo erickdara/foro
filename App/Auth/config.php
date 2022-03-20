@@ -1,20 +1,18 @@
-<?php 
-
+<?php
 
 $config = [
 
-     'callback' => "http://localhost/Foro/App/Auth/callback.php",
+    'callback' => "http://localhost/Foro/App/Auth/callback.php",
     //'callback' => "http://localhost/Foro/App/Auth/Auth.php",
 
-
-   'providers' => [
+    'providers' => [
         'Twitter' => [
             'enabled' => true,
             'keys' => [
                 'key' => 'r1TpqNVJ4CvHaIsHNu10ALvsX',
                 'secret' => 'VRMqNLLIpBgGSYyZUsg6BowoELs4sZtFSxcY5p6r2Rh6yTnhak',
             ],
-            "includeEmail" => true
+            "includeEmail" => true,
         ],
 
         'Facebook' => [
@@ -23,7 +21,7 @@ $config = [
                 'id' => '427082155860894',
                 'secret' => '464ccdbcb7657881d051219256aa8123',
             ],
-            "scope" => "email"
+            "scope" => "email",
         ],
 
         'Google' => [
@@ -32,4 +30,3 @@ $config = [
         ],
     ],
 ];
-?>

@@ -545,17 +545,16 @@ if ($rowRespuesta['usuImagen'] != null) {
                         <i class="fas fa-envelope prefix grey-text"></i>
                         <label for="correo usuario" class="col-form-label">Correo:</label>
                         <input type="text" id="correo" name="mail" class="form-control" <?php echo $usuCorreo; ?>>
-                        <small id="emailvalid" class="form-text
-                text-muted invalid-feedback">
-                    Su email debe ser un email válido
-            </small>
+                        <small id="emailvalid" class="form-text text-muted invalid-feedback">
+                                Su email debe ser un email válido
+                        </small>
                         <span class="invalid-feedback"><?php echo $mail_err; ?></span>
                     </div>
                     <div class="mb-3">
                         <i class="fas fa-lock prefix grey-text"></i>
                         <label for="password" class="col-form-label">Contraseña:</label>
                         <input type="password" id="pass" name="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>">
-                        <h6 id="passcheck" style="color: red;">
+                        <h6 id="passcheckLogin" style="color: red;">
                             *Por favor llene el password
                         </h6>
                         <span class="invalid-feedback"><?php echo $password_err; ?></span>

@@ -1,3 +1,6 @@
+//Global Variables
+var loggedUser;
+
 $("#nav-bar").mouseover(function() {
     //alert("Estoy entrando al evento mouseover");
     $("#nav-bar").toggleClass("showMenu").delay(1000);
@@ -20,28 +23,6 @@ $("#nav-bar").mouseout(function() {
     $("#header").toggleClass("body-pd").delay(1000);
 });
 
-function modalLogin() {
-    var exampleModal = document.getElementById("exampleModal");
-    exampleModal.addEventListener("show.bs.modal", function(event) {
-        // Button that triggered the modal
-        var button = event.relatedTarget;
-        // Extract info from data-bs-* attributes
-        var recipient = button.getAttribute("data-bs-whatever");
-        // If necessary, you could initiate an AJAX request here
-        // and then do the updating in a callback.
-        //
-        // Update the modal's content.
-        var modalTitle = exampleModal.querySelector(".modal-title");
-        var modalBodyInput = exampleModal.querySelector(".modal-body input");
-
-        modalTitle.textContent = "New message to " + recipient;
-        modalBodyInput.value = recipient;
-    });
-
-    var myAlert = document.getElementById("myAlert");
-    var bsAlert = new bootstrap.Alert(myAlert);
-}
-
 // register USER
 function loginUser() {
     $(document).ready(function() {
@@ -55,21 +36,23 @@ function loginUser() {
             data: { mail: mail, password: password },
 
             success: function(response) {
+                let logged = true;
+                loggedUser = logged;
                 $("#loginModal").modal("hide");
 
                 const result = JSON.parse(response);
 
-                var inf =
-                    `<div class="alert alert-success" id="login-info" role="alert">
-    Registro con el correo: ` +
-                    mail +
-                    ` exitoso 
-         </div>`;
-                $(inf).insertBefore(".container").delay(5000).fadeOut();
                 window.location.href = "http://localhost/Foro/User/index.php";
             },
         });
     });
+    var inf =
+        `<div class="alert alert-success" id="login-info" role="alert">
+Registro con el correo: ` +
+        mail +
+        ` exitoso 
+     </div>`;
+    $(inf).insertBefore(".container").delay(7000).fadeOut();
 }
 
 // register USER
@@ -93,43 +76,42 @@ function registerUser() {
             console.log("lo que llega de status:  " + status);
             // close the popup
             $("#registerModal").modal("hide");
-            var dato = data;
-            var response = "This e-mail is already taken.";
-            var compare = response.localeCompare(dato);
-            console.log(compare);
-            if (compare > 0) {
-                var inf =
-                    `<div class="alert alert-danger" id="login-info" role="alert">
-                El correo: ` +
-                    mail +
-                    ` ya está registrado en el sistema. 
-                 </div>`;
+            /* var dato = data;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  var response = "This e-mail is already taken.";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  var compare = response.localeCompare(dato);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  console.log(compare);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  if (compare > 0) {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      var inf =
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          `<div class="alert alert-danger" id="login-info" role="alert">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      El correo: ` +
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          mail +
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ` ya está registrado en el sistema. 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       </div>`;
 
-                $(inf).insertBefore(".container").delay(5000).fadeOut();
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      $(inf).insertBefore(".container").delay(5000).fadeOut();
 
-                $("#usernames").val("");
-                $("#email").val("");
-                $("#password").val("");
-                $("#conpassword").val("");
-            } else {
-                var inf =
-                    `<div class="alert alert-success" id="login-info" role="alert">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      $("#usernames").val("");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      $("#email").val("");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      $("#password").val("");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      $("#conpassword").val(""); */
+
+            var inf =
+                `<div class="alert alert-success" id="login-info" role="alert">
             Registro con el correo: ` +
-                    mail +
-                    ` exitoso 
+                mail +
+                ` exitoso 
                  </div>`;
 
-                $(inf).insertBefore(".container").delay(5000).fadeOut();
-                //alert("Data: " + data + "\nStatus: " + status);
+            $(inf).insertBefore(".container").delay(5000).fadeOut();
+            //alert("Data: " + data + "\nStatus: " + status);
 
-                // alert("Usuario:" + mail + "registrado con exito");
+            // alert("Usuario:" + mail + "registrado con exito");
 
-                // borrar campos
-                $("#usernames").val("");
-                $("#email").val("");
-                $("#password").val("");
-                $("#conpassword").val("");
-            }
+            // borrar campos
+            $("#usernames").val("");
+            $("#email").val("");
+            $("#password").val("");
+            $("#conpassword").val("");
         }
     );
 }
@@ -171,7 +153,7 @@ $(document).ready(function() {
             return false;
         } else if (usernameValue.length < 3 || usernameValue.length > 10) {
             $("#usercheck").show();
-            $("#usercheck").html("**length of username must be between 3 and 10");
+            $("#usercheck").html("*longitud de usuario debe estar entre 3 y 10");
             usernameError = false;
             return false;
         } else {
@@ -212,9 +194,7 @@ $(document).ready(function() {
         }
         if (passwordValue.length < 3 || passwordValue.length > 10) {
             $("#passcheck").show();
-            $("#passcheck").html(
-                "**length of your password must be between 3 and 10"
-            );
+            $("#passcheck").html("*longitud de contraseña debe estar entre 3 y 10");
             $("#passcheck").css("color", "red");
             passwordError = false;
             return false;
@@ -231,7 +211,7 @@ $(document).ready(function() {
         let passwordValue = $("#password").val();
         if (passwordValue != confirmPasswordValue) {
             $("#conpasscheck").show();
-            $("#conpasscheck").html("**Password didn't Match");
+            $("#conpasscheck").html("*Contraseña no coincide");
             $("#conpasscheck").css("color", "red");
             confirmPasswordError = false;
             return false;
@@ -294,4 +274,55 @@ $(".provider").each(function(index, element) {
     $(element).attr("id", "provider" + index);
 });
 
-$('#validateImage').delay(5000).fadeOut();
+$("#validateImage").delay(5000).fadeOut();
+
+$(function() {
+    $("#correo").blur(function(e) {
+        e.preventDefault();
+        let regex = /^([_\-\.0-9a-zA-Z]+)@([_\-\.0-9a-zA-Z]+)\.([a-zA-Z]){2,7}$/;
+        let s = this.value;
+        if (regex.test(s)) {
+            this.classList.remove("is-invalid");
+        } else {
+            this.classList.add("is-invalid");
+        }
+    });
+
+    $("#passcheckLogin").hide();
+
+    $("#loginModal").on("shown.bs.modal", function() {
+        $("#pass").keyup(function(e) {
+            e.preventDefault();
+            $("#passcheckLogin").hide();
+            let passwordValue = this.value;
+            if (passwordValue.length == "") {
+                $("#passcheckLogin").show();
+            }
+            if (passwordValue.length < 3 || passwordValue.length > 10) {
+                $("#passcheckLogin").show();
+                $("#passcheckLogin").html(
+                    "*longitud de contraseña debe estar entre 3 y 10"
+                );
+                $("#passcheckLogin").css("color", "red");
+            } else {
+                $("#passcheckLogin").hide();
+            }
+        });
+    });
+});
+
+$(window).on("load", function() {
+    let searchParams = new URLSearchParams(window.location.search);
+    searchParams.has("logged"); // true
+    let param = searchParams.get("logged");
+    if (param == "false") {
+        console.log("Ingresa a la validación por false");
+        $("#validateModal").modal("show");
+    } else {
+        let template1 = `<a href="#" class="nav_logo" data-bs-toggle="modal" data-bs-target="#loginModal" id="logModal"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">Iniciar Sesion</span> </a>`;
+        $("#imageProfile").replaceWith(template1);
+        $("#renderImage").remove();
+        // <a href="#" class="nav_link active" data-bs-toggle="modal" data-bs-target="#registerModal"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Registrarse</span> </a>
+        // <a href="#" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Comunidad Assist</span> </a>
+    }
+});

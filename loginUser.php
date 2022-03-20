@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 // Check if username exists, if yes then verify password
                 if (mysqli_stmt_num_rows($stmt) == 1) {
-                   
+
                     // Bind result variables
                     mysqli_stmt_bind_result($stmt, $idUsuario, $idRol, $usuCorreo, $hashed_password);
                     if (mysqli_stmt_fetch($stmt)) {
@@ -65,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             $_SESSION['rol'] = $idRol;
                             $_SESSION['mail'] = $usuCorreo;
 
-                            $mail = $_POST['mail'] ;
+                            $mail = $_POST['mail'];
 
                             $response = array('mail' => $mail);
 
@@ -102,4 +102,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Close connection
     mysqli_close($link);
 }
-?>

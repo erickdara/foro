@@ -1,27 +1,29 @@
 <?php
-require_once('config.php');
+require_once 'config.php';
 session_start();
-include('utils.php');
+include 'utils.php';
 
 $util = new utils();
 
-class Actividad{
-    
-    public function actividad($tipoInteraccion){
-        include('config.php');
-        require_once('utils.php');
+class Actividad
+{
+
+    public function actividad($tipoInteraccion)
+    {
+        include 'config.php';
+        require_once 'utils.php';
         $util = new Utils();
         $queryTema = mysqli_query($link, "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, t.tituloTema, t.describeTema, DATE_FORMAT(t.created_at, \"%d %m %Y %H %i %s\") AS fecha, likes, unlikes
-            FROM tema t 
-            INNER JOIN usuario u ON t.idUsuario = u.idUsuario 
+            FROM tema t
+            INNER JOIN usuario u ON t.idUsuario = u.idUsuario
             INNER JOIN rol r ON u.idRol = r.idRol
             ORDER BY t.created_at DESC");
         $queryDateNow = mysqli_query($link, "SELECT DATE_FORMAT(now(),\"%d %m %Y %H %i %s\") as dateNow");
         $dateNow = mysqli_fetch_array($queryDateNow);
-        switch($tipoInteraccion){
+        switch ($tipoInteraccion) {
             case "tema":
-                while($rowTema = mysqli_fetch_array($queryTema)){
-                    $fecha = $util-> get_time_ago($rowTema['fecha'], $dateNow['dateNow']);
+                while ($rowTema = mysqli_fetch_array($queryTema)) {
+                    $fecha = $util->get_time_ago($rowTema['fecha'], $dateNow['dateNow']);
                     return "<div class=\"row d-flex justify-content-center\">
                         <div class=\"card actividad-info\">
                             <div class=\"row d-flex justify-content-center\" style=\"width: 90%;\">
@@ -39,7 +41,7 @@ class Actividad{
                     </div>";
                 }
         }
-}
+    }
 
 }
 ?>
@@ -80,13 +82,18 @@ class Actividad{
         </div>
     </header>
     <?php
+if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     $idUsuario = $_SESSION['id'];
-
-    $queryUser = mysqli_query($link,"SELECT u.idUsuario, CONCAT(u.usuNombres,\" \",u.usuApellidos) AS nombres, r.idRol, r.tipoRol, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
-    FROM usuario u 
-    INNER JOIN rol r ON u.idRol = r.idRol
-    WHERE u.idUsuario = '$idUsuario'");
-    $rowUser = mysqli_fetch_array($queryUser);
+    $queryUser = mysqli_query($link, "SELECT u.idUsuario, CONCAT(u.usuNombres,\" \",u.usuApellidos) AS nombres, r.idRol, r.tipoRol, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
+        FROM usuario u
+        INNER JOIN rol r ON u.idRol = r.idRol
+        WHERE u.idUsuario = '$idUsuario'");
+} else {
+    $queryUser = mysqli_query($link, "SELECT CONCAT(u.usuNombres,\" \",u.usuApellidos) AS nombres, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
+        FROM usuario u
+        INNER JOIN rol r ON u.idRol = r.idRol");
+}
+$rowUser = mysqli_fetch_array($queryUser);
 ?>
     <div class="l-navbar" id="nav-bar">
         <nav class="nav">
@@ -96,16 +103,16 @@ class Actividad{
                 </div>
                 <div style="column-gap: 2rem;width: 1.5rem; height: 1.6rem; margin-left: 1.5rem;" class="d-flex mb-4">
                 <?php
-                            if($rowUser['usuImagen'] != null){
-                        ?>
+if ($rowUser['usuImagen'] != null) {
+    ?>
                                 <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowUser['usuImagen']); ?>" style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="100%" height="100%" class="rounded-circle" alt="Imagen de usuario">
-                        <?php   
-                        }else{?>
+                        <?php
+} else {?>
                             <img src="img/user.png"  style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="100%" height="100%" class="rounded-circle" alt="Imagen de usuario">
                         <?php
-                        }
-                        ?> 
-                    <a href="perfil.php" class="d-flex" >        
+}
+?>
+                    <a href="perfil.php" class="d-flex" >
                     <span class="nav_logo-name">Perfil</span>
                 </a>
                 </div>
@@ -120,48 +127,48 @@ class Actividad{
 
     <div class="height-100 bg-light">
         <div class="container">
-         
+
         <?php
-            $queryTema = mysqli_query($link, "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, t.tituloTema, t.describeTema, u.usuImagen, DATE_FORMAT(t.created_at, \"%d-%m-%Y %H:%i:%s\") AS fecha, likes, unlikes
-            FROM tema t 
-            INNER JOIN usuario u ON t.idUsuario = u.idUsuario 
+$queryTema = mysqli_query($link, "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, t.tituloTema, t.describeTema, u.usuImagen, DATE_FORMAT(t.created_at, \"%d-%m-%Y %H:%i:%s\") AS fecha, likes, unlikes
+            FROM tema t
+            INNER JOIN usuario u ON t.idUsuario = u.idUsuario
             INNER JOIN rol r ON u.idRol = r.idRol
             ORDER BY t.created_at DESC");
 
-            $queryDateNow = mysqli_query($link, "SELECT DATE_FORMAT(now(),\"%d %m %Y %H %i %s\") as dateNow");
-            $dateNow = mysqli_fetch_array($queryDateNow);
-            while ($rowTema = mysqli_fetch_array($queryTema)) {
-            ?>
+$queryDateNow = mysqli_query($link, "SELECT DATE_FORMAT(now(),\"%d %m %Y %H %i %s\") as dateNow");
+$dateNow = mysqli_fetch_array($queryDateNow);
+while ($rowTema = mysqli_fetch_array($queryTema)) {
+    ?>
                 <div class="row d-flex justify-content-center">
                     <div class="card actividad-info">
                         <div class="row d-flex justify-content-center" style="width: 90%;">
                             <div class="col-md-3 mt-3 mb-1">
                                 <div class="d-flex justify-content-center" >
                                     <?php
-                                        if($rowTema['usuImagen'] != null){
-                                    ?>
+if ($rowTema['usuImagen'] != null) {
+        ?>
                                             <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowTema['usuImagen']); ?>" style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="50%" height="50%" class="rounded-circle" alt="Imagen de usuario">
-                                    <?php   
-                                    }else{?>
+                                    <?php
+} else {?>
                                         <img src="img/user.png"  style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="50%" height="50%" class="rounded-circle" alt="Imagen de usuario">
                                     <?php
-                                    }
-                                    ?> 
+}
+    ?>
                                     </div>
                             </div>
                             <div class="col-md-9 mt-3 mb-2 d-flex align-items-center">
                                 <div class="card-body">
                                     <h5 class="card-title"><b style="color: rgb(7, 26, 57);"><?php echo $rowTema['nombres'] . " creo el tema "; ?></b><b style="color: rgb(255 50 59);"><?php echo $rowTema['tituloTema'] ?></b></h5>
-                                    <p class="card-text"><small class="text-muted"><?php echo $util->get_time_ago($rowTema['fecha'])?></small></p>
+                                    <p class="card-text"><small class="text-muted"><?php echo $util->get_time_ago($rowTema['fecha']) ?></small></p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             <?php
-            }
-            ?>
-            
+}
+?>
+
         </div>
     </div>
 
