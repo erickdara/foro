@@ -1,13 +1,14 @@
 <?php
+// Include config file
+require_once "config.php";
+
+ob_start();
 
 // Takes raw data from the request
 $json = file_get_contents('php://input');
 
 // Converts it into a PHP object
 $data = json_decode($json);
-
-// Include config file
-require_once "config.php";
 
 // Define variables and initialize with empty values
 $usuCorreo = $usuPassword = "";
@@ -71,6 +72,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                             echo json_encode($response);
 
+                            header("location:http://localhost/Foro/User/index.php");
+
+                            exit;
                             // error_reporting(E_ALL | E_WARNING | E_NOTICE);
                             // ini_set('display_errors', TRUE);
                             // // Redirect user to welcome page
@@ -84,14 +88,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         } else {
                             // Password is not valid, display a generic error message
                             $login_err = "Invalid username or password.";
+                            echo json_encode($login_err);
                         }
                     }
                 } else {
                     // Username doesn't exist, display a generic error message
                     $login_err = "Invalid username or password.";
+                    echo json_encode($login_err);
                 }
             } else {
                 echo "Oops! Something went wrong. Please try again later.";
+                echo json_encode("Oops! Something went wrong. Please try again later.");
             }
 
             // Close statement

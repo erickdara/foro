@@ -19,9 +19,15 @@ class RegisterSocial
             printf("Falló la conexión: %s\n", mysqli_connect_error());
         }
 
+        mysqli_autocommit($conn, false);
+
         $queryUser = "INSERT INTO usuario(idUsuario, idRol, usuCorreo, created_at) VALUES ('','1','$mail',now())";
 
         $result = mysqli_query($conn, $queryUser);
+
+        if ($result !== true) {
+            mysqli_rollback($conn); //If error, roll back transaction
+        }
 
         //return $result->num_rows;
 
@@ -50,8 +56,15 @@ class RegisterSocial
                         $idUsuario = $idUsuario;
 
                         //TODO: Enviar estas variables por parametro para una función que realize el insert de user-social
-                        $querySocial = "INSERT INTO user_social(id, user_id, social_id, service, created_at) VALUES ('','$idUsuario','$identifier','$provider',now())";
+                        $querySocial = "INSERT INTO user_social(id, user_id, social_id, provider, created_at) VALUES ('','$idUsuario','$identifier','$provider',now())";
                         $result = mysqli_query($conn, $querySocial);
+
+                        if ($result !== true) {
+                            mysqli_rollback($conn); //If error, roll back transaction
+                        }
+
+                        //Assuming no error, commit transaction
+                        mysqli_commit($conn);
 
                     }
 

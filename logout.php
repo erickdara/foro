@@ -3,6 +3,10 @@
 //Initialize the session
 session_start();
 
+require_once 'App/Auth/Auth.php';
+
+Auth::logout();
+
 //Unset all of the session variables
 $_SESSION = array();
 
