@@ -1,15 +1,5 @@
 <?php
-/**
- * Build a simple HTML page with multiple providers.
- */
-/* if ($_GET['logged'] == false) {
-echo '<script type="text/javascript">',
-'$(window).load(function(){
-'$('#loginAlert').modal('show');',
-'});'
-'</script>'
-;
-} */
+
 
 include 'hybridauth/src/autoload.php';
 include 'App/Auth/config.php';
@@ -434,7 +424,8 @@ if ($rowRespuesta['usuImagen'] != null) {
 
 <!--Start Register Modal -->
 <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-    <?php require_once "registerUser.php"?>
+    <?php require_once "registerUser.php" ?>
+    
 
   aria-hidden="true">
   <div class="modal-dialog modal-sm" role="document">
@@ -450,8 +441,8 @@ if ($rowRespuesta['usuImagen'] != null) {
         <div class="md-form mb-4">
             <i class="fas fa-user prefix grey-text"></i>
           <label data-error="wrong" data-success="right" for="orangeForm-name">Nombre</label>
-          <input type="text" id="usernames" name="username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
-          <span class="invalid-feedback"><?php echo $username_err; ?></span>
+          <input type="text" id="usernames" name="username" class="form-control ">
+
           <h6 id="usercheck" style="color: red;" >
                     *Falta nombre de usuario
               </h6>
@@ -459,8 +450,8 @@ if ($rowRespuesta['usuImagen'] != null) {
         <div class="md-form mb-4">
           <i class="fas fa-envelope prefix grey-text"></i>
           <label data-error="wrong" data-success="right" for="email">Correo</label>
-          <input type="email" id="email" name="email" class="form-control <?php echo (!empty($mail_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $mail; ?>">
-          <span class="invalid-feedback"><?php echo $mail_err; ?></span>
+          <input type="email" id="email" name="email" class="form-control ">
+          
           <small id="emailvalid" class="form-text
                 text-muted invalid-feedback">
                     Su email debe ser un email válido
@@ -470,8 +461,8 @@ if ($rowRespuesta['usuImagen'] != null) {
         <div class="md-form mb-4">
           <i class="fas fa-lock prefix grey-text"></i>
           <label data-error="wrong" data-success="right" for="orangeForm-pass">Contraseña</label>
-          <input type="password" id="password" name="pass" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $password; ?>">
-          <span class="invalid-feedback"><?php echo $password_err; ?></span>
+          <input type="password" id="password" name="pass" class="form-control ">
+          
           <h6 id="passcheck" style="color: red;">
           *Por favor llene el password
               </h6>
@@ -481,8 +472,8 @@ if ($rowRespuesta['usuImagen'] != null) {
         <i class="fa-solid fa-key"></i>
           <!-- <i class="fas fa-lock prefix grey-text"></i> -->
           <label data-error="wrong" data-success="right" for="orangeForm-pass">Confirm password</label>
-          <input type="password" id="conpassword" name="username" class="form-control <?php echo (!empty($confirm_password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $confirm_password; ?>">
-          <span class="invalid-feedback"><?php echo $confirm_password_err; ?></span>
+          <input type="password" id="conpassword" name="username" class="form-control ">
+          
           <h6 id="conpasscheck" style="color: red;">
                   *Contraseña no coincide
               </h6>
@@ -561,11 +552,20 @@ if ($rowRespuesta['usuImagen'] != null) {
                         </h6>
                         <span class="invalid-feedback"><?php echo $password_err; ?></span>
                     </div>
-                    <div class="mb-3 d-flex justify-content-center" >
+                    <?php if (RegisterSocial::isLogin()): var_dump(RegisterSocial::isLogin())?>
+                    <div class="mb-3 d-none justify-content-center" >
                     <a href="#" onclick="document.getElementById('provider0').click();" class="fa fa-twitter"></a>
                     <a href="#" onclick="document.getElementById('provider1').click();" class="fa fa-facebook"></a>
                     <a href="#" onclick="document.getElementById('provider2').click();" class="fa fa-google"></a>
                     </div>
+                    <?php else: var_dump(RegisterSocial::isLogin())?>    
+                        <div class="mb-3 d-flex justify-content-center" >
+                    <a href="#" onclick="document.getElementById('provider0').click();" class="fa fa-twitter"></a>
+                    <a href="#" onclick="document.getElementById('provider1').click();" class="fa fa-facebook"></a>
+                    <a href="#" onclick="document.getElementById('provider2').click();" class="fa fa-google"></a>
+                    </div>
+                    <?php endif;?>
+                    
             </div>
             <div class="modal-footer d-flex justify-content-center">
 

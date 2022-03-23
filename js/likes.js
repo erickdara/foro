@@ -14,6 +14,16 @@ $(document).ready(function () {
                 $('.bx-like').addClass('.colorLike');
                 $('.bx-dislike').addClass('.colorUnlike');
 
+                // if(responseT.likes != 0 && responseT.unlikes == 0){
+                //         $("#likeTema").toggleClass("bxs-like");
+                   
+                // }else if(responseT.unlikes != 0 && responseT.likes == 0){
+                //         $("#unlikeTema").toggleClass("bxs-dislike");
+                // }else{
+                //     $("#likeTema").toggleClass("bx-like");
+                //     $("#unlikeTema").toggleClass("bx-dislike");
+                // }
+
                 // if(responseT.likes != 0 || responseT.unlikes != 0){
                 //     var estiloLike = {"background-color":'rgba(0, 253, 93, 0.159)'};
                 //     var estiloUnlike = {"background-color":'rgba(255, 22, 22, 0.152)'};
@@ -23,6 +33,16 @@ $(document).ready(function () {
             }
         });
     });
+
+    // $("#likeTema").click(function() {
+    //     $("#likeTema").toggleClass("bxs-like");
+    // });
+    
+    // $("#unlikeTema").click(function() {
+    //     $("#unlikeTema").toggleClass("bxs-like");
+    // });
+
+
     $(".likeComentario").on("click", function(){
         var idComentario = $(this).attr("id");
         idComentario = idComentario.replace(/\D/g,'');
@@ -54,3 +74,4 @@ $(document).ready(function () {
         });
     });
 });
+

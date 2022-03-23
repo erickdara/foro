@@ -1,6 +1,11 @@
 <?php
+
 // Include config file
 require_once "config.php";
+include("mail.php");
+
+// passing true in constructor enables exceptions in PHPMailer
+//$sendMail = new PHPMailer(true);
 
 // Define variables and initialize with empty values
 $username = $mail = $password = $confirm_password = "";
@@ -15,35 +20,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $username_err = "Please enter a username.";
     } elseif (!preg_match('/^[a-zA-Z0-9_]+$/', trim($_POST["username"]))) {
         $username_err = "Username can only contain letters, numbers, and underscores.";
-    } else {
-        // Prepare a select statement
-        $sql = "SELECT idUsuario FROM usuario WHERE usuNombres = ?";
-
-        if ($stmt = mysqli_prepare($link, $sql)) {
-            // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "s", $param_username);
-
-            // Set parameters
-            $param_username = trim($_POST["username"]);
-
-            // Attempt to execute the prepared statement
-            if (mysqli_stmt_execute($stmt)) {
-                /* store result */
-                mysqli_stmt_store_result($stmt);
-
-                if (mysqli_stmt_num_rows($stmt) == 1) {
-                    $username_err = "This username is already taken.";
-                } else {
-                    $username  = trim($_POST["username"]);
-                }
-            } else {
-                echo "Oops! Something went wrong. Please try again later.";
-            }
-
-            // Close statement
-            mysqli_stmt_close($stmt);
+   
         }
-    }
+    
 
 
     // Validate User Mail
@@ -69,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 if (mysqli_stmt_num_rows($stmt) == 1) {
                     $mail_err = "This e-mail is already taken.";
-                    echo json_encode($mail_err);
+                    echo json_encode(array("response"=>$mail_err));
                 } else {
                     $usuCorreo = trim($_POST["mail"]);
                 }
@@ -120,14 +99,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Attempt to execute the prepared statement
             if (mysqli_stmt_execute($stmt)) {
-                // Redirect to login page
-                header("location: index.php");
+
+                $sendMail = new Mail();
+                $sendMail -> sendMail($mail,$username);
+
+                if($sendMail){
+                    // Redirect to login page
+                    header("location: index.php");
+                }else{
+                    echo 'No se envió email';
+                }
+                
             } else {
                 echo "Oops! Something went wrong. Please try again later.";
             }
-
+            
             // Close statement
             mysqli_stmt_close($stmt);
+        }else{
+            echo 'no preparo consulta';
         }
     }
 

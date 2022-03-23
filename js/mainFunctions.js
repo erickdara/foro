@@ -63,6 +63,7 @@ function loginUser() {
     });
 }
 
+
 $(document).bind("ajaxSuccess", function() {
     $(document).on("load", function() {
         $("#login-info").fadeOut(10000);
@@ -90,32 +91,56 @@ function registerUser() {
             password: password,
             confirm_password: confirm_password,
         },
-        function(data, status) {
-            console.log("lo que llega de data:  " + data);
-            console.log("lo que llega de status:  " + status);
-            // close the popup
-            $("#registerModal").modal("hide");
+        function(data) {
 
-            var inf =
-                `<div class="alert alert-success" id="login-info" role="alert">
-            Registro con el correo: ` +
+            let res = data.response;
+            console.log(data.response);
+
+            //TODO: Si contiene This e-mail is already taken.
+            if(res.includes("taken")){
+                $("#registerModal").modal("hide");
+
+                var inf =
+                `<div class="alert alert-danger" id="login-info" role="alert">
+            Este correo: ` +
                 mail +
-                ` exitoso 
+                ` ya se encuentra Registrado
                  </div>`;
 
-            $(inf).insertBefore(".container").fadeOut(7000);
-            //alert("Data: " + data + "\nStatus: " + status);
+                 $(inf).insertBefore(".container").fadeOut(7000);
+            }else{
+                
+                // close the popup
+                $("#registerModal").modal("hide");
+    
+                var inf =
+                    `<div class="alert alert-success" id="login-info" role="alert">
+                Registro con el correo: ` +
+                    mail +
+                    ` exitoso 
+                     </div>`;
+    
+                $(inf).insertBefore(".container").fadeOut(7000);
+                //alert("Data: " + data + "\nStatus: " + status);
+    
+                // alert("Usuario:" + mail + "registrado con exito");
+    
+                // borrar campos
+                $("#usernames").val("");
+                $("#email").val("");
+                $("#password").val("");
+                $("#conpassword").val("");
 
-            // alert("Usuario:" + mail + "registrado con exito");
-
-            // borrar campos
-            $("#usernames").val("");
-            $("#email").val("");
-            $("#password").val("");
-            $("#conpassword").val("");
-        }
-    );
+            }
+        }, "json");
 }
+
+$.get("http://localhost/Foro/App/Auth/callback.php?provider=Google",
+    function (data, textStatus, jqXHR) {
+        console.log("Lo que llega de registerSocial". data.response); 
+    },
+    "json"
+);
 
 function buscar(buscar) {
     var parametros = { buscar: buscar };
@@ -248,13 +273,13 @@ $(document).ready(function() {
     });
 });
 
-$("#likeTema").click(function() {
-    $("#likeTema").toggleClass("bxs-like");
-});
+// $("#likeTema").click(function() {
+//     $("#likeTema").toggleClass("bxs-like");
+// });
 
-$("#unlikeTema").click(function() {
-    $("#unlikeTema").toggleClass("bxs-like");
-});
+// $("#unlikeTema").click(function() {
+//     $("#unlikeTema").toggleClass("bxs-like");
+// });
 
 // $("#logModal").click(function() {
 //     $("#loginModal").modal("show");
