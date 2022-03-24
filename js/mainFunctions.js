@@ -52,8 +52,8 @@ function loginUser() {
 
             const result = JSON.parse(response);
 
-            // window.location.href =
-            //     "http://localhost/Foro/User/index.php?success=true";
+            window.location.href =
+                "http://localhost/Foro/User/index.php?success=true";
 
             $(inf).insertBefore(".container");
         },

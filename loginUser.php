@@ -70,9 +70,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                             $response = array('mail' => $mail);
 
+                            // header("location: ./User/index.php");
                             echo json_encode($response);
 
-                            header("location:http://localhost/Foro/User/index.php");
+                            
 
                             exit;
                             // error_reporting(E_ALL | E_WARNING | E_NOTICE);

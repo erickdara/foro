@@ -70,7 +70,12 @@ $register->insertUser($data, $name);
         </div>
         <div class="col-md-12 d-flex justify-content-start">
             <div class="col-md-6 col-sm-2 pb-1">
-                <a href="index.php" type="button" class="btn text-light btn-nav">Temas</a>
+                <?php
+                if(isset($_SESSION['id'])){?>
+                    <a href="../User/index.php" type="button" class="btn text-light btn-nav">Temas</a>
+                <?php }else{?>
+                    <a href="index.php" type="button" class="btn text-light btn-nav">Temas</a>
+                <?php } ?>  
                 <a href="actividad.php" type="button" class="btn text-light btn-nav">Actividad Reciente</a>
                 <a href="comentario.php" type="button" class="btn text-light btn-nav">Comentarios</a>
             </div>
