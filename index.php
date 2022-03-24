@@ -238,8 +238,6 @@ $idTemaC = $row['idTema'];
                                 <button class="btn btn-vermas" type="button" data-bs-toggle="collapse" data-bs-target="#collapseComentar" aria-expanded="false" aria-controls="collapseExample"><b>Comentar</b></button>
                             </div>
                         </div>
-
-                        <form action="comentar.php" method="POST">
                             <div class="row collapse mt-4" id="collapseComentar">
                                 <div class="col-md-10">
                                     <div class="mb-3">
@@ -248,11 +246,9 @@ $idTemaC = $row['idTema'];
                                 </div>
                                 <div class="col-md-2">
                                     <input type="hidden" name="idTema" value="<?php echo $row['idTema'] ?>">
-                                    <input name="comentario" type="submit" class="btn btn-danger" value="Comentar"/>
+                                    <input name="comentario" type="submit" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#validateModal" value="Comentar"/>
                                 </div>
                             </div>
-                        </form>
-
                         <?php
 $idTema = $row['idTema'];
     $queryComentario = "SELECT c.idComentario, c.idTema, c.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, c.describeComentario, u.usuImagen, c.likes, c.unlikes, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
@@ -307,7 +303,7 @@ $idComentario = $rowComentario['idComentario'];
                                     <div class="col-md-4 d-flex justify-content-end">
                                         <div class="d-flex justify-content-between">
                                             <div>
-                                                <a class="likeComentario btn" data-vote-type="1" id="like_<?php echo $rowComentario['idComentario'] ?>">
+                                                <a class="likeComentario btn" data-bs-toggle="modal" data-bs-target="#validateModal" data-vote-type="1" id="like_<?php echo $rowComentario['idComentario'] ?>">
                                                     <i class='bx bx-like' style="color:rgb(0, 253, 93);"></i>
                                                 </a>
                                             </div>
@@ -319,7 +315,7 @@ $idComentario = $rowComentario['idComentario'];
                                         </div>
                                         <div class="d-flex justify-content-between">
                                             <div>
-                                                <a class="likeComentario btn" data-vote-type="0" id="unlike_<?php echo $rowComentario['idComentario'] ?>">
+                                                <a class="likeComentario btn" data-bs-toggle="modal" data-bs-target="#validateModal" data-vote-type="0" id="unlike_<?php echo $rowComentario['idComentario'] ?>">
                                                     <i class='bx bx-dislike' style="color:rgb(255, 22, 22);"></i>
                                                 </a>
                                             </div>
@@ -331,10 +327,21 @@ $idComentario = $rowComentario['idComentario'];
                                         </div>
                                     </div>
                                     <div class="col-md-4 d-flex justify-content-end">
-                                        <button class="btn btn-vermas">
-                                            responder comentario
+                                        <button class="btn btn-vermas"  data-bs-toggle="collapse" data-bs-target="#collapseResponder_com<?php echo $rowComentario['idComentario'] ?>" aria-expanded="false" aria-controls="collapseExample">
+                                            Responder comentario
                                         </button>
                                     </div>
+                                        <div class="row collapse mt-4" id="collapseResponder_com<?php echo $rowComentario['idComentario'] ?>">
+                                            <div class="col-md-10">
+                                                <div class="mb-3">
+                                                    <input type="text" name="describeRespuesta" class="form-control" placeholder="Escribe una respuesta...">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <input type="hidden" name="idComentario" value="<?php echo $rowComentario['idComentario'] ?>">
+                                                <input name="respuesta" type="submit" data-bs-toggle="modal" data-bs-target="#validateModal" class="btn btn-danger" value="Responder">
+                                            </div>
+                                        </div>
                                 </div>
                             </div>
 
