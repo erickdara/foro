@@ -38,49 +38,55 @@ session_start();
         </div>
     </header>
     <?php
-// Check if the user is already logged in, if yes then redirect him to welcome page
-if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-    $idUsuario = $_SESSION['id'];
-    $queryUser = mysqli_query($link, "SELECT u.idUsuario, CONCAT(u.usuNombres,\" \",u.usuApellidos) AS nombres, r.idRol, r.tipoRol, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
-    FROM usuario u
-    INNER JOIN rol r ON u.idRol = r.idRol
-    WHERE u.idUsuario = '$idUsuario'");
-} else {
-    $queryUser = mysqli_query($link, "SELECT CONCAT(u.usuNombres,\" \",u.usuApellidos) AS nombres, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
-    FROM usuario u");
-    //INNER JOIN rol r ON u.idRol = r.idRol");
-}
+        // Check if the user is already logged in, if yes then redirect him to welcome page
+        if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
+            $idUsuario = $_SESSION['id'];
+            $queryUser = mysqli_query($link, "SELECT u.idUsuario, CONCAT(u.usuNombres,\" \",u.usuApellidos) AS nombres, r.idRol, r.tipoRol, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
+            FROM usuario u
+            INNER JOIN rol r ON u.idRol = r.idRol
+            WHERE u.idUsuario = '$idUsuario'");
+        } else {
+            $queryUser = mysqli_query($link, "SELECT CONCAT(u.usuNombres,\" \",u.usuApellidos) AS nombres, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
+            FROM usuario u");
+            //INNER JOIN rol r ON u.idRol = r.idRol");
+        }
 
-$rowUser = mysqli_fetch_array($queryUser);
-if (isset($rowUser['idRol']) == null) {
-    $rol = 'User';
-} else {
-    $rol = $rowUser['idRol'] == 1 ? 'Administrador' : 'Usuario';
-    $rol = $rowUser['idRol'] == null ? 'User' : '';
-}
-?>
+        $rowUser = mysqli_fetch_array($queryUser);
+        if (isset($rowUser['idRol']) == null) {
+            $rol = 'User';
+        } else {
+            $rol = $rowUser['idRol'] == 1 ? 'Administrador' : 'Usuario';
+            $rol = $rowUser['idRol'] == null ? 'User' : '';
+        }
+        ?>
     <div class="l-navbar" id="nav-bar">
             <nav class="nav">
                 <div class="nav_list">
-                    <div class="" id="imageProfile">
-                        <img class="imgLogo" style="margin-left: 0.6rem; margin-bottom: 1rem; border-radius: 50%;" src="img/logo.jpg" width="27%" height="17%" alt="">
-                    </div>
+                <div class="">
+                    <img class="imgLogo" style="margin-left: 0.6rem; margin-bottom: 1rem; border-radius: 50%;" src="img/logo.jpg" width="27%" height="17%" alt="">
+                </div>
                     <div id="renderImage" style="column-gap: 2rem;width: 1.5rem; height: 1.6rem; margin-left: 1.5rem;" class="d-flex mb-4">
-                                <?php
-if ($rowUser['usuImagen'] != null) {
-    ?>
+                        <?php
+                        if(isset($_SESSION['id'])){
+
+                        
+                        if ($rowUser['usuImagen'] != null) {
+                            ?>
                                         <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowUser['usuImagen']); ?>" style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="100%" height="100%" class="rounded-circle" alt="Imagen de usuario">
                                 <?php
-} else {?>
+                         } else {?>
                                     <img src="img/user.png"  style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="100%" height="100%" class="rounded-circle" alt="Imagen de usuario">
                                 <?php
-}
-?>
+                        }
+                        ?>
                         <a href="perfil.php" class="d-flex" >
                             <span class="nav_logo-name">Perfil</span>
                         </a>
                     </div>
                     <a href="#" class="nav_link active"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Notificaciones</span> </a>
+                    <?php }else{ ?>    
+
+                    <?php } ?>    
                     <a href="comunidadAssist.php" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Comunidad Assist</span> </a>
                     <a href="#" class="nav_link">
                 </div>

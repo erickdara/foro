@@ -297,7 +297,7 @@ $idTema = $row['idTema'];
                                 <div class="col-md-3 mt-2">
                                 <div class="d-flex justify-content-center mb-2" style="width: 100%; height: 100%;">
                                     <?php
-if ($rowComentario['usuImagen'] != null) {
+if ($rowComentario      ['usuImagen'] != null) {
             ?>
                                             <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowComentario['usuImagen']); ?>" style="object-fit: cover; object-position: center;" width="60%" height="60%" class="img-thumbnail img-perfil rounded-circle" alt="Imagen de usuario">
                                     <?php
