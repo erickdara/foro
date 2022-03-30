@@ -169,7 +169,7 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
             </div>
             <!-- Fin del modal-->
             <?php
-$query = "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, r.tipoRol, t.tituloTema, t.describeTema, DATE_FORMAT(t.created_at, \"%M %d de %Y\") AS fecha, likes, unlikes
+$query = "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, u.usuNombres, r.tipoRol, t.tituloTema, t.describeTema, DATE_FORMAT(t.created_at, \"%M %d de %Y\") AS fecha, likes, unlikes
                   FROM tema t
                   INNER JOIN usuario u ON t.idUsuario = u.idUsuario
                   INNER JOIN rol r ON u.idRol = r.idRol
@@ -178,11 +178,12 @@ $query = "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellid
 $resultQuery = mysqli_query($link, $query);
 while ($row = mysqli_fetch_array($resultQuery)) {
     ?>
+                <a name="tema_<?php echo $row['idTema'] ?>"></a>
                 <div class="card tema-informacion mt-2 mb-3">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-5 ">
-                                <h6><strong>Publicado por: <?php echo $row['nombres'] ?> (<?php echo $row['tipoRol'] ?>)</strong></h6>
+                                <h6><strong>Publicado por: <?php echo $row['usuNombres'] ?> (<?php echo $row['tipoRol'] ?>)</strong></h6>
                             </div>
                             <div class="col-7">
                                 <p class="text-muted" style="font-size: smaller;">Fecha: <?php echo $row['fecha'] ?></p>

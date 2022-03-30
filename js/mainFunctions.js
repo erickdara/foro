@@ -149,11 +149,29 @@ function buscar(buscar) {
         url: "../buscador.php",
         data: parametros,
         success: function(data) {
-            $(data).insertBefore("#datos_buscador");
-            $("#buscar").on("focusout", function() {
-                location.reload();
-            });
-            // document.getElementById("datos_buscador").innerHTML = data;
+            // $(data).insertBefore("#datos_buscador");
+            
+            document.getElementById("datos_buscador").innerHTML = data;
+            // $("#buscar").on("focusout", function() {
+            //     location.reload();
+            // });
+        },
+    });
+}
+
+function strangeBuscar(buscar) {
+    var parametros = { buscar: buscar };
+    $.ajax({
+        type: "GET",
+        url: "buscador.php",
+        data: parametros,
+        success: function(data) {
+            // $(data).insertBefore("#datos_buscador");      
+            document.getElementById("datos_buscador").innerHTML = data;
+
+            // $("#buscar").on("focusout", function() {
+            //     location.reload();
+            // });
         },
     });
 }

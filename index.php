@@ -82,7 +82,7 @@ $register->insertUser($data, $name);
 
             <div class="col-md-6 col-sm- 4 d-flex align-items-center justify-content-end">
                 <i class='bx bx-search bx-sm' style='color:#fffbfb'></i>&nbsp;&nbsp;&nbsp;
-                <input type="text" style="background-color: rgb(7, 26, 57); border: 0;" class="input-busqueda text-light" placeholder="Búsqueda">
+                <input type="text" id="buscar" name="buscar" onkeyup="strangeBuscar($('#buscar').val())"  style="background-color: rgb(7, 26, 57); border: 0;" class="input-busqueda text-light" placeholder="Búsqueda">
             </div>
         </div>
     </div>
@@ -117,6 +117,9 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
 ?>
 <div class="height-100 bg-light">
     <div class="container">
+    <div id="datos_buscador" class="row mt-2">
+
+    </div>
         <div class="row d-flex justify-content-end">
             <div class="col-md-5 mt-3 d-flex justify-content-end">
                 <div class="card info">
@@ -156,7 +159,7 @@ $query = "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellid
 
 $resultQuery = mysqli_query($link, $query);
 while ($row = mysqli_fetch_array($resultQuery)) {
-    ?>
+    ?>          <div id="tema_<?php echo $row['idTema'] ?>"></div>
                 <div class="card tema-informacion mt-2 mb-3">
                     <div class="card-body">
                         <div class="row">
