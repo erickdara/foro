@@ -19,13 +19,13 @@ require './PHPMailer/src/SMTP.php';
             $sendMail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $sendMail->Port = 587;
         
-            $sendMail->Username = 'marangel847@misena.edu.co'; // YOUR gmail email
-            $sendMail->Password = 'siemprefamilia'; // YOUR gmail password
+            $sendMail->Username = 'erick1rg@gmail.com'; // YOUR gmail email
+            $sendMail->Password = 'Erda-1022'; // YOUR gmail password
         
             // Sender and recipient settings
-            $sendMail->setFrom('marangel847@misena.edu.co', 'Foro Assist');
+            $sendMail->setFrom('erick1rg@gmail.com', 'Foro Assist');
             $sendMail->addAddress($mail, 'Receiver Name');
-            $sendMail->addReplyTo('marangel847@misena.edu.co', 'Sender Name'); // to set the reply to
+            $sendMail->addReplyTo('erick1rg@gmail.com', 'Sender Name'); // to set the reply to
 
             $message  = "<html><body>";
 

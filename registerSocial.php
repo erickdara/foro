@@ -158,7 +158,7 @@ class RegisterSocial{
                     $_SESSION['rol'] = $idRol;
                     $_SESSION['mail'] = $usuCorreo;
 
-                    header('Location: ./User/index.php');
+                    header('Location: ./User/index.php?provider=' . $provider);
         }
     }
 }

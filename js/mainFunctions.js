@@ -1,5 +1,6 @@
 //Global Variables
-var loggedUser;
+let loggedUser;
+let provider;
 
 $("#nav-bar").mouseover(function() {
     //alert("Estoy entrando al evento mouseover");
@@ -23,7 +24,7 @@ $("#nav-bar").mouseout(function() {
     $("#header").toggleClass("body-pd").delay(1000);
 });
 
-// register USER
+// login USER
 function loginUser() {
     // get values
     var mail = $("#correo").val();
@@ -37,25 +38,51 @@ function loginUser() {
     $.ajax({
         type: "post",
         url: "loginUser.php",
+        //contentType: "application/json; charset=utf-8",
         global: true,
         data: { mail: mail, password: password },
-        // afterSend: function() {
-
-        //     //renderAlertLogin(inf);
-        // },
         success: function(response) {
-            let logged = true;
-            loggedUser = logged;
+            loggedUser = true;
             console.log(response);
 
-            $("#loginModal").modal("hide");
+            //var json = JSON.parse(data);
 
-            const result = JSON.parse(response);
+            let result = JSON.parse(response);
+            console.log(result.mail);
+            console.log(
+                "si trae o no trae: " + (result.mail === undefined ? true : false)
+            );
 
-            window.location.href =
-                "http://localhost/Foro/User/index.php?success=true";
+            let err = "Invalid username or password.";
+            let contain = "Invalid";
 
-            $(inf).insertBefore(".container");
+            if (result.mail === undefined) {
+                $("#validation")
+                    .empty()
+                    .append("Usuario o Contraseña no válido")
+                    .css("color", "red");
+
+                $("#loginModal").find("form").trigger("reset");
+
+                $("#loginModal").on("hidden.bs.modal", function() {
+                    $("#validation").empty();
+                    $(this).find("form").trigger("reset");
+                });
+
+                //alert("Usuario o contraseña no válido");
+            } else {
+                $("#loginModal").modal("hide");
+
+                const result = JSON.parse(response);
+
+                var url = "http://localhost/Foro/User/index.php";
+                $(location).attr("href", url);
+
+                // window.location.href =
+                //     "http://localhost/Foro/User/index.php?success=true";
+
+                $(inf).insertBefore(".container");
+            }
         },
         error: function() {
             console.log("error");
@@ -108,6 +135,11 @@ function registerUser() {
                  </div>`;
 
                  $(inf).insertBefore(".container").fadeOut(7000);
+
+                 $("#usernames").val("");
+                 $("#email").val("");
+                 $("#password").val("");
+                 $("#conpassword").val("");
             }else{
                 
                 // close the popup
@@ -189,6 +221,24 @@ $(document).ready(function() {
         validateUsername();
     });
 
+    // function validateTituloTema(){
+    //     let titulotema = $("#tituloTema").val();
+    //     if(titulotema.length == ""){
+
+    //     }
+    // }
+
+    $("#describeTema").keyup(function(){
+        var max = 1000;
+        var len = $(this).val().length;
+        if(len >= max){
+            $("#charNum").text("Ha llegado usted al límite máximo.");
+        }else{
+            var char = max - len;
+            $("#charNum").text(char + " caracteres restantes");
+        }
+    });
+
     function validateUsername() {
         let usernameValue = $("#usernames").val();
         if (usernameValue.length == "") {
@@ -197,7 +247,7 @@ $(document).ready(function() {
             return false;
         } else if (usernameValue.length < 3 || usernameValue.length > 10) {
             $("#usercheck").show();
-            $("#usercheck").html("*longitud de usuario debe estar entre 3 y 10");
+            $("#usercheck").html("longitud de usuario debe estar entre 3 y 20");
             usernameError = false;
             return false;
         } else {
@@ -382,6 +432,14 @@ $(window).on("load", function() {
         $(inf).insertBefore(".container").fadeOut(7000);
     }
 });
+
+
+$.get("/Foro/User/index.php", "provider=", function(data, textStatus, jqXHR) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const param = urlParams.get("provider");
+    provider = param;
+});
+
 // $("#login-info").fadeIn(7000, function() {
 //     $("#login-info").fadeOut(7000);
 // });

@@ -104,8 +104,10 @@ $rowUser = mysqli_fetch_array($queryUser);
     <div class="height-100 bg-light">
         <div class="container">
              <div class="row"></div>
+             <div class="row mt-3 mb-3 d-flex justify-content-center">
+                    <div class="card mb-3 actividad-info">
             <?php
-            $queryTema = mysqli_query($link, "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, t.tituloTema, t.describeTema, u.usuImagen, DATE_FORMAT(t.created_at, \"%d-%m-%Y %H:%i:%s\") AS fecha, likes, unlikes
+            $queryTema = mysqli_query($link, "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, usuNombres, t.tituloTema, t.describeTema, u.usuImagen, DATE_FORMAT(t.created_at, \"%d-%m-%Y %H:%i:%s\") AS fecha, likes, unlikes
             FROM tema t
             INNER JOIN usuario u ON t.idUsuario = u.idUsuario
             INNER JOIN rol r ON u.idRol = r.idRol
@@ -113,10 +115,17 @@ $rowUser = mysqli_fetch_array($queryUser);
 
             $queryDateNow = mysqli_query($link, "SELECT DATE_FORMAT(now(),\"%d %m %Y %H %i %s\") as dateNow");
             $dateNow = mysqli_fetch_array($queryDateNow);
+
+            // $num = mysqli_fetch_array($queryTema);
+            // $rowTema = mysqli_fetch_array($queryTema);
+            // $arrayTema = array();
+
+            // for($i = 0; $i < $num; $i++){
+
+            // }
+
             while ($rowTema = mysqli_fetch_array($queryTema)) {
             ?>
-                <div class="row mt-3 d-flex justify-content-center">
-                    <div class="card actividad-info">
                         <div class="row d-flex justify-content-center" style="width: 90%;">
                             <div class="col-md-3 mt-3 mb-1">
                                 <div class="d-flex justify-content-center" >
@@ -134,16 +143,16 @@ $rowUser = mysqli_fetch_array($queryUser);
                             </div>
                             <div class="col-md-9 mt-3 mb-2 d-flex align-items-center">
                                 <div class="card-body">
-                                    <h5 class="card-title"><b style="color: rgb(7, 26, 57);"><?php echo $rowTema['nombres'] . " Creó el tema "; ?></b><b style="color: rgb(255 50 59);"><?php echo $rowTema['tituloTema'] ?></b></h5>
+                                    <h5 class="card-title"><b style="color: rgb(7, 26, 57);"><?php echo $rowTema['usuNombres'] . " creó el tema "; ?></b><b style="color: rgb(255 50 59);"><?php echo $rowTema['tituloTema'] ?></b></h5>
                                     <p class="card-text"><small class="text-muted"><?php echo $util->get_time_ago($rowTema['fecha']) ?></small></p>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
             <?php
 }
 ?>
+                    </div>
+                </div>
 
 <!-- Modal Login -->
 

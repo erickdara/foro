@@ -94,7 +94,7 @@ $register->insertUser($data, $name);
             <div class="nav_list">
                 <a href="#" class="nav_logo" data-bs-toggle="modal" data-bs-target="#loginModal" id="logModal"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">Iniciar Sesion</span> </a>
                 <a href="#" class="nav_link active" data-bs-toggle="modal" data-bs-target="#registerModal"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Registrarse</span> </a>
-                <a href="#" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Comunidad Assist</span> </a>
+                <a href="./comunidadAssist.php" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Comunidad Assist</span> </a>
                 <a href="#" class="nav_link">
             </div>
         </div>
@@ -151,7 +151,7 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
         <div class="row mt-4 d-flex justify-content-start">
 
             <?php
-$query = "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, r.tipoRol, t.tituloTema, t.describeTema, t.likes, t.unlikes, DATE_FORMAT(t.created_at, \"%M %d de %Y\") AS fecha
+$query = "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres,u.usuNombres, r.tipoRol, t.tituloTema, t.describeTema, t.likes, t.unlikes, DATE_FORMAT(t.created_at, \"%M %d de %Y\") AS fecha
                   FROM tema t
                   INNER JOIN usuario u ON t.idUsuario = u.idUsuario
                   INNER JOIN rol r ON u.idRol = r.idRol
@@ -164,7 +164,7 @@ while ($row = mysqli_fetch_array($resultQuery)) {
                     <div class="card-body">
                         <div class="row">
                             <div class="col-5 ">
-                                <h6><strong>Publicado por: <?php echo $row['nombres'] ?> (<?php echo $row['tipoRol'] ?>)</strong></h6>
+                                <h6><strong>Publicado por: <?php echo $row['usuNombres'] ?> (<?php echo $row['tipoRol'] ?>)</strong></h6>
                             </div>
                             <div class="col-7">
                                 <p class="text-muted" style="font-size: smaller;">Fecha: <?php echo $row['fecha'] ?></p>
@@ -254,7 +254,7 @@ $idTemaC = $row['idTema'];
                             </div>
                         <?php
 $idTema = $row['idTema'];
-    $queryComentario = "SELECT c.idComentario, c.idTema, c.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, c.describeComentario, u.usuImagen, c.likes, c.unlikes, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
+    $queryComentario = "SELECT c.idComentario, c.idTema, c.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, u.usuNombres, c.describeComentario, u.usuImagen, c.likes, c.unlikes, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
                                                 FROM comentario c
                                                 INNER JOIN tema t ON c.idTema = t.idTema
                                                 INNER JOIN usuario u ON c.idUsuario = u.idUsuario
@@ -289,7 +289,7 @@ if ($rowComentario['usuImagen'] != null) {
                                 </div>
                                 <div class="row mt-2 ">
                                     <div class="col-md-3 mt-1 d-flex justify-content-center">
-                                        <h5><?php echo $rowComentario['nombres'] ?></h5>
+                                        <h5><?php echo $rowComentario['usuNombres'] ?></h5>
                                     </div>
                                 </div>
                                 <?php
@@ -350,7 +350,7 @@ $idComentario = $rowComentario['idComentario'];
 
                             <?php
 $idComentario = $rowComentario['idComentario'];
-        $queryRespuesta = "SELECT r.idRespuesta, r.idComentario, r.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, r.describeRespuesta, r.likes, r.unlikes, u.usuImagen, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
+        $queryRespuesta = "SELECT r.idRespuesta, r.idComentario, r.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres,u.usuNombres, r.describeRespuesta, r.likes, r.unlikes, u.usuImagen, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
                                 FROM respuesta r
                                 INNER JOIN comentario c ON r.idComentario = c.idComentario
                                 INNER JOIN usuario u ON r.idUsuario = u.idUsuario
@@ -388,7 +388,7 @@ if ($rowRespuesta['usuImagen'] != null) {
                             </div>
                             <div class="row mt-2 ">
                                 <div class="col-md-3 mt-1 d-flex justify-content-center">
-                                    <h5><?php echo $rowRespuesta['nombres'] ?></h5>
+                                    <h5><?php echo $rowRespuesta['usuNombres'] ?></h5>
                                 </div>
                                 <div class="col-md-4 d-flex justify-content-end">
                                     <div class="d-flex justify-content-between">
@@ -459,7 +459,7 @@ if ($rowRespuesta['usuImagen'] != null) {
           <input type="text" id="usernames" name="username" class="form-control ">
 
           <h6 id="usercheck" style="color: red;" >
-                    *Falta nombre de usuario
+                    Falta nombre de usuario
               </h6>
         </div>
         <div class="md-form mb-4">
@@ -479,7 +479,7 @@ if ($rowRespuesta['usuImagen'] != null) {
           <input type="password" id="password" name="pass" class="form-control ">
           
           <h6 id="passcheck" style="color: red;">
-          *Por favor llene el password
+           Por favor llene el password
               </h6>
         </div>
 
@@ -490,8 +490,13 @@ if ($rowRespuesta['usuImagen'] != null) {
           <input type="password" id="conpassword" name="username" class="form-control ">
           
           <h6 id="conpasscheck" style="color: red;">
-                  *Contraseña no coincide
+                  Contraseña no coincide
               </h6>
+        </div>
+        <div class="mb-3 d-flex justify-content-center" >
+                    <a href="#" onclick="document.getElementById('provider0').click();" class="fa fa-twitter"></a>
+                    <a href="#" onclick="document.getElementById('provider1').click();" class="fa fa-facebook"></a>
+                    <a href="#" onclick="document.getElementById('provider2').click();" class="fa fa-google"></a>
         </div>
       </div>
       <div class="modal-footer d-flex justify-content-center">
@@ -563,18 +568,19 @@ if ($rowRespuesta['usuImagen'] != null) {
                         <label for="password" class="col-form-label">Contraseña:</label>
                         <input type="password" id="pass" name="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>">
                         <h6 id="passcheckLogin" style="color: red;">
-                            *Por favor llene el password
+                            Por favor llene el password
                         </h6>
+                        <text id=validation></text>
                         <span class="invalid-feedback"><?php echo $password_err; ?></span>
                     </div>
-                    <?php if (RegisterSocial::isLogin()): var_dump(RegisterSocial::isLogin())?>
+                    <?php if (RegisterSocial::isLogin()):?>
                     <div class="mb-3 d-none justify-content-center" >
                     <a href="#" onclick="document.getElementById('provider0').click();" class="fa fa-twitter"></a>
                     <a href="#" onclick="document.getElementById('provider1').click();" class="fa fa-facebook"></a>
                     <a href="#" onclick="document.getElementById('provider2').click();" class="fa fa-google"></a>
                     </div>
-                    <?php else: var_dump(RegisterSocial::isLogin())?>    
-                        <div class="mb-3 d-flex justify-content-center" >
+                    <?php else:?>    
+                    <div class="mb-3 d-flex justify-content-center" >
                     <a href="#" onclick="document.getElementById('provider0').click();" class="fa fa-twitter"></a>
                     <a href="#" onclick="document.getElementById('provider1').click();" class="fa fa-facebook"></a>
                     <a href="#" onclick="document.getElementById('provider2').click();" class="fa fa-google"></a>

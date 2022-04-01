@@ -11,8 +11,14 @@ $(document).ready(function () {
             success: function (responseT) {
                 $("#likeCount_"+responseT.idTema).html("  "+responseT.likes);
                 $("#unlikeCount_"+responseT.idTema).html("  "+responseT.unlikes);  
-                $('.bx-like').addClass('.colorLike');
-                $('.bx-dislike').addClass('.colorUnlike');
+                // $('.bx-like').addClass('.colorLike');
+                // $('.bx-dislike').addClass('.colorUnlike');
+
+                // if(responseT.likes != 0){
+                //     $("#likeTema").addClass('bxs-like');
+                // }else{
+                //     $("#likeTema").removeClass('bxs-like');
+                // }
 
                 // if(responseT.likes != 0 && responseT.unlikes == 0){
                 //         $("#likeTema").toggleClass("bxs-like");

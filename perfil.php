@@ -113,7 +113,7 @@ if(isset($_POST["submit"])){
 <?php
     $idUsuario = $_SESSION['id'];
 
-    $queryUser = mysqli_query($link,"SELECT u.idUsuario, CONCAT(u.usuNombres,\" \",u.usuApellidos) AS nombres, r.idRol, r.tipoRol, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
+    $queryUser = mysqli_query($link,"SELECT u.idUsuario, CONCAT(u.usuNombres,\" \",u.usuApellidos) AS nombres, u.usuNombres, r.idRol, r.tipoRol, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
     FROM usuario u 
     INNER JOIN rol r ON u.idRol = r.idRol
     WHERE u.idUsuario = '$idUsuario'");
@@ -142,7 +142,7 @@ if(isset($_POST["submit"])){
             </a>
             </div>
                 <a href="#" class="nav_link active"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Notificaciones</span> </a>
-                <a href="../comunidadAssist.php" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Comunidad Assist</span> </a>
+                <a href="./comunidadAssist.php" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Comunidad Assist</span> </a>
                 <a href="#" class="nav_link">
             </div>
         
@@ -178,7 +178,7 @@ if(isset($_POST["submit"])){
                 </div>    
             </div>
                 <div class="card-body">
-                    <h2 class="card-title text-center mb-4"><b><?php echo $rowUser['nombres']?></b></h2>
+                    <h2 class="card-title text-center mb-4"><b><?php echo $rowUser['usuNombres']?></b></h2>
                     <div class="row">
                         <div class="col-sm-12 col-md-6 mt-2">
                             <h6 class="text-center"><b>Tipo de usuario:</b></h6>

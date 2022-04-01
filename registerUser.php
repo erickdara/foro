@@ -104,8 +104,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $sendMail -> sendMail($mail,$username);
 
                 if($sendMail){
-                    // Redirect to login page
-                    header("location: index.php");
+                    $mail_err = "";
+                    echo json_encode(array("response"=>$mail_err));
                 }else{
                     echo 'No se envió email';
                 }

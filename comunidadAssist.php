@@ -1,5 +1,6 @@
 <?php
 require_once('config.php');
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,9 +39,9 @@ require_once('config.php');
         </div>
     </header>
     <?php
-        $queryUser = mysqli_query($link, "SELECT u.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) as nombres, u.usuImagen, r.idRol, r.tipoRol FROM usuario u 
+        $queryUser = mysqli_query($link, "SELECT u.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) as nombres, u.usuNombres, u.usuImagen, r.idRol, r.tipoRol, created_at FROM usuario u 
         INNER JOIN rol r ON u.idRol = r.idRol 
-        ORDER BY u.idRol");
+        ORDER BY u.created_at DESC");
 
         $rowUser = mysqli_fetch_array($queryUser);
     ?>
@@ -48,13 +49,19 @@ require_once('config.php');
         <nav class="nav">
             <div class="nav_list">
                 <div class="">
-                    <img class="imgLogo" style="margin-left: 0.6rem; margin-bottom: 1rem; border-radius: 50%;" src="../img/logo.jpg" width="27%" height="17%" alt="">
+                    <img class="imgLogo" style="margin-left: 0.6rem; margin-bottom: 1rem; border-radius: 50%;" src="./img/logo.jpg" width="27%" height="17%" alt="">
                 </div>
                 <div style="column-gap: 2rem;width: 1.5rem; height: 1.6rem; margin-left: 1.5rem;" class="d-flex mb-4">
                     <?php
-                                if($rowUser['usuImagen'] != null){
+                            if(isset($_SESSION['id'])){
+                            
+                            $idUsuario = $_SESSION['id'];
+                            $user = mysqli_query($link,"SELECT * FROM usuario u WHERE idUsuario = '$idUsuario'");
+                            $imgUser = mysqli_fetch_array($user);
+
+                                if($imgUser['usuImagen'] != null){
                             ?>
-                                    <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowUser['usuImagen']); ?>" style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="100%" height="100%" class="rounded-circle" alt="Imagen de usuario">
+                                    <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($imgUser['usuImagen']); ?>" style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="100%" height="100%" class="rounded-circle" alt="Imagen de usuario">
                             <?php   
                             }else{?>
                                 <img src="img/user.jpeg"  style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="100%" height="100%" class="rounded-circle" alt="Imagen de usuario">
@@ -66,6 +73,11 @@ require_once('config.php');
                     </a>
                 </div>
                 <a href="#" class="nav_link active"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Notificaciones</span> </a>
+                <?php } else{?>
+                </div>    
+                <a href="#" class="nav_logo" data-bs-toggle="modal" data-bs-target="#loginModal" id="logModal"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">Iniciar Sesion</span> </a>
+                <a href="#" class="nav_link active" data-bs-toggle="modal" data-bs-target="#registerModal"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Registrarse</span> </a>    
+                <?php }?>
                 <a href="comunidadAssist.php" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Comunidad Assist</span> </a>
                 <a href="#" class="nav_link">
             </div>
@@ -100,7 +112,7 @@ require_once('config.php');
                             </div>
                             <div class="col-md-9 mt-3 mb-2 d-flex align-items-center">
                                 <div class="card-body">
-                                    <h5 class="card-title"><b style="color: rgb(7, 26, 57);"><?php echo $rowUser['nombres'] ." $rol"?></b></h5>
+                                    <h5 class="card-title"><b style="color: rgb(7, 26, 57);"><?php echo $rowUser['usuNombres'] ." $rol"?></b></h5>
                                     <p class="card-text"><small class="text-muted"></small></p>
                                 </div>
                             </div>

@@ -152,11 +152,13 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                             <div class="modal-body">
                                 <div class="mb-3">
                                     <label for="tituloTema" class="form-label">Titulo:</label>
-                                    <input type="text" class="form-control" name="tituloTema">
+                                    <input id="tituloTema" type="text" class="form-control" name="tituloTema" required>
+                                    <span id="tituloTema"></span>
                                 </div>
                                 <div class="mb-3">
                                     <label for="describeTema" class="form-label">Descripción:</label>
-                                    <textarea name="describeTema" class="form-control" cols="30" rows="8"></textarea>
+                                    <textarea id="describeTema" name="describeTema" class="form-control" cols="30" rows="8" maxlength="1000" required></textarea>
+                                    <div class="mt-2" style="font-weight: bold;" id="charNum"></div>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -265,7 +267,7 @@ $idTemaC = $row['idTema'];
                            <div class="row collapse mt-4" id="collapseComentar_tema<?php echo $row['idTema'] ?>">
                                 <div class="col-md-10">
                                     <div class="mb-3">
-                                        <input type="text" name="describeComentario" class="form-control" placeholder="Escribe un comentario...">
+                                        <input type="text" name="describeComentario" class="form-control" placeholder="Escribe un comentario..." required>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
@@ -277,7 +279,7 @@ $idTemaC = $row['idTema'];
 
                         <?php
 $idTema = $row['idTema'];
-    $queryComentario = "SELECT c.idComentario, c.idTema, c.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, c.describeComentario, c.likes, c.unlikes, u.usuImagen, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
+    $queryComentario = "SELECT c.idComentario, c.idTema, c.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres,u.usuNombres, c.describeComentario, c.likes, c.unlikes, u.usuImagen, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
                           FROM comentario c
                           INNER JOIN tema t ON c.idTema = t.idTema
                           INNER JOIN usuario u ON c.idUsuario = u.idUsuario
@@ -315,7 +317,7 @@ if ($rowComentario      ['usuImagen'] != null) {
                             </div>
                             <div class="row mt-2 ">
                                 <div class="col-md-3 mt-1 d-flex justify-content-center">
-                                <h5><?php echo $rowComentario['nombres'] ?></h5>
+                                <h5><?php echo $rowComentario['usuNombres'] ?></h5>
                                 </div>
                             </div>
                             <?php
@@ -378,7 +380,7 @@ $idComentario = $rowComentario['idComentario'];
 
                         <?php
 $idComentario = $rowComentario['idComentario'];
-        $queryRespuesta = "SELECT r.idRespuesta, r.idComentario, r.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, r.describeRespuesta, r.likes, r.unlikes, u.usuImagen, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
+        $queryRespuesta = "SELECT r.idRespuesta, r.idComentario, r.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, u.usuNombres, r.describeRespuesta, r.likes, r.unlikes, u.usuImagen, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
                           FROM respuesta r
                           INNER JOIN comentario c ON r.idComentario = c.idComentario
                           INNER JOIN usuario u ON r.idUsuario = u.idUsuario
@@ -416,7 +418,7 @@ if ($rowRespuesta['usuImagen'] != null) {
                             </div>
                             <div class="row mt-2 ">
                                 <div class="col-md-3 mt-1 d-flex justify-content-center">
-                                    <h5><?php echo $rowRespuesta['nombres'] ?></h5>
+                                    <h5><?php echo $rowRespuesta['usuNombres'] ?></h5>
                                 </div>
                                 <div class="col-md-4 d-flex justify-content-end">
                                     <div class="d-flex justify-content-between">
