@@ -3,73 +3,83 @@ require_once 'config.php';
 
 $status = $statusMsg = '';
 session_start();
-// $ifImage = $_FILES['image']["tmp_name"];
-if (isset($_POST["submit"])) {
 
-    $idUsuario = $_SESSION['id'];
+// Check if the user is already logged in, if yes then redirect him to welcome page
+if ($_SESSION["id"] == null) {
+    echo 'entra a la validación de sesion';
+    print($_SESSION["id"]);
+    header("location: index.php");
+    die();
+} else {
+    // $ifImage = $_FILES['image']["tmp_name"];
+    if (isset($_POST["submit"])) {
 
-    if (!empty($_FILES["image"]["name"])) {
-        // Get file info
-        $fileName = basename($_FILES["image"]["name"]);
-        $fileType = pathinfo($fileName, PATHINFO_EXTENSION);
+        $idUsuario = $_SESSION['id'];
 
-        // Allow certain file formats
-        $allowTypes = array('jpg', 'png', 'jpeg', 'gif');
-        if (in_array($fileType, $allowTypes)) {
-            $image = $_FILES['image']['tmp_name'];
-            $imgContent = addslashes(file_get_contents($image));
+        if (!empty($_FILES["image"]["name"])) {
+            // Get file info
+            $fileName = basename($_FILES["image"]["name"]);
+            $fileType = pathinfo($fileName, PATHINFO_EXTENSION);
 
-            // Get Image Dimension
-            $fileinfo = @getimagesize($_FILES["image"]["tmp_name"]);
-            $width = $fileinfo[0];
-            $height = $fileinfo[1];
+            // Allow certain file formats
+            $allowTypes = array('jpg', 'png', 'jpeg', 'gif');
+            if (in_array($fileType, $allowTypes)) {
+                $image = $_FILES['image']['tmp_name'];
+                $imgContent = addslashes(file_get_contents($image));
 
-            if (($_FILES["image"]["size"] < 1000000)) {
+                // Get Image Dimension
+                $fileinfo = @getimagesize($_FILES["image"]["tmp_name"]);
+                $width = $fileinfo[0];
+                $height = $fileinfo[1];
 
-                if ($width <= "400" || $height <= "400") {
+                if (($_FILES["image"]["size"] < 1000000)) {
 
-                    // Insert image content into database
-                    $update = mysqli_query($link, "UPDATE usuario u SET u.usuImagen = '$imgContent' WHERE u.idUsuario = '$idUsuario';");
+                    if ($width <= "400" || $height <= "400") {
 
-                    if ($update) {
-                        $response = array(
-                            "type" => "success",
-                            "message" => "La imagen se ha actualizado correctamente.",
-                        );
+                        // Insert image content into database
+                        $update = mysqli_query($link, "UPDATE usuario u SET u.usuImagen = '$imgContent' WHERE u.idUsuario = '$idUsuario';");
+
+                        if ($update) {
+                            $response = array(
+                                "type" => "success",
+                                "message" => "La imagen se ha actualizado correctamente.",
+                            );
+                        } else {
+                            $response = array(
+                                "type" => "error",
+                                "message" => "",
+                            );
+                            $statusMsg = "No se pudo cargar el archivo, intente nuevamente.";
+                        }
                     } else {
+
                         $response = array(
                             "type" => "error",
-                            "message" => "",
+                            "message" => "La dimensión de la imagen debe estar dentro de 400x400",
                         );
-                        $statusMsg = "No se pudo cargar el archivo, intente nuevamente.";
+
                     }
                 } else {
-
                     $response = array(
                         "type" => "error",
-                        "message" => "La dimensión de la imagen debe estar dentro de 400x400",
+                        "message" => "El tamaño de la imagen supera 1 MB.",
                     );
-
                 }
+
             } else {
                 $response = array(
                     "type" => "error",
-                    "message" => "El tamaño de la imagen supera 1 MB.",
+                    "message" => "Lo sentimos, solo se pueden cargar archivos JPG, JPEG, PNG y GIF.",
                 );
             }
-
         } else {
             $response = array(
                 "type" => "error",
-                "message" => "Lo sentimos, solo se pueden cargar archivos JPG, JPEG, PNG y GIF.",
+                "message" => "Seleccione un archivo de imagen para cargar.",
             );
         }
-    } else {
-        $response = array(
-            "type" => "error",
-            "message" => "Seleccione un archivo de imagen para cargar.",
-        );
     }
+
 }
 
 ?>
