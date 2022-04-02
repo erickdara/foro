@@ -75,7 +75,7 @@ function loginUser() {
 
                 const result = JSON.parse(response);
 
-                var url = "http://localhost/Foro/User/index.php";
+                var url = "/foro/User/index.php";
                 $(location).attr("href", url);
 
                 // window.location.href =
@@ -89,7 +89,6 @@ function loginUser() {
         },
     });
 }
-
 
 $(document).bind("ajaxSuccess", function() {
     $(document).on("load", function() {
@@ -119,57 +118,57 @@ function registerUser() {
             confirm_password: confirm_password,
         },
         function(data) {
-
             let res = data.response;
             console.log(data.response);
 
             //TODO: Si contiene This e-mail is already taken.
-            if(res.includes("taken")){
+            if (res.includes("taken")) {
                 $("#registerModal").modal("hide");
 
                 var inf =
-                `<div class="alert alert-danger" id="login-info" role="alert">
+                    `<div class="alert alert-danger" id="login-info" role="alert">
             Este correo: ` +
-                mail +
-                ` ya se encuentra Registrado
+                    mail +
+                    ` ya se encuentra Registrado
                  </div>`;
 
-                 $(inf).insertBefore(".container").fadeOut(7000);
+                $(inf).insertBefore(".container").fadeOut(12000);
 
-                 $("#usernames").val("");
-                 $("#email").val("");
-                 $("#password").val("");
-                 $("#conpassword").val("");
-            }else{
-                
+                $("#usernames").val("");
+                $("#email").val("");
+                $("#password").val("");
+                $("#conpassword").val("");
+            } else {
                 // close the popup
                 $("#registerModal").modal("hide");
-    
+
                 var inf =
                     `<div class="alert alert-success" id="login-info" role="alert">
                 Registro con el correo: ` +
                     mail +
                     ` exitoso 
                      </div>`;
-    
+
                 $(inf).insertBefore(".container").fadeOut(7000);
                 //alert("Data: " + data + "\nStatus: " + status);
-    
+
                 // alert("Usuario:" + mail + "registrado con exito");
-    
+
                 // borrar campos
                 $("#usernames").val("");
                 $("#email").val("");
                 $("#password").val("");
                 $("#conpassword").val("");
-
             }
-        }, "json");
+        },
+        "json"
+    );
 }
 
-$.get("http://localhost/Foro/App/Auth/callback.php?provider=Google",
-    function (data, textStatus, jqXHR) {
-        console.log("Lo que llega de registerSocial". data.response); 
+$.get(
+    "http://localhost/Foro/App/Auth/callback.php?provider=Google",
+    function(data, textStatus, jqXHR) {
+        console.log("Lo que llega de registerSocial".data.response);
     },
     "json"
 );
@@ -182,7 +181,7 @@ function buscar(buscar) {
         data: parametros,
         success: function(data) {
             // $(data).insertBefore("#datos_buscador");
-            
+
             document.getElementById("datos_buscador").innerHTML = data;
             // $("#buscar").on("focusout", function() {
             //     location.reload();
@@ -198,7 +197,7 @@ function strangeBuscar(buscar) {
         url: "buscador.php",
         data: parametros,
         success: function(data) {
-            // $(data).insertBefore("#datos_buscador");      
+            // $(data).insertBefore("#datos_buscador");
             document.getElementById("datos_buscador").innerHTML = data;
 
             // $("#buscar").on("focusout", function() {
@@ -228,12 +227,12 @@ $(document).ready(function() {
     //     }
     // }
 
-    $("#describeTema").keyup(function(){
+    $("#describeTema").keyup(function() {
         var max = 1000;
         var len = $(this).val().length;
-        if(len >= max){
+        if (len >= max) {
             $("#charNum").text("Ha llegado usted al límite máximo.");
-        }else{
+        } else {
             var char = max - len;
             $("#charNum").text(char + " caracteres restantes");
         }
@@ -433,12 +432,35 @@ $(window).on("load", function() {
     }
 });
 
-
 $.get("/Foro/User/index.php", "provider=", function(data, textStatus, jqXHR) {
     const urlParams = new URLSearchParams(window.location.search);
     const param = urlParams.get("provider");
     provider = param;
 });
+
+function showModalLogin() {
+    window.location.href = "index.php?login";
+}
+
+function showRegisterModal() {
+    window.location.href = "index.php?register";
+}
+
+$(document).ready(function() {
+    var location = document.location.href;
+    console.log(location.href);
+    if (location == "http://localhost/Foro/index.php?login") {
+        $("#loginModal").modal("show");
+    } else if (location == "http://localhost/Foro/index.php?register") {
+        $("#registerModal").modal("show");
+    }
+});
+
+function logoutSocial(provider) {
+    console.log('la variale provider: ' + provider);
+    let location = "http://localhost/Foro/App/Auth/callback.php";
+    window.location.href = location + "?logout=" + provider;
+}
 
 // $("#login-info").fadeIn(7000, function() {
 //     $("#login-info").fadeOut(7000);

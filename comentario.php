@@ -38,20 +38,20 @@ session_start();
         </div>
     </header>
     <?php
-        // Check if the user is already logged in, if yes then redirect him to welcome page
-        if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-            $idUsuario = $_SESSION['id'];
-            $queryUser = mysqli_query($link, "SELECT u.idUsuario, CONCAT(u.usuNombres,\" \",u.usuApellidos) AS nombres, u.usuNombres, r.idRol, r.tipoRol, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
+// Check if the user is already logged in, if yes then redirect him to welcome page
+if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
+    $idUsuario = $_SESSION['id'];
+    $queryUser = mysqli_query($link, "SELECT u.idUsuario, CONCAT(u.usuNombres,\" \",u.usuApellidos) AS nombres, u.usuNombres, r.idRol, r.tipoRol, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
             FROM usuario u
             INNER JOIN rol r ON u.idRol = r.idRol
             WHERE u.idUsuario = '$idUsuario'");
-        } else {
-            $queryUser = mysqli_query($link, "SELECT CONCAT(u.usuNombres,\" \",u.usuApellidos) AS nombres, u.usuNombres, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
+} else {
+    $queryUser = mysqli_query($link, "SELECT CONCAT(u.usuNombres,\" \",u.usuApellidos) AS nombres, u.usuNombres, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
             FROM usuario u");
-            //INNER JOIN rol r ON u.idRol = r.idRol");
-        }
+    //INNER JOIN rol r ON u.idRol = r.idRol");
+}
 
-        ?>
+?>
     <div class="l-navbar" id="nav-bar">
             <nav class="nav">
                 <div class="nav_list">
@@ -60,30 +60,30 @@ session_start();
                 </div>
                     <div style="column-gap: 2rem;width: 1.5rem; height: 1.6rem; margin-left: 1.5rem;" class="d-flex mb-4">
                         <?php
-                        if(isset($_SESSION['id'])){
-                            $idUsuario = $_SESSION['id'];
-                            $user = mysqli_query($link,"SELECT * FROM usuario u WHERE idUsuario = '$idUsuario'");
-                            $imgUser = mysqli_fetch_array($user);
+if (isset($_SESSION['id'])) {
+    $idUsuario = $_SESSION['id'];
+    $user = mysqli_query($link, "SELECT * FROM usuario u WHERE idUsuario = '$idUsuario'");
+    $imgUser = mysqli_fetch_array($user);
 
-                        if ($imgUser['usuImagen'] != null) {
-                            ?>
+    if ($imgUser['usuImagen'] != null) {
+        ?>
                                         <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($imgUser['usuImagen']); ?>" style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="100%" height="100%" class="rounded-circle" alt="Imagen de usuario">
                                 <?php
-                         } else {?>
+} else {?>
                                     <img src="img/user.png"  style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="100%" height="100%" class="rounded-circle" alt="Imagen de usuario">
                                 <?php
-                        }
-                        ?>
+}
+    ?>
                         <a href="perfil.php" class="d-flex" >
                             <span class="nav_logo-name">Perfil</span>
                         </a>
                     </div>
                     <a href="#" class="nav_link active"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Notificaciones</span> </a>
-                    <?php }else{ ?> 
-                        </div>   
-                        <a href="#" class="nav_logo" data-bs-toggle="modal" data-bs-target="#loginModal" id="logModal"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">Iniciar Sesion</span> </a>
-                        <a href="#" class="nav_link active" data-bs-toggle="modal" data-bs-target="#registerModal"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Registrarse</span> </a>
-                    <?php } ?>    
+                    <?php } else {?>
+                        </div>
+                        <a href="#" class="nav_logo" data-bs-toggle="modal" data-bs-target="#loginModal" id="logModal"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name" onclick="showModalLogin()">Iniciar Sesion</span> </a>
+                        <a href="#" class="nav_link active" data-bs-toggle="modal" data-bs-target="#registerModal"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name" onclick="showRegisterModal()">Registrarse</span> </a>
+                    <?php }?>
                     <a href="comunidadAssist.php" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Comunidad Assist</span> </a>
                     <a href="#" class="nav_link">
                 </div>

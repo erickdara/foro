@@ -1,6 +1,5 @@
 <?php
 
-
 include 'hybridauth/src/autoload.php';
 include 'App/Auth/config.php';
 
@@ -71,11 +70,11 @@ $register->insertUser($data, $name);
         <div class="col-md-12 d-flex justify-content-start">
             <div class="col-md-6 col-sm-2 pb-1">
                 <?php
-                if(isset($_SESSION['id'])){?>
+if (isset($_SESSION['id'])) {?>
                     <a href="../User/index.php" type="button" class="btn text-light btn-nav">Temas</a>
-                <?php }else{?>
+                <?php } else {?>
                     <a href="index.php" type="button" class="btn text-light btn-nav">Temas</a>
-                <?php } ?>  
+                <?php }?>
                 <a href="actividad.php" type="button" class="btn text-light btn-nav">Actividad Reciente</a>
                 <a href="comentario.php" type="button" class="btn text-light btn-nav">Comentarios</a>
             </div>
@@ -439,8 +438,8 @@ if ($rowRespuesta['usuImagen'] != null) {
 
 <!--Start Register Modal -->
 <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-    <?php require_once "registerUser.php" ?>
-    
+    <?php require_once "registerUser.php"?>
+
 
   aria-hidden="true">
   <div class="modal-dialog modal-sm" role="document">
@@ -466,7 +465,7 @@ if ($rowRespuesta['usuImagen'] != null) {
           <i class="fas fa-envelope prefix grey-text"></i>
           <label data-error="wrong" data-success="right" for="email">Correo</label>
           <input type="email" id="email" name="email" class="form-control ">
-          
+
           <small id="emailvalid" class="form-text
                 text-muted invalid-feedback">
                     Su email debe ser un email válido
@@ -477,7 +476,7 @@ if ($rowRespuesta['usuImagen'] != null) {
           <i class="fas fa-lock prefix grey-text"></i>
           <label data-error="wrong" data-success="right" for="orangeForm-pass">Contraseña</label>
           <input type="password" id="password" name="pass" class="form-control ">
-          
+
           <h6 id="passcheck" style="color: red;">
            Por favor llene el password
               </h6>
@@ -488,7 +487,7 @@ if ($rowRespuesta['usuImagen'] != null) {
           <!-- <i class="fas fa-lock prefix grey-text"></i> -->
           <label data-error="wrong" data-success="right" for="orangeForm-pass">Confirm password</label>
           <input type="password" id="conpassword" name="username" class="form-control ">
-          
+
           <h6 id="conpasscheck" style="color: red;">
                   Contraseña no coincide
               </h6>
@@ -532,15 +531,7 @@ if ($rowRespuesta['usuImagen'] != null) {
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-6236821402b458e6"></script>
 
 </body>
-  <!-- container social network -->
-  <!-- <div id="share-bar"></div> -->
-    <!-- container social network -->
-<!--Container Main end-->
-<script>$('#share-bar').share({
-    pageUrl: 'http://foro-assist.com',
-    position: 'right',
-    animate: true
-});</script>
+
 
 <!-- Modal Login -->
 
@@ -573,20 +564,20 @@ if ($rowRespuesta['usuImagen'] != null) {
                         <text id=validation></text>
                         <span class="invalid-feedback"><?php echo $password_err; ?></span>
                     </div>
-                    <?php if (RegisterSocial::isLogin()):?>
+                    <?php if (RegisterSocial::isLogin()): ?>
                     <div class="mb-3 d-none justify-content-center" >
                     <a href="#" onclick="document.getElementById('provider0').click();" class="fa fa-twitter"></a>
                     <a href="#" onclick="document.getElementById('provider1').click();" class="fa fa-facebook"></a>
                     <a href="#" onclick="document.getElementById('provider2').click();" class="fa fa-google"></a>
                     </div>
-                    <?php else:?>    
+                    <?php else: ?>
                     <div class="mb-3 d-flex justify-content-center" >
                     <a href="#" onclick="document.getElementById('provider0').click();" class="fa fa-twitter"></a>
                     <a href="#" onclick="document.getElementById('provider1').click();" class="fa fa-facebook"></a>
                     <a href="#" onclick="document.getElementById('provider2').click();" class="fa fa-google"></a>
                     </div>
                     <?php endif;?>
-                    
+
             </div>
             <div class="modal-footer d-flex justify-content-center">
 

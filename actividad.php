@@ -33,11 +33,11 @@ $util = new utils();
             <div class="col-md-12 d-flex justify-content-start">
                 <div class="col-md-6 col-sm-2 pb-1">
                     <?php
-                    if(isset($_SESSION['id'])){?>
+if (isset($_SESSION['id'])) {?>
                         <a href="./User/index.php" type="button" class="btn text-light btn-nav">Temas</a>
-                    <?php }else{?>
+                    <?php } else {?>
                         <a href="index.php" type="button" class="btn text-light btn-nav">Temas</a>
-                    <?php } ?>  
+                    <?php }?>
                     <a href="actividad.php" type="button" class="btn text-light btn-nav">Actividad Reciente</a>
                     <a href="comentario.php" type="button" class="btn text-light btn-nav">Comentarios</a>
                 </div>
@@ -70,29 +70,28 @@ $rowUser = mysqli_fetch_array($queryUser);
                     <img class="imgLogo" style="margin-left: 0.6rem; margin-bottom: 1rem; border-radius: 50%;" src="img/logo.jpg" width="27%" height="17%" alt="">
                 </div>
                 <div style="column-gap: 2rem;width: 1.5rem; height: 1.6rem; margin-left: 1.5rem;" class="d-flex mb-4">
-                <?php           
-                    if(isset($_SESSION['id'])){
+                <?php
+if (isset($_SESSION['id'])) {
 
-                    
-                    if ($rowUser['usuImagen'] != null) {
-                        ?>
+    if ($rowUser['usuImagen'] != null) {
+        ?>
                                 <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowUser['usuImagen']); ?>" style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="100%" height="100%" class="rounded-circle" alt="Imagen de usuario">
                         <?php
-                    } else {?>
+} else {?>
                             <img src="img/user.png"  style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="100%" height="100%" class="rounded-circle" alt="Imagen de usuario">
                         <?php
-                    }
-                ?>
+}
+    ?>
                     <a href="perfil.php" class="d-flex" >
                     <span class="nav_logo-name">Perfil</span>
                 </a>
                 </div>
                 <a href="#" class="nav_link active"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Notificaciones</span> </a>
-                <?php }else{ ?>
-                </div>    
-                <a href="#" class="nav_logo" data-bs-toggle="modal" data-bs-target="#loginModal" id="logModal"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">Iniciar Sesion</span> </a>
-                <a href="#" class="nav_link active" data-bs-toggle="modal" data-bs-target="#registerModal"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Registrarse</span> </a>
-                <?php }?>    
+                <?php } else {?>
+                </div>
+                <a href="#" class="nav_logo" data-bs-toggle="modal" data-bs-target="#loginModal" id="logModal"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name" onclick="showModalLogin()">Iniciar Sesion</span> </a>
+                <a href="#" class="nav_link active" data-bs-toggle="modal" data-bs-target="#registerModal"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name" onclick="showRegisterModal()">Registrarse</span> </a>
+                <?php }?>
                 <a href="comunidadAssist.php" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Comunidad Assist</span> </a>
                 <a href="#" class="nav_link">
             </div>
@@ -107,38 +106,38 @@ $rowUser = mysqli_fetch_array($queryUser);
              <div class="row mt-3 mb-3 d-flex justify-content-center">
                     <div class="card mb-3 actividad-info">
             <?php
-            $queryTema = mysqli_query($link, "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, usuNombres, t.tituloTema, t.describeTema, u.usuImagen, DATE_FORMAT(t.created_at, \"%d-%m-%Y %H:%i:%s\") AS fecha, likes, unlikes
+$queryTema = mysqli_query($link, "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, usuNombres, t.tituloTema, t.describeTema, u.usuImagen, DATE_FORMAT(t.created_at, \"%d-%m-%Y %H:%i:%s\") AS fecha, likes, unlikes
             FROM tema t
             INNER JOIN usuario u ON t.idUsuario = u.idUsuario
             INNER JOIN rol r ON u.idRol = r.idRol
             ORDER BY t.created_at DESC");
 
-            $queryDateNow = mysqli_query($link, "SELECT DATE_FORMAT(now(),\"%d %m %Y %H %i %s\") as dateNow");
-            $dateNow = mysqli_fetch_array($queryDateNow);
+$queryDateNow = mysqli_query($link, "SELECT DATE_FORMAT(now(),\"%d %m %Y %H %i %s\") as dateNow");
+$dateNow = mysqli_fetch_array($queryDateNow);
 
-            // $num = mysqli_fetch_array($queryTema);
-            // $rowTema = mysqli_fetch_array($queryTema);
-            // $arrayTema = array();
+// $num = mysqli_fetch_array($queryTema);
+// $rowTema = mysqli_fetch_array($queryTema);
+// $arrayTema = array();
 
-            // for($i = 0; $i < $num; $i++){
+// for($i = 0; $i < $num; $i++){
 
-            // }
+// }
 
-            while ($rowTema = mysqli_fetch_array($queryTema)) {
-            ?>
+while ($rowTema = mysqli_fetch_array($queryTema)) {
+    ?>
                         <div class="row d-flex justify-content-center" style="width: 90%;">
                             <div class="col-md-3 mt-3 mb-1">
                                 <div class="d-flex justify-content-center" >
                                     <?php
-            if ($rowTema['usuImagen'] != null) {
-            ?>
+if ($rowTema['usuImagen'] != null) {
+        ?>
                                             <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowTema['usuImagen']); ?>" style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="50%" height="50%" class="rounded-circle" alt="Imagen de usuario">
                                     <?php
-            } else {?>
+} else {?>
                                         <img src="img/user.png"  style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="50%" height="50%" class="rounded-circle" alt="Imagen de usuario">
                                     <?php
-            }
-            ?>
+}
+    ?>
                                     </div>
                             </div>
                             <div class="col-md-9 mt-3 mb-2 d-flex align-items-center">
@@ -153,63 +152,6 @@ $rowUser = mysqli_fetch_array($queryUser);
 ?>
                     </div>
                 </div>
-
-<!-- Modal Login -->
-
-<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="loginModalLabel" data-bs-toggle="modal" data-bs-target="#loginModal">INICIAR SESIÓN</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="loginUser.php" method="post">
-                    <div class="mb-3">
-                        <i class="fas fa-envelope prefix grey-text"></i>
-                        <label for="correo usuario" class="col-form-label">Correo:</label>
-                        <input type="text" id="correo" name="mail" class="form-control" >
-                        <small id="emailvalid" class="form-text text-muted invalid-feedback">
-                                Su email debe ser un email válido
-                        </small>
-                        <span class="invalid-feedback"></span>
-                    </div>
-                    <div class="mb-3">
-                        <i class="fas fa-lock prefix grey-text"></i>
-                        <label for="password" class="col-form-label">Contraseña:</label>
-                        <input type="password" id="pass" name="password" class="form-control">
-                        <h6 id="passcheckLogin" style="color: red;">
-                            *Por favor llene el password
-                        </h6>
-                        <span class="invalid-feedback"></span>
-                    </div>
-                    
-                    <div class="mb-3 d-flex justify-content-center" >
-                    <a href="#" onclick="document.getElementById('provider0').click();" class="fa fa-twitter"></a>
-                    <a href="#" onclick="document.getElementById('provider1').click();" class="fa fa-facebook"></a>
-                    <a href="#" onclick="document.getElementById('provider2').click();" class="fa fa-google"></a>
-                    </div>
-                    
-            </div>
-            <div class="modal-footer d-flex justify-content-center">
-
-
-  <!--
-            <button class="g-recaptcha"
-            data-sitekey="6LfZh9UeAAAAAGoCYH8PZoqKbYpo6lKDLqhWPDei"
-            data-callback='onSubmit'
-            data-action='submit'>Submit</button> -->
-
-
-                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <!-- <button type="button" class="btn btn-primary">Send message</button> -->
-                <input type="button" onclick="loginUser()" class="btn btn-primary" value="Login">
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- Fin Modal Login -->
-
         </div>
     </div>
 

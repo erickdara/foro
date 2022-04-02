@@ -37,11 +37,11 @@ require_once "../config.php";
         <div class="col-md-12 d-flex justify-content-start">
             <div class="col-md-6 col-sm-2 pb-1">
                 <?php
-                if(isset($_SESSION['id'])){?>
+if (isset($_SESSION['id'])) {?>
                     <a href="../User/index.php" type="button" class="btn text-light btn-nav">Temas</a>
-                <?php }else{?>
+                <?php } else {?>
                     <a href="index.php" type="button" class="btn text-light btn-nav">Temas</a>
-                <?php } ?>    
+                <?php }?>
                 <a href="../actividad.php" type="button" class="btn text-light btn-nav">Actividad Reciente</a>
                 <a href="../comentario.php" type="button" class="btn text-light btn-nav">Comentarios</a>
             </div>
@@ -88,7 +88,7 @@ if ($rowUser['usuImagen'] != null) {
                 <a href="#" class="nav_link">
             </div>
 
-        <a href="../logout.php" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">Cerrar sesión</span> </a>
+        <a href="../logout.php" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name" onclick="logoutSocial(provider)">Cerrar sesión</span> </a>
     </nav>
 </div>
 <!--Container Main start-->
@@ -300,7 +300,7 @@ $idTema = $row['idTema'];
                                 <div class="col-md-3 mt-2">
                                 <div class="d-flex justify-content-center mb-2" style="width: 100%; height: 100%;">
                                     <?php
-if ($rowComentario      ['usuImagen'] != null) {
+if ($rowComentario['usuImagen'] != null) {
             ?>
                                             <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowComentario['usuImagen']); ?>" style="object-fit: cover; object-position: center;" width="60%" height="60%" class="img-thumbnail img-perfil rounded-circle" alt="Imagen de usuario">
                                     <?php
