@@ -244,9 +244,9 @@ class Utils{
     function get_time_ago( $time )
 {
     $timeCreate = strtotime($time);
-    $time_difference = (time() - $timeCreate) - 21600;
+    $time_difference = (time() - $timeCreate) - 25200;
 
-    if( $time_difference < 1 ) { return 'less than 1 second ago'; }
+    if( $time_difference < 1 ) { return 'Hace 1 segundo'; }
     $condition = array( 12 * 30 * 24 * 60 * 60 =>  'año',
                 30 * 24 * 60 * 60       =>  'mes',
                 24 * 60 * 60            =>  'día',
@@ -255,6 +255,7 @@ class Utils{
                 1                       =>  'segundo'
     );
 
+    //echo "tiempo creacion: ".$timeCreate." ";
     foreach( $condition as $secs => $str )
     {
         $d = $time_difference / $secs;

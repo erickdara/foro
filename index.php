@@ -375,7 +375,7 @@ if ($rowRespuesta['usuImagen'] != null) {
                                             <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowRespuesta['usuImagen']); ?>" style="object-fit: cover; object-position: center;" width="60%" height="60%" class="img-thumbnail img-perfil rounded-circle" alt="Imagen de usuario">
                                     <?php
 } else {?>
-                                        <img src="../img/user.png"  style="object-fit: cover; object-position: center;" width="60%" height="60%" class="img-thumbnail img-perfil rounded-circle" alt="Imagen de usuario">
+                                        <img src="./img/user.png"  style="object-fit: cover; object-position: center;" width="60%" height="60%" class="img-thumbnail img-perfil rounded-circle" alt="Imagen de usuario">
                                     <?php
 }
             ?>

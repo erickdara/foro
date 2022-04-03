@@ -22,8 +22,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
          VALUES (idComentario,'$idTema', '$idUsuario', '$describeComentario', now());";
 
         $resultQuery = mysqli_query($link, $query);
-        header('Location: ./User/index.php');
-        exit;
+
+        if($resultQuery){
+            $queryComentario = mysqli_query($link,"SELECT * FROM comentario order by idComentario DESC LIMIT 1");
+            $resultQueryComentario = mysqli_fetch_array($queryComentario);
+
+            $idTema = $resultQueryComentario['idTema'];
+            $idUsuario = $resultQueryComentario['idUsuario'];
+
+            $queryNotificacion = mysqli_query($link,"INSERT INTO notificacion (idNotificacion, idUsuario, idTema, tipoNotificacion, created_at) VALUES (idNotificacion, '$idUsuario', '$idTema', 'ha dejado un comentario sobre', now());");
+
+            header("Location: ./User/index.php");
+            exit;
+        }else{
+            echo("Query notificacion failed");
+        }
 
         if (!$resultQuery) {
             echo "Query failed";

@@ -25,7 +25,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $resultLlamado = mysqli_fetch_array($llamado);
             $id_sub = $resultLlamado['idTema'];
 
-            header("Location: ./User/index.php");
+            if($resultQuery){
+                $queryTema = mysqli_query($link,"SELECT * FROM tema order by idTema DESC LIMIT 1");
+                $resultQueryTema = mysqli_fetch_array($queryTema);
+
+                $idTema = $resultQueryTema['idTema'];
+                $idUsuario = $resultQueryTema['idUsuario'];
+
+                $queryNotificacion = mysqli_query($link,"INSERT INTO notificacion (idNotificacion, idUsuario, idTema, tipoNotificacion, created_at) VALUES (idNotificacion, '$idUsuario', '$idTema', 'creó el tema', now());");
+
+                header("Location: ./User/index.php");
+            }else{
+                echo("Query notificacion failed");
+            }
+            
+
+            
 
         if(!$resultQuery){
             echo("Query failed");

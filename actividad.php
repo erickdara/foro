@@ -106,32 +106,30 @@ if (isset($_SESSION['id'])) {
              <div class="row mt-3 mb-3 d-flex justify-content-center">
                     <div class="card mb-3 actividad-info">
             <?php
-$queryTema = mysqli_query($link, "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, usuNombres, t.tituloTema, t.describeTema, u.usuImagen, DATE_FORMAT(t.created_at, \"%d-%m-%Y %H:%i:%s\") AS fecha, likes, unlikes
-            FROM tema t
-            INNER JOIN usuario u ON t.idUsuario = u.idUsuario
-            INNER JOIN rol r ON u.idRol = r.idRol
-            ORDER BY t.created_at DESC");
+// $queryTema = mysqli_query($link, "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, usuNombres, t.tituloTema, t.describeTema, u.usuImagen, DATE_FORMAT(t.created_at, \"%d-%m-%Y %H:%i:%s\") AS fecha, likes, unlikes
+//             FROM tema t
+//             INNER JOIN usuario u ON t.idUsuario = u.idUsuario
+//             INNER JOIN rol r ON u.idRol = r.idRol
+//             ORDER BY t.created_at DESC");
+
+ $queryNotificacion = mysqli_query($link, "SELECT n.idNotificacion, n.idUsuario, n.idTema, u.usuNombres, u.usuImagen, t.tituloTema, n.tipoNotificacion, DATE_FORMAT(n.created_at, \"%d-%m-%Y %H:%i:%s\") AS fecha
+ FROM notificacion n
+ INNER JOIN usuario u ON n.idUsuario = u.idUsuario
+ INNER JOIN tema t ON n.idtema = t.idTema
+ ORDER BY n.created_at DESC");
 
 $queryDateNow = mysqli_query($link, "SELECT DATE_FORMAT(now(),\"%d %m %Y %H %i %s\") as dateNow");
 $dateNow = mysqli_fetch_array($queryDateNow);
 
-// $num = mysqli_fetch_array($queryTema);
-// $rowTema = mysqli_fetch_array($queryTema);
-// $arrayTema = array();
-
-// for($i = 0; $i < $num; $i++){
-
-// }
-
-while ($rowTema = mysqli_fetch_array($queryTema)) {
+while ($rowNotificacion = mysqli_fetch_array($queryNotificacion)) {
     ?>
                         <div class="row d-flex justify-content-center" style="width: 90%;">
                             <div class="col-md-3 mt-3 mb-1">
                                 <div class="d-flex justify-content-center" >
                                     <?php
-if ($rowTema['usuImagen'] != null) {
+if ($rowNotificacion['usuImagen'] != null) {
         ?>
-                                            <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowTema['usuImagen']); ?>" style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="50%" height="50%" class="rounded-circle" alt="Imagen de usuario">
+                                            <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowNotificacion['usuImagen']); ?>" style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="50%" height="50%" class="rounded-circle" alt="Imagen de usuario">
                                     <?php
 } else {?>
                                         <img src="img/user.png"  style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="50%" height="50%" class="rounded-circle" alt="Imagen de usuario">
@@ -142,8 +140,8 @@ if ($rowTema['usuImagen'] != null) {
                             </div>
                             <div class="col-md-9 mt-3 mb-2 d-flex align-items-center">
                                 <div class="card-body">
-                                    <h5 class="card-title"><b style="color: rgb(7, 26, 57);"><?php echo $rowTema['usuNombres'] . " creó el tema "; ?></b><b style="color: rgb(255 50 59);"><?php echo $rowTema['tituloTema'] ?></b></h5>
-                                    <p class="card-text"><small class="text-muted"><?php echo $util->get_time_ago($rowTema['fecha']) ?></small></p>
+                                    <h5 class="card-title"><b style="color: rgb(7, 26, 57);"><?php echo $rowNotificacion['usuNombres']." ".$rowNotificacion['tipoNotificacion']." "; ?></b><b style="color: rgb(255 50 59);"><?php echo $rowNotificacion['tituloTema'] ?></b></h5>
+                                    <p class="card-text"><small class="text-muted"><?php echo $util->get_time_ago($rowNotificacion['fecha'])?></small></p>
                                 </div>
                             </div>
                         </div>

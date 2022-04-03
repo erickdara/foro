@@ -15,7 +15,25 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
          VALUES (idRespuesta,'$idComentario', '$idUsuario', '$describeRespuesta', now());";
 
          $resultQuery = mysqli_query($link,$query);
-         header('Location: ./User/index.php');
+
+         if($resultQuery){
+            $queryRespuesta = mysqli_query($link,"SELECT r.idRespuesta, r.idUsuario, r.idComentario, t.idTema FROM respuesta r
+            INNER JOIN comentario c ON r.idComentario = c.idComentario
+            INNER JOIN tema t ON c.idTema = t.idTema
+            order by idRespuesta DESC LIMIT 1");
+            $resultQueryRespuesta = mysqli_fetch_array($queryRespuesta);
+
+            $idTema = $resultQueryRespuesta['idTema'];
+            $idUsuario = $resultQueryRespuesta['idUsuario'];
+
+            $queryNotificacion = mysqli_query($link,"INSERT INTO notificacion (idNotificacion, idUsuario, idTema, tipoNotificacion, created_at) VALUES (idNotificacion, '$idUsuario', '$idTema', 'ha respondido un comentario sobre ', now());");
+
+            header("Location: ./User/index.php");
+            exit;
+        }else{
+            echo("Query notificacion failed");
+        }
+
 
          if(!$resultQuery){
             echo "Query failed";
