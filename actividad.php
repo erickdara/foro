@@ -61,6 +61,17 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
         FROM usuario u
         INNER JOIN rol r ON u.idRol = r.idRol");
 }
+
+if(isset($_SESSION['id'])){
+    $queryNotificacion = mysqli_query($link,"SELECT n.idNotificacion, n.idUsuario, n.idTema, u.usuNombres, u.usuImagen, t.tituloTema, n.idTipoNotificacion, tn.describeNotificacion, DATE_FORMAT(n.created_at, \"%d-%m-%Y %H:%i:%s\") AS fecha
+    FROM notificacion n
+    INNER JOIN usuario u ON n.idUsuario = u.idUsuario
+    INNER JOIN tema t ON n.idtema = t.idTema
+    INNER JOIN tipoNotificacion tn ON n.idTipoNotificacion = tn.idTipo
+    WHERE n.idDestUser = '$idUsuario' 
+    ORDER BY n.created_at DESC LIMIT 4");
+}
+
 $rowUser = mysqli_fetch_array($queryUser);
 ?>
     <div class="l-navbar" id="nav-bar">
@@ -86,7 +97,18 @@ if (isset($_SESSION['id'])) {
                     <span class="nav_logo-name">Perfil</span>
                 </a>
                 </div>
-                <a href="#" class="nav_link active"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Notificaciones</span> </a>
+                <a class="nav_link active btn" data-bs-toggle="collapse" href="#collapseNotificacion" role="button" aria-expanded="false" aria-controls="collapseNotificacion"> <i class='bx bx-grid-alt nav_icon'></i>Notificaciones </a>
+                <div class="collapse text-light" style="background-color: #d0252d; font-size: 13px;" id="collapseNotificacion">
+                    <?php 
+                    while($resultQueryNotificacion = mysqli_fetch_array($queryNotificacion)){
+                        $notificacion = $resultQueryNotificacion['idTipoNotificacion'] == 1 ? 'creaste el tema': ($resultQueryNotificacion['idTipoNotificacion'] == 2 ? 'comentó tu publicación' : 'respondió tu comentario en');?>
+                        <div class="p-2">
+                            <p><b> <?php echo $resultQueryNotificacion['usuNombres'];?></b> <?php echo $notificacion." "."\"".$resultQueryNotificacion['tituloTema']."\""; ?></p>
+                        </div>
+                        <hr>
+
+                    <?php }?>
+                </div>
                 <?php } else {?>
                 </div>
                 <a href="#" class="nav_logo" data-bs-toggle="modal" data-bs-target="#loginModal" id="logModal"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name" onclick="showModalLogin()">Iniciar Sesion</span> </a>
@@ -106,30 +128,26 @@ if (isset($_SESSION['id'])) {
              <div class="row mt-3 mb-3 d-flex justify-content-center">
                     <div class="card mb-3 actividad-info">
             <?php
-// $queryTema = mysqli_query($link, "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, usuNombres, t.tituloTema, t.describeTema, u.usuImagen, DATE_FORMAT(t.created_at, \"%d-%m-%Y %H:%i:%s\") AS fecha, likes, unlikes
-//             FROM tema t
-//             INNER JOIN usuario u ON t.idUsuario = u.idUsuario
-//             INNER JOIN rol r ON u.idRol = r.idRol
-//             ORDER BY t.created_at DESC");
 
- $queryNotificacion = mysqli_query($link, "SELECT n.idNotificacion, n.idUsuario, n.idTema, u.usuNombres, u.usuImagen, t.tituloTema, n.tipoNotificacion, DATE_FORMAT(n.created_at, \"%d-%m-%Y %H:%i:%s\") AS fecha
+ $queryActividad = mysqli_query($link, "SELECT n.idNotificacion, n.idUsuario, n.idTema, u.usuNombres, u.usuImagen, t.tituloTema, n.idTipoNotificacion, tn.describeNotificacion, DATE_FORMAT(n.created_at, \"%d-%m-%Y %H:%i:%s\") AS fecha
  FROM notificacion n
  INNER JOIN usuario u ON n.idUsuario = u.idUsuario
  INNER JOIN tema t ON n.idtema = t.idTema
+ INNER JOIN tipoNotificacion tn ON n.idTipoNotificacion = tn.idTipo
  ORDER BY n.created_at DESC");
 
 $queryDateNow = mysqli_query($link, "SELECT DATE_FORMAT(now(),\"%d %m %Y %H %i %s\") as dateNow");
 $dateNow = mysqli_fetch_array($queryDateNow);
 
-while ($rowNotificacion = mysqli_fetch_array($queryNotificacion)) {
+while ($rowActividad = mysqli_fetch_array($queryActividad)) {
     ?>
                         <div class="row d-flex justify-content-center" style="width: 90%;">
                             <div class="col-md-3 mt-3 mb-1">
                                 <div class="d-flex justify-content-center" >
                                     <?php
-if ($rowNotificacion['usuImagen'] != null) {
+if ($rowActividad['usuImagen'] != null) {
         ?>
-                                            <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowNotificacion['usuImagen']); ?>" style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="50%" height="50%" class="rounded-circle" alt="Imagen de usuario">
+                                            <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowActividad['usuImagen']); ?>" style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="50%" height="50%" class="rounded-circle" alt="Imagen de usuario">
                                     <?php
 } else {?>
                                         <img src="img/user.png"  style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="50%" height="50%" class="rounded-circle" alt="Imagen de usuario">
@@ -140,8 +158,8 @@ if ($rowNotificacion['usuImagen'] != null) {
                             </div>
                             <div class="col-md-9 mt-3 mb-2 d-flex align-items-center">
                                 <div class="card-body">
-                                    <h5 class="card-title"><b style="color: rgb(7, 26, 57);"><?php echo $rowNotificacion['usuNombres']." ".$rowNotificacion['tipoNotificacion']." "; ?></b><b style="color: rgb(255 50 59);"><?php echo $rowNotificacion['tituloTema'] ?></b></h5>
-                                    <p class="card-text"><small class="text-muted"><?php echo $util->get_time_ago($rowNotificacion['fecha'])?></small></p>
+                                    <h5 class="card-title"><b style="color: rgb(7, 26, 57);"><?php echo $rowActividad['usuNombres']." ".$rowActividad['describeNotificacion']." "; ?></b><b style="color: rgb(255 50 59);"><?php echo $rowActividad['tituloTema'] ?></b></h5>
+                                    <p class="card-text"><small class="text-muted"><?php echo $util->get_time_ago($rowActividad['fecha'])?></small></p>
                                 </div>
                             </div>
                         </div>

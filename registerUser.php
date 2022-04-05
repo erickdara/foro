@@ -87,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
          $mail = $_POST['mail'];
         // $confirm_password = $_POST['confirm_password'];
         // Prepare an insert statement
-        $sql = "INSERT INTO usuario (usuNombres, idRol, usuCorreo, usuPassword) VALUES ('$username',1,?, ?)";
+        $sql = "INSERT INTO usuario (usuNombres, idRol, usuCorreo, usuPassword) VALUES ('$username',2,?, ?)";
 
         if ($stmt = mysqli_prepare($link, $sql)) {
             // Bind variables to the prepared statement as parameters

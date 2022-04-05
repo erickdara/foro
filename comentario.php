@@ -50,6 +50,15 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             FROM usuario u");
     //INNER JOIN rol r ON u.idRol = r.idRol");
 }
+if(isset($_SESSION['id'])){
+    $queryNotificacion = mysqli_query($link,"SELECT n.idNotificacion, n.idUsuario, n.idTema, u.usuNombres, u.usuImagen, t.tituloTema, n.idTipoNotificacion, tn.describeNotificacion, DATE_FORMAT(n.created_at, \"%d-%m-%Y %H:%i:%s\") AS fecha
+    FROM notificacion n
+    INNER JOIN usuario u ON n.idUsuario = u.idUsuario
+    INNER JOIN tema t ON n.idtema = t.idTema
+    INNER JOIN tipoNotificacion tn ON n.idTipoNotificacion = tn.idTipo
+    WHERE n.idDestUser = '$idUsuario' 
+    ORDER BY n.created_at DESC LIMIT 4");
+}
 
 ?>
     <div class="l-navbar" id="nav-bar">
@@ -78,7 +87,18 @@ if (isset($_SESSION['id'])) {
                             <span class="nav_logo-name">Perfil</span>
                         </a>
                     </div>
-                    <a href="#" class="nav_link active"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Notificaciones</span> </a>
+                    <a class="nav_link active btn" data-bs-toggle="collapse" href="#collapseNotificacion" role="button" aria-expanded="false" aria-controls="collapseNotificacion"> <i class='bx bx-grid-alt nav_icon'></i>Notificaciones </a>
+                    <div class="collapse text-light" style="background-color: #d0252d; font-size: 13px;" id="collapseNotificacion">
+                        <?php 
+                        while($resultQueryNotificacion = mysqli_fetch_array($queryNotificacion)){
+                            $notificacion = $resultQueryNotificacion['idTipoNotificacion'] == 1 ? 'creaste el tema': ($resultQueryNotificacion['idTipoNotificacion'] == 2 ? 'comentó tu publicación' : 'respondió tu comentario en');?>
+                            <div class="p-2">
+                                <p><b> <?php echo $resultQueryNotificacion['usuNombres'];?></b> <?php echo $notificacion." "."\"".$resultQueryNotificacion['tituloTema']."\""; ?></p>
+                            </div>
+                            <hr>
+
+                        <?php }?>
+                    </div>
                     <?php } else {?>
                         </div>
                         <a href="#" class="nav_logo" data-bs-toggle="modal" data-bs-target="#loginModal" id="logModal"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name" onclick="showModalLogin()">Iniciar Sesion</span> </a>

@@ -123,12 +123,20 @@ if ($_SESSION["id"] == null) {
 <?php
 $idUsuario = $_SESSION['id'];
 
-$queryUser = mysqli_query($link, "SELECT u.idUsuario, CONCAT(u.usuNombres,\" \",u.usuApellidos) AS nombres, u.usuNombres, r.idRol, r.tipoRol, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
+$queryUser = mysqli_query($link, "SELECT u.idUsuario, CONCAT(u.usuNombres,\" \",u.usuApellidos) AS nombres, u.usuNombres, u.empresa, u.cargo, u.skills, r.idRol, r.tipoRol, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
     FROM usuario u
     INNER JOIN rol r ON u.idRol = r.idRol
     WHERE u.idUsuario = '$idUsuario'");
 $rowUser = mysqli_fetch_array($queryUser);
 $rol = $rowUser['idRol'] == 1 ? 'Administrador' : 'Usuario';
+
+$queryNotificacion = mysqli_query($link,"SELECT n.idNotificacion, n.idUsuario, n.idTema, u.usuNombres, u.usuImagen, t.tituloTema, n.idTipoNotificacion, tn.describeNotificacion, DATE_FORMAT(n.created_at, \"%d-%m-%Y %H:%i:%s\") AS fecha
+    FROM notificacion n
+    INNER JOIN usuario u ON n.idUsuario = u.idUsuario
+    INNER JOIN tema t ON n.idtema = t.idTema
+    INNER JOIN tipoNotificacion tn ON n.idTipoNotificacion = tn.idTipo
+    WHERE n.idDestUser = '$idUsuario' 
+    ORDER BY n.created_at DESC LIMIT 4"); 
 ?>
 <div class="l-navbar" id="nav-bar">
     <nav class="nav">
@@ -151,7 +159,18 @@ if ($rowUser['usuImagen'] != null) {
                 <span class="nav_logo-name">Perfil</span>
             </a>
             </div>
-                <a href="#" class="nav_link active"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Notificaciones</span> </a>
+            <a class="nav_link active btn" data-bs-toggle="collapse" href="#collapseNotificacion" role="button" aria-expanded="false" aria-controls="collapseNotificacion"> <i class='bx bx-grid-alt nav_icon'></i>Notificaciones </a>
+                    <div class="collapse text-light" style="background-color: #d0252d; font-size: 13px;" id="collapseNotificacion">
+                        <?php 
+                        while($resultQueryNotificacion = mysqli_fetch_array($queryNotificacion)){
+                            $notificacion = $resultQueryNotificacion['idTipoNotificacion'] == 1 ? 'creaste el tema': ($resultQueryNotificacion['idTipoNotificacion'] == 2 ? 'comentó tu publicación' : 'respondió tu comentario en');?>
+                            <div class="p-2">
+                                <p><b> <?php echo $resultQueryNotificacion['usuNombres'];?></b> <?php echo $notificacion." "."\"".$resultQueryNotificacion['tituloTema']."\""; ?></p>
+                            </div>
+                            <hr>
+
+                        <?php }?>
+                    </div>
                 <a href="./comunidadAssist.php" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Comunidad Assist</span> </a>
                 <a href="#" class="nav_link">
             </div>
@@ -202,9 +221,29 @@ if ($rowUser['usuImagen'] != null) {
                             <p class="text-center"><?php echo $rowUser['usuCorreo'] ?></p>
                             <hr>
                         </div>
+                        <div class="col-sm-12 col-md-6 mt-2">
+                            <h6 class="text-center"><b>Empresa:</b></h6>
+                            <hr>
+                            <p class="text-center"><?php if($rowUser['empresa'] != null){ echo $rowUser['empresa']; } else { echo "---";}  ?></p>
+                            <hr>
+                        </div>
+                        <div class="col-sm-12 col-md-6 mt-2">
+                            <h6 class="text-center"><b>Cargo:</b></h6>
+                            <hr>
+                            <p class="text-center"><?php if($rowUser['cargo'] != null){ echo $rowUser['cargo']; } else { echo "---";}  ?></p>
+                            <hr>
+                        </div>
+                        <div class="col-sm-12 col-md-12 mt-2">
+                            <h6 class="text-center"><b>Skills:</b></h6>
+                        </div>
+                        <div class="col-sm-12 col-md-12 mt-2">
+                            <p class="text-center"><?php if($rowUser['skills'] != null){ echo $rowUser['skills']; } else { echo "---";}  ?></p>
+                        </div>
+                        <hr>
                         <div class="col-sm-12 col-md-12 mt-2">
                             <p class="text-muted text-center">Miembro de la Comunidad Assist desde <?php echo $rowUser['fecha'] ?></p>
                         </div>
+                        <b>Actualizar información personal <button class="btn" data-bs-toggle="modal" data-bs-target="#actualizarPerfil"><i class='bx bx-edit bx-md'></i></button></b>
                         <div class="col-md-12 mt-4">
                         <form id="uploadImage" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" enctype="multipart/form-data">
                                 <div class="row mt-2">
@@ -216,6 +255,43 @@ if ($rowUser['usuImagen'] != null) {
                                     </div>
                                 </div>
                         </form>
+                        <!-- Modal Actualizar Perfil-->
+                        <div class="modal fade" id="actualizarPerfil" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="background-color: rgb(255 50 59);">
+                                        <h5 class="modal-title text-light" id="exampleModalLabel">Perfil de usuario</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form action="actualizarPerfil.php" method="POST">
+                                    <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-6">
+                                                    <label for="" class="label-control">Nombre completo:</label>
+                                                    <input class="form-control" type="text" name="nombre" value="<?php echo $rowUser['usuNombres'] ?>" required>
+                                                </div>
+                                                <div class="col-sm-12 col-md-6">
+                                                    <label for="" class="label-control">Empresa:</label>
+                                                    <input class="form-control" type="text" name="empresa" value="<?php echo $rowUser['empresa'] ?>" required>
+                                                </div>
+                                                <div class="col-sm-12 col-md-12">
+                                                    <label for="" class="label-control">Cargo:</label>
+                                                    <input class="form-control" type="text" name="cargo" value="<?php echo $rowUser['cargo'] ?>" required>
+                                                </div>
+                                                <div class="col-sm-12 col-md-12">
+                                                    <label for="" class="label-control">Skills:</label>
+                                                    <textarea class="form-control" type="text" name="skills" cols="30" rows="3" maxlength="255" required><?php echo $rowUser['skills'] ?></textarea>
+                                                </div>
+                                            </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <input type="submit"  class="btn btn-danger" value="Actulizar">
+                                    </div>
+                                    </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

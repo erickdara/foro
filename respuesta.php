@@ -24,9 +24,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $resultQueryRespuesta = mysqli_fetch_array($queryRespuesta);
 
             $idTema = $resultQueryRespuesta['idTema'];
-            $idUsuario = $resultQueryRespuesta['idUsuario'];
+            $idComentario = $resultQueryRespuesta['idComentario'];
+            $idUsuarioEmisor = $resultQueryRespuesta['idUsuario'];
 
-            $queryNotificacion = mysqli_query($link,"INSERT INTO notificacion (idNotificacion, idUsuario, idTema, tipoNotificacion, created_at) VALUES (idNotificacion, '$idUsuario', '$idTema', 'ha respondido un comentario sobre ', now());");
+            $queryComentario = mysqli_query($link,"SELECT * FROM comentario WHERE idComentario ='$idComentario'");
+            $resultQueryComentario = mysqli_fetch_array($queryComentario);
+
+            $idUsuarioDestino = $resultQueryComentario['idUsuario'];
+
+            $queryNotificacion = mysqli_query($link,"INSERT INTO notificacion (idNotificacion, idUsuario,idDestUser, idTema, idTipoNotificacion, created_at) VALUES (idNotificacion, '$idUsuarioEmisor', '$idUsuarioDestino','$idTema', 3, now());");
 
             header("Location: ./User/index.php");
             exit;

@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $idTema = $resultQueryTema['idTema'];
                 $idUsuario = $resultQueryTema['idUsuario'];
 
-                $queryNotificacion = mysqli_query($link,"INSERT INTO notificacion (idNotificacion, idUsuario, idTema, tipoNotificacion, created_at) VALUES (idNotificacion, '$idUsuario', '$idTema', 'creó el tema', now());");
+                $queryNotificacion = mysqli_query($link,"INSERT INTO notificacion (idNotificacion, idUsuario, idDestUser, idTema, idTipoNotificacion, created_at) VALUES (idNotificacion, '$idUsuario', '$idUsuario','$idTema', 1, now());");
 
                 header("Location: ./User/index.php");
             }else{

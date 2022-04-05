@@ -81,3 +81,19 @@ $(document).ready(function () {
     });
 });
 
+$(".likeComment").on("click", function(){
+    var idComentario = $(this).attr("id");
+    idComentario = idComentario.replace(/\D/g,'');
+    var vote_type = $(this).data("vote-type");
+    $.ajax({
+        type: "GET",
+        url: "./likesComentario.php",
+        data: {idComentario:idComentario, vote_type:vote_type},
+        dataType: "json",
+        success: function (responseC) {
+            $("#likeCount_"+responseC.idComentario).html("  "+responseC.likes);
+            $("#unlikeCount_"+responseC.idComentario).html("  "+responseC.unlikes);
+        }
+    });
+});
+

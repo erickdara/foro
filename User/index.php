@@ -2,7 +2,7 @@
 setlocale(LC_ALL, "es_ES");
 // Initialize the session
 session_start();
-
+// date_default_timezone_set("America/Bogota");
 // Check if the user is already logged in, if yes then redirect him to welcome page
 if ($_SESSION["id"] == null) {
     header("location: ../index.php");
@@ -61,6 +61,15 @@ $queryUser = mysqli_query($link, "SELECT u.idUsuario, CONCAT(u.usuNombres,\" \",
     INNER JOIN rol r ON u.idRol = r.idRol
     WHERE u.idUsuario = '$idUsuario'");
 $rowUser = mysqli_fetch_array($queryUser);
+
+    $queryNotificacion = mysqli_query($link,"SELECT n.idNotificacion, n.idUsuario, n.idTema, u.usuNombres, u.usuImagen, t.tituloTema, n.idTipoNotificacion, tn.describeNotificacion, DATE_FORMAT(n.created_at, \"%d-%m-%Y %H:%i:%s\") AS fecha
+    FROM notificacion n
+    INNER JOIN usuario u ON n.idUsuario = u.idUsuario
+    INNER JOIN tema t ON n.idtema = t.idTema
+    INNER JOIN tipoNotificacion tn ON n.idTipoNotificacion = tn.idTipo
+    WHERE n.idDestUser = '$idUsuario' 
+    ORDER BY n.created_at DESC LIMIT 4"); 
+
 ?>
 <div class="l-navbar" id="nav-bar">
     <nav class="nav">
@@ -83,7 +92,18 @@ if ($rowUser['usuImagen'] != null) {
                 <span class="nav_logo-name">Perfil</span>
             </a>
             </div>
-                <a href="#" class="nav_link active"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Notificaciones</span> </a>
+                <a class="nav_link active btn" data-bs-toggle="collapse" href="#collapseNotificacion" role="button" aria-expanded="false" aria-controls="collapseNotificacion"> <i class='bx bx-grid-alt nav_icon'></i>Notificaciones </a>
+                <div class="collapse text-light" style="background-color: #d0252d; font-size: 13px;" id="collapseNotificacion">
+                    <?php 
+                    while($resultQueryNotificacion = mysqli_fetch_array($queryNotificacion)){
+                        $notificacion = $resultQueryNotificacion['idTipoNotificacion'] == 1 ? 'creaste el tema': ($resultQueryNotificacion['idTipoNotificacion'] == 2 ? 'comentó tu publicación' : 'respondió tu comentario en');?>
+                        <div class="p-2">
+                            <p><b> <?php echo $resultQueryNotificacion['usuNombres'];?></b> <?php echo $notificacion." "."\"".$resultQueryNotificacion['tituloTema']."\""; ?></p>
+                        </div>
+                        <hr>
+
+                    <?php }?>
+                </div>
                 <a href="../comunidadAssist.php" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Comunidad Assist</span> </a>
                 <a href="#" class="nav_link">
             </div>
@@ -126,7 +146,7 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
             </div>
             <div class="col-md-5 d-flex align-items-end justify-content-center">
                 <div class="row tema">
-                    <button type="button" class="btn d-flex justify-content-between align-items-center" data-bs-toggle="modal" data-bs-target="#modalTema">
+                    <button type="button" class="btn d-flex justify-content-between align-items-center" data-bs-toggle="modal" data-bs-target="#modalTema<?php echo $_SESSION['rol']?>">
                         <div class="col-md-6 d-flex justify-content-end btn">
                             <img class="img img-add-tema" src="../img/agregar.png" alt="">
                         </div>
@@ -140,8 +160,9 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
 
         <div class="row mt-4 d-flex justify-content-start">
 
+       
             <!-- Modal para crear tema-->
-            <div class="modal fade" id="modalTema" tabindex="-1" aria-labelledby="modalTema" aria-hidden="true">
+            <div class="modal fade" id="modalTema1" tabindex="-1" aria-labelledby="modalTema" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -170,6 +191,26 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                 </div>
             </div>
             <!-- Fin del modal-->
+
+            <!-- validateModal Tema si no es Admin-->
+            <div class="modal fade" id="modalTema2" tabindex="-1" aria-labelledby="modalTema1" aria-hidden="true">
+                <div class="modal-dialog modal-sm modal-dialog-centered">
+                    <div class="modal-content">
+                    <div class="modal-header bg-danger">
+                        <h5 class="modal-title text-light" id="loginModalLabel" style="padding-left: 40%;">Aviso</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        ¡Tienes que ser administrador para poder crear un tema en el foro!
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <!-- fin validateModal -->
+
             <?php
 $query = "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, u.usuNombres, r.tipoRol, t.tituloTema, t.describeTema, DATE_FORMAT(t.created_at, \"%M %d de %Y\") AS fecha, likes, unlikes
                   FROM tema t
