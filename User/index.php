@@ -70,6 +70,10 @@ $rowUser = mysqli_fetch_array($queryUser);
     WHERE n.idDestUser = '$idUsuario' 
     ORDER BY n.created_at DESC LIMIT 4"); 
 
+    $num_rows = mysqli_num_rows($queryNotificacion);
+
+    echo 'El numero de resultados encontrados ' . $num_rows;
+
 ?>
 <div class="l-navbar" id="nav-bar">
     <nav class="nav">
@@ -92,7 +96,7 @@ if ($rowUser['usuImagen'] != null) {
                 <span class="nav_logo-name">Perfil</span>
             </a>
             </div>
-                <a class="nav_link active btn" data-bs-toggle="collapse" href="#collapseNotificacion" role="button" aria-expanded="false" aria-controls="collapseNotificacion"> <i class='bx bx-grid-alt nav_icon'></i>Notificaciones </a>
+                <a class="nav_link active btn" id="notification" data-bs-toggle="collapse" href="#collapseNotificacion" role="button" aria-expanded="false" aria-controls="collapseNotificacion"> <i class='bx bx-grid-alt nav_icon'><span id="notification_count"></span></i>Notificaciones </a>
                 <div class="collapse text-light" style="background-color: #d0252d; font-size: 13px;" id="collapseNotificacion">
                     <?php 
                     while($resultQueryNotificacion = mysqli_fetch_array($queryNotificacion)){
@@ -507,7 +511,10 @@ if ($rowRespuesta['usuImagen'] != null) {
 </div>
 <!--Container Main end-->
 
-
+<script type="text/javascript">
+        var getCountNotifications = "<?php echo"$num_rows"?>";
+        document.write(getCountNotifications);
+    </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="../js/mainFunctions.js"></script>
     <script type="text/javascript" src="../js/likes.js"></script>

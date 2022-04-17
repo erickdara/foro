@@ -454,6 +454,11 @@ $(document).ready(function() {
     } else if (location == "http://localhost/Foro/index.php?register") {
         $("#registerModal").modal("show");
     }
+    if(getCountNotifications > 0){
+        $('#notification_count').text(getCountNotifications);
+    }else{
+        $('#notification_count').hide();
+    }
 });
 
 function logoutSocial(provider) {
@@ -461,6 +466,27 @@ function logoutSocial(provider) {
     let location = "http://localhost/Foro/App/Auth/callback.php";
     window.location.href = location + "?logout=" + provider;
 }
+
+$('#notification_count').click(function (e) { 
+    e.preventDefault();
+    $("#notification_count").fadeOut("slow");
+});
+
+$('.bx bx-grid-alt nav_icon').click(function (e) { 
+    e.preventDefault();
+    $("#notification_count").fadeOut("slow");
+});
+
+$('#notification').click(function (e) { 
+    e.preventDefault();
+    $("#notification_count").fadeOut("slow");
+});
+
+$('#collapseNotificacion').on('hidden.bs.collapse', function () {
+    $('#notification_count').text(getCountNotifications);
+  })
+
+
 
 // $("#login-info").fadeIn(7000, function() {
 //     $("#login-info").fadeOut(7000);
