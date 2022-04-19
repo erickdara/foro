@@ -25,11 +25,17 @@ $util = new utils();
 <body>
     <header class="header" id="header">
         <div class="row mb-2">
-            <div class="col-md-12">
-                <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
-                <h1 id="title"><span style="color:red;">BIENVENIDO AL</span> <span style="color: white;">FORO ASSIST</span></h1>
-                <!-- <div class="header_img"> <img src="https://i.imgur.com/hczKIze.jpg" alt=""> </div> -->
+        <div class="col-md-12">
+            <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
+        </div>
+        <div class="col-md-6 d-flex justify-content-start">
+            <h1 id="title"><span style="color: white;">FORO ASSIST</span></h1>
+        </div>
+        <div class="col-md-6 d-flex align-items-start justify-content-end">
+            <div style="width: 5rem; height: 5rem;">
+                <img src="./img/foro-02.png" style="object-fit: contain; object-position: center;" width="100%" height="100%">
             </div>
+        </div>
             <div class="col-md-12 d-flex justify-content-start">
                 <div class="col-md-6 col-sm-2 pb-1">
                     <?php
@@ -70,6 +76,8 @@ if(isset($_SESSION['id'])){
     INNER JOIN tipoNotificacion tn ON n.idTipoNotificacion = tn.idTipo
     WHERE n.idDestUser = '$idUsuario' 
     ORDER BY n.created_at DESC LIMIT 4");
+
+$num_rows = mysqli_num_rows($queryNotificacion);
 }
 
 $rowUser = mysqli_fetch_array($queryUser);
@@ -97,7 +105,7 @@ if (isset($_SESSION['id'])) {
                     <span class="nav_logo-name">Perfil</span>
                 </a>
                 </div>
-                <a class="nav_link active btn" data-bs-toggle="collapse" href="#collapseNotificacion" role="button" aria-expanded="false" aria-controls="collapseNotificacion"> <i class='bx bx-grid-alt nav_icon'></i>Notificaciones </a>
+                <a class="nav_link active btn" id="notification" data-bs-toggle="collapse" href="#collapseNotificacion" role="button" aria-expanded="false" aria-controls="collapseNotificacion"><i class='bx bxs-bell-ring bx-sm'><span id="notification_count"></span></i>Notificaciones </a>
                 <div class="collapse text-light" style="background-color: #d0252d; font-size: 13px;" id="collapseNotificacion">
                     <?php 
                     while($resultQueryNotificacion = mysqli_fetch_array($queryNotificacion)){
@@ -125,11 +133,11 @@ if (isset($_SESSION['id'])) {
     <div class="height-100 bg-light">
         <div class="container">
              <div class="row"></div>
-             <div class="row mt-3 mb-3 d-flex justify-content-center">
+             <div class="row mt-4 mb-3 d-flex justify-content-center">
                     <div class="card mb-3 actividad-info">
             <?php
 
- $queryActividad = mysqli_query($link, "SELECT n.idNotificacion, n.idUsuario, n.idTema, u.usuNombres, u.usuImagen, t.tituloTema, n.idTipoNotificacion, tn.describeNotificacion, DATE_FORMAT(n.created_at, \"%d-%m-%Y %H:%i:%s\") AS fecha
+ $queryActividad = mysqli_query($link, "SELECT n.idNotificacion, n.idUsuario, n.idTema, u.usuNombres, u.usuCorreo, u.cargo, u.empresa, u.usuImagen, t.tituloTema, n.idTipoNotificacion, tn.describeNotificacion, DATE_FORMAT(n.created_at, \"%d-%m-%Y %H:%i:%s\") AS fecha
  FROM notificacion n
  INNER JOIN usuario u ON n.idUsuario = u.idUsuario
  INNER JOIN tema t ON n.idtema = t.idTema
@@ -159,6 +167,9 @@ if ($rowActividad['usuImagen'] != null) {
                             <div class="col-md-9 mt-3 mb-2 d-flex align-items-center">
                                 <div class="card-body">
                                     <h5 class="card-title"><b style="color: rgb(7, 26, 57);"><?php echo $rowActividad['usuNombres']." ".$rowActividad['describeNotificacion']." "; ?></b><b style="color: rgb(255 50 59);"><?php echo $rowActividad['tituloTema'] ?></b></h5>
+                                    <?php if(isset($_SESSION['rol']) && $_SESSION['rol'] == 1){ ?>
+                                        <p class="card-text row"> <small class="text-muted col-md-12"><?php echo  "Empresa: ".$rowActividad['empresa'] ?></small> <small class="text-muted col-md-12"><?php echo "Cargo: ".$rowActividad['cargo'] ?></small> <small class="text-muted col-md-12"><?php echo "Correo: ".$rowActividad['usuCorreo'] ?></small></p>
+                                    <?php } ?>
                                     <p class="card-text"><small class="text-muted"><?php echo $util->get_time_ago($rowActividad['fecha'])?></small></p>
                                 </div>
                             </div>
@@ -173,6 +184,10 @@ if ($rowActividad['usuImagen'] != null) {
 
 </body>
 
+<script type="text/javascript">
+        var getCountNotifications = "<?php echo"$num_rows"?>";
+        document.write(getCountNotifications);
+    </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="js/mainFunctions.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>

@@ -30,10 +30,16 @@ require_once "../config.php";
 <header class="header" id="header">
     <div class="row">
         <div class="col-md-12">
-            <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
-            <h1 id="title"><span style="color:red;">BIENVENIDO AL</span> <span style="color: white;">FORO ASSIST</span></h1>
-            <!-- <div class="header_img"> <img src="https://i.imgur.com/hczKIze.jpg" alt=""> </div> -->
-        </div>
+                <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
+            </div>
+            <div class="col-md-6 d-flex justify-content-start">
+                <h1 id="title"><span style="color: white;">FORO ASSIST</span></h1>
+            </div>
+            <div class="col-md-6 d-flex align-items-start justify-content-end">
+                <div style="width: 5rem; height: 5rem;">
+                    <img src="../img/foro-02.png" style="object-fit: contain; object-position: center;" width="100%" height="100%">
+                </div>
+            </div>
         <div class="col-md-12 d-flex justify-content-start">
             <div class="col-md-6 col-sm-2 pb-1">
                 <?php
@@ -54,6 +60,7 @@ if (isset($_SESSION['id'])) {?>
     </div>
 </header>
 <?php
+
 $idUsuario = $_SESSION['id'];
 
 $queryUser = mysqli_query($link, "SELECT u.idUsuario, CONCAT(u.usuNombres,\" \",u.usuApellidos) AS nombres, r.idRol, r.tipoRol, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
@@ -71,8 +78,6 @@ $rowUser = mysqli_fetch_array($queryUser);
     ORDER BY n.created_at DESC LIMIT 4"); 
 
     $num_rows = mysqli_num_rows($queryNotificacion);
-
-    echo 'El numero de resultados encontrados ' . $num_rows;
 
 ?>
 <div class="l-navbar" id="nav-bar">
@@ -96,7 +101,7 @@ if ($rowUser['usuImagen'] != null) {
                 <span class="nav_logo-name">Perfil</span>
             </a>
             </div>
-                <a class="nav_link active btn" id="notification" data-bs-toggle="collapse" href="#collapseNotificacion" role="button" aria-expanded="false" aria-controls="collapseNotificacion"> <i class='bx bx-grid-alt nav_icon'><span id="notification_count"></span></i>Notificaciones </a>
+            <a class="nav_link active btn" id="notification" data-bs-toggle="collapse" href="#collapseNotificacion" role="button" aria-expanded="false" aria-controls="collapseNotificacion"><i class='bx bxs-bell-ring bx-sm'><span id="notification_count"></span></i>Notificaciones </a>
                 <div class="collapse text-light" style="background-color: #d0252d; font-size: 13px;" id="collapseNotificacion">
                     <?php 
                     while($resultQueryNotificacion = mysqli_fetch_array($queryNotificacion)){

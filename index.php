@@ -50,24 +50,26 @@ $register->insertUser($data, $name);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
-    <!-- sidebar social network -->
-    <!-- <link type="text/css" href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet"> -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-
-    <link rel="stylesheet" type="text/css" href="css/jquery-social-share-bar.css">
-    <script type="text/javascript" src="js/jquery-social-share-bar.js"></script>
-    <!-- sidebar social network -->
-
     <title>Foro ASSIST</title>
 </head>
 <header class="header" id="header">
     <div class="row">
         <div class="col-md-12">
             <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
-            <h1 id="title"><span style="color:red;">BIENVENIDO AL</span> <span style="color: white;">FORO ASSIST</span></h1>
-            <!-- <div class="header_img"> <img src="https://i.imgur.com/hczKIze.jpg" alt=""> </div> -->
         </div>
-        <div class="col-md-12 d-flex justify-content-start">
+        <div class="col-md-6 d-flex justify-content-start">
+            <h1 id="title"><span style="color: white;">FORO ASSIST</span></h1>
+        </div>
+        <div class="col-md-6 d-flex align-items-start justify-content-end">
+            <div style="width: 5rem; height: 5rem;">
+                <img src="./img/foro-02.png" style="object-fit: contain; object-position: center;" width="100%" height="100%">
+            </div>
+        </div>
+            
+            
+            <!-- <div class="header_img"> <img src="https://i.imgur.com/hczKIze.jpg" alt=""> </div> -->
+        
+        <div class="col-md-12 d-flex justify-content-start mt-2">
             <div class="col-md-6 col-sm-2 pb-1">
                 <?php
 if (isset($_SESSION['id'])) {?>
@@ -120,7 +122,7 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
 
     </div>
         <div class="row d-flex justify-content-end">
-            <div class="col-md-5 mt-3 d-flex justify-content-end">
+            <div class="col-md-5 mt-4 d-flex justify-content-end">
                 <div class="card info">
                     <div class="row card-body d-flex">
                         <div class="col num-commentary pt-2">

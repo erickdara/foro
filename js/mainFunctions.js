@@ -22,6 +22,7 @@ $("#nav-bar").mouseout(function() {
     $("#body-pd").toggleClass("body-pd").delay(1000);
     // add padding to header
     $("#header").toggleClass("body-pd").delay(1000);
+
 });
 
 // login USER
@@ -454,12 +455,16 @@ $(document).ready(function() {
     } else if (location == "http://localhost/Foro/index.php?register") {
         $("#registerModal").modal("show");
     }
+    getCountNotification();
+});
+
+function getCountNotification(){
     if(getCountNotifications > 0){
         $('#notification_count').text(getCountNotifications);
     }else{
         $('#notification_count').hide();
     }
-});
+}
 
 function logoutSocial(provider) {
     console.log('la variale provider: ' + provider);
@@ -479,13 +484,22 @@ $('.bx bx-grid-alt nav_icon').click(function (e) {
 
 $('#notification').click(function (e) { 
     e.preventDefault();
+    $('.showMenu').css({'width': 'calc(var(--nav-width) + 230px)'});
+    $('#header').addClass('notificationShadow');
     $("#notification_count").fadeOut("slow");
 });
 
-$('#collapseNotificacion').on('hidden.bs.collapse', function () {
-    $('#notification_count').text(getCountNotifications);
-  })
 
+  $('#nav-bar').mouseleave(function () { 
+    $('#collapseNotificacion').collapse('hide');
+    // $('.showMenu').css({'width': 'calc(var(--nav-width) + 156px)'});
+    $("#nav-bar").removeClass("showMenu");
+    $('#nav-bar').removeAttr('style');
+    $('#header').removeClass('notificationShadow');
+    $('#notification_count').is(":hidden") ? $('#notification_count').show() : $('#notification_count').show();
+  });
+
+ 
 
 
 // $("#login-info").fadeIn(7000, function() {
