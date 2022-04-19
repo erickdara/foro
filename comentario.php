@@ -202,7 +202,7 @@ if ($rowComentario['usuImagen'] != null) {
 </body>
 <script type="text/javascript">
         var getCountNotifications = "<?php echo"$num_rows"?>";
-        document.write(getCountNotifications);
+        document.write('<text style="visibility: hidden">getCountNotifications</text>');
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="./js/mainFunctions.js"></script>
