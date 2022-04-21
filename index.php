@@ -58,7 +58,7 @@ $register->insertUser($data, $name);
             <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
         </div>
         <div class="col-md-6 d-flex justify-content-start">
-            <h1 id="title"><span style="color: white;">FORO ASSIST</span></h1>
+            <h1 id="title"><span style="color: white; font-family: 'Alfa Slab One', cursive;">FORO ASSIST</span></h1>
         </div>
         <div class="col-md-6 d-flex align-items-start justify-content-end">
             <div style="width: 5rem; height: 5rem;">
@@ -93,13 +93,20 @@ if (isset($_SESSION['id'])) {?>
         <div>
 
             <div class="nav_list">
+                <div class="">
+                <img class="imgLogo" style="margin-left: 0.6rem; margin-bottom: 1rem; border-radius: 50%;" src="./img/logo.jpg" width="27%" height="15%" alt="">
+                </div>
                 <a href="#" class="nav_logo" data-bs-toggle="modal" data-bs-target="#loginModal" id="logModal"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">Iniciar Sesion</span> </a>
                 <a href="#" class="nav_link active" data-bs-toggle="modal" data-bs-target="#registerModal"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Registrarse</span> </a>
                 <a href="./comunidadAssist.php" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Comunidad Assist</span> </a>
                 <a href="#" class="nav_link">
             </div>
         </div>
-        <a href="logout.php" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">Cerrar sesión</span> </a>
+        <?php if(isset($_SESSION['id'])){ ?>
+            <a href="logout.php" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">Cerrar sesión</span> </a>
+        <?php }else{?>
+            <a href="#"></a>
+        <?php } ?> 
     </nav>
 </div>
 <!--Container Main start-->
@@ -121,7 +128,7 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
     <div id="datos_buscador" class="row mt-2">
 
     </div>
-        <div class="row d-flex justify-content-end">
+        <div class="row d-flex justify-content-end mt-4">
             <div class="col-md-5 mt-4 d-flex justify-content-end">
                 <div class="card info">
                     <div class="row card-body d-flex">
@@ -159,6 +166,7 @@ $query = "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellid
                   ORDER BY t.idTema DESC";
 
 $resultQuery = mysqli_query($link, $query);
+
 while ($row = mysqli_fetch_array($resultQuery)) {
     ?>          <div id="tema_<?php echo $row['idTema'] ?>"></div>
                 <div class="card tema-informacion mt-2 mb-3">
@@ -431,6 +439,12 @@ if ($rowRespuesta['usuImagen'] != null) {
                     </div>
                 </div>
             <?php
+}
+if(!$row = mysqli_fetch_array($resultQuery)){ ?>
+    <!-- <div class="text-center" style="background-color: #a99f9f36; border-radius: 20px;">
+        <h3 class="p-4" style="color: #928b8b;">Aún no hay temas publicados</h3>
+    </div> -->
+<?php 
 }
 ?>
         </div>

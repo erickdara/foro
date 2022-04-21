@@ -33,7 +33,7 @@ require_once "../config.php";
                 <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
             </div>
             <div class="col-md-6 d-flex justify-content-start">
-                <h1 id="title"><span style="color: white;">FORO ASSIST</span></h1>
+                <h1 id="title"><span style="color: white; font-family: 'Alfa Slab One', cursive;">FORO ASSIST</span></h1>
             </div>
             <div class="col-md-6 d-flex align-items-start justify-content-end">
                 <div style="width: 5rem; height: 5rem;">
@@ -138,7 +138,7 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
             <div id="datos_buscador" class="row mt-2">
 
             </div>
-        <div class="row d-flex justify-content-end">
+        <div class="row d-flex justify-content-end mt-4">
             <div class="col-md-5 mt-3 d-flex justify-content-end">
                 <div class="card info">
                     <div class="row card-body d-flex">
@@ -509,6 +509,12 @@ if ($rowRespuesta['usuImagen'] != null) {
                     </div>
                 </div>
             <?php
+}
+if($row == null){?>
+    <!-- <div class="text-center" style="background-color: #a99f9f36; border-radius: 20px;">
+        <h3 class="p-4" style="color: #928b8b;">Aún no hay temas publicados</h3>
+    </div> -->
+<?php 
 }
 ?>
         </div>

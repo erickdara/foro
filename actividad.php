@@ -48,10 +48,6 @@ if (isset($_SESSION['id'])) {?>
                     <a href="comentario.php" type="button" class="btn text-light btn-nav">Comentarios</a>
                 </div>
 
-                <div class="col-md-6 col-sm- 4 d-flex align-items-center justify-content-end">
-                    <i class='bx bx-search bx-sm' style='color:#fffbfb'></i>&nbsp;&nbsp;&nbsp;
-                    <input type="text" style="background-color: rgb(7, 26, 57); border: 0;" class="input-busqueda text-light" placeholder="Búsqueda">
-                </div>
             </div>
         </div>
     </header>
@@ -125,8 +121,11 @@ if (isset($_SESSION['id'])) {
                 <a href="comunidadAssist.php" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Comunidad Assist</span> </a>
                 <a href="#" class="nav_link">
             </div>
-
+            <?php if(isset($_SESSION['id'])){ ?>
             <a href="logout.php" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">Cerrar sesión</span> </a>
+        <?php }else{?>
+            <a href="#"></a>
+        <?php } ?> 
         </nav>
     </div>
 
@@ -171,6 +170,7 @@ if ($rowActividad['usuImagen'] != null) {
                                         <p class="card-text row"> <small class="text-muted col-md-12"><?php echo  "Empresa: ".$rowActividad['empresa'] ?></small> <small class="text-muted col-md-12"><?php echo "Cargo: ".$rowActividad['cargo'] ?></small> <small class="text-muted col-md-12"><?php echo "Correo: ".$rowActividad['usuCorreo'] ?></small></p>
                                     <?php } ?>
                                     <p class="card-text"><small class="text-muted"><?php echo $util->get_time_ago($rowActividad['fecha'])?></small></p>
+                                    <hr class="line">
                                 </div>
                             </div>
                         </div>
@@ -178,6 +178,14 @@ if ($rowActividad['usuImagen'] != null) {
 }
 ?>
                     </div>
+<?php
+if($rowActividad == null){?>
+    <!-- <div class="text-center" style="background-color: #a99f9f36; border-radius: 20px;">
+        <h3 class="p-4" style="color: #928b8b;">No hay actividad reciente</h3>
+    </div> -->
+<?php
+}
+?>
                 </div>
         </div>
     </div>

@@ -36,11 +36,6 @@ session_start();
                     <a href="actividad.php" type="button" class="btn text-light btn-nav">Actividad Reciente</a>
                     <a href="comentario.php" type="button" class="btn text-light btn-nav">Comentarios</a>
                 </div>
-
-                <div class="col-md-6 col-sm- 4 d-flex align-items-center justify-content-end">
-                    <i class='bx bx-search bx-sm' style='color:#fffbfb'></i>&nbsp;&nbsp;&nbsp;
-                    <input type="text" style="background-color: rgb(7, 26, 57); border: 0;" class="input-busqueda text-light" placeholder="Búsqueda">
-                </div>
             </div>
         </div>
     </header>
@@ -101,14 +96,17 @@ session_start();
                     </div>
                 <?php } else{?>
                 </div>    
-                <a href="#" class="nav_logo" data-bs-toggle="modal" data-bs-target="#loginModal" id="logModal"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">Iniciar Sesion</span> </a>
-                <a href="#" class="nav_link active" data-bs-toggle="modal" data-bs-target="#registerModal"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Registrarse</span> </a>    
+                <a href="#" class="nav_logo" data-bs-toggle="modal" data-bs-target="#loginModal" id="logModal"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name"  onclick="showModalLogin()">Iniciar Sesion</span> </a>
+                <a href="#" class="nav_link active" data-bs-toggle="modal" data-bs-target="#registerModal"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name" onclick="showRegisterModal()">Registrarse</span> </a>    
                 <?php }?>
                 <a href="comunidadAssist.php" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Comunidad Assist</span> </a>
                 <a href="#" class="nav_link">
             </div>
-
+            <?php if(isset($_SESSION['id'])){ ?>
             <a href="logout.php" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">Cerrar sesión</span> </a>
+        <?php }else{?>
+            <a href="#"></a>
+        <?php } ?> 
         </nav>
     </div>
 

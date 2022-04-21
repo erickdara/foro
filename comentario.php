@@ -35,11 +35,6 @@ session_start();
                     <a href="actividad.php" type="button" class="btn text-light btn-nav">Actividad Reciente</a>
                     <a href="comentario.php" type="button" class="btn text-light btn-nav">Comentarios</a>
                 </div>
-
-                <div class="col-md-6 col-sm- 4 d-flex align-items-center justify-content-end">
-                    <i class='bx bx-search bx-sm' style='color:#fffbfb'></i>&nbsp;&nbsp;&nbsp;
-                    <input type="text" style="background-color: rgb(7, 26, 57); border: 0;" class="input-busqueda text-light" placeholder="Búsqueda">
-                </div>
             </div>
         </div>
     </header>
@@ -115,8 +110,11 @@ if (isset($_SESSION['id'])) {
                     <a href="comunidadAssist.php" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Comunidad Assist</span> </a>
                     <a href="#" class="nav_link">
                 </div>
-
-                <a href="logout.php" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">Cerrar sesión</span> </a>
+                <?php if(isset($_SESSION['id'])){ ?>
+            <a href="logout.php" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">Cerrar sesión</span> </a>
+        <?php }else{?>
+            <a href="#"></a>
+        <?php } ?> 
             </nav>
         </div>
         <div class="height-100 bg-light">
@@ -195,6 +193,15 @@ if ($rowComentario['usuImagen'] != null) {
 }
 ?>
                         </div>
+<?php 
+if($rowComentario == null){
+?>
+    <!-- <div class="text-center" style="background-color: #a99f9f36; border-radius: 20px;">
+        <h3 class="p-4" style="color: #928b8b;">Aún no hay comentarios</h3>
+    </div> -->
+<?php
+ }
+ ?>
             </div>
         </div>
 
