@@ -484,9 +484,17 @@ $('.bx bx-grid-alt nav_icon').click(function (e) {
 
 $('#notification').click(function (e) { 
     e.preventDefault();
-    $('.showMenu').css({'width': 'calc(var(--nav-width) + 230px)'});
-    $('#header').addClass('notificationShadow');
-    $("#notification_count").fadeOut("slow");
+    if($('#notification_count').is('hidden')){
+        $('.showMenu').css({'width': 'calc(var(--nav-width) + 230px)'});
+        $('#header').addClass('notificationShadow');
+        $("#notification_count").fadeOut("slow");
+    }else{
+        let template = `<div class="p-2">
+        <p><b>No tienes Notificaciones...</b> 
+    </div>`;
+    $('#collapseNotificacion').empty();
+    $(template).appendTo('#collapseNotificacion');
+    }
 });
 
 
