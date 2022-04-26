@@ -1,3 +1,9 @@
+<?php $token = $_GET['token']; 
+include('reset_password.php');
+//session_start();
+$_SESSION['token'] = $token;
+var_dump($_SESSION['token']);
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -17,7 +23,7 @@
                                 <h2 class="card-tittle">Nueva Contraseña</h2>
                             </div>
                             <!-- Form validation messages -->
-                            
+                            <?php include('messages.php'); ?>
                             <div class="mb-3 mt-4 ms-2 px-2">
                                 <label class="form-label" for="">Nueva contraseña</label>
                                 <input type="password" class="form-control" name="new_pass" id="">

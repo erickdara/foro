@@ -23,7 +23,7 @@ if(isset($_POST['reset-password'])){
     if(empty($email)){
         array_push($errors, "Su correo es requerido");
     }else if(mysqli_num_rows($results) <= 0){
-        arra_push($errors, "Lo sentimos usuario no existe en nuestro sistema con ese correo" );
+        array_push($errors, "Lo sentimos usuario no existe en nuestro sistema con ese correo" );
     }
 
     //generate a unique random token of length 100
@@ -65,34 +65,48 @@ if(isset($_POST['reset-password'])){
     {
       echo "Mail Error - >".$mail->ErrorInfo;
     }
-    }
+  }
+}
 
     // ENTER A NEW PASSWORD
 if (isset($_POST['new_password'])) {
     $new_pass = mysqli_real_escape_string($link, $_POST['new_pass']);
     $new_pass_c = mysqli_real_escape_string($link, $_POST['new_pass_c']);
-  
+    
     // Grab to token that came from the email link
     $token = $_SESSION['token'];
+    var_dump($token);
+
     if (empty($new_pass) || empty($new_pass_c)) array_push($errors, "Password is required");
     if ($new_pass !== $new_pass_c) array_push($errors, "Password do not match");
+    echo "Valido si hay datos en errors: ";
+    var_dump(count($errors));
     if (count($errors) == 0) {
+        echo ("entro a consultar token por email: ");
       // select email address of user from the password_reset table 
       $sql = "SELECT email FROM password_reset WHERE token='$token' LIMIT 1";
       $results = mysqli_query($link, $sql);
+      echo nl2br('result token query');
+      var_dump($results);
       $email = mysqli_fetch_assoc($results)['email'];
+      echo nl2br('result email');
+      var_dump($email);
   
       if ($email) {
-        $new_pass = md5($new_pass);
+        $new_pass = password_hash($new_pass, PASSWORD_DEFAULT);  
+        //$new_pass = md5($new_pass);
         $sql = "UPDATE usuario SET usuPassword='$new_pass' WHERE usuCorreo='$email'";
         $results = mysqli_query($link, $sql);
-        header('location: localhost/foro/index.php');
+        echo nl2br('result update query');
+        var_dump($results);
+        if($results){
+            $queryToken = "UPDATE password_reset SET token=NULL WHERE email='$email' ORDER by id DESC LIMIT 1";
+            $results = mysqli_query($link, $queryToken);
+            echo nl2br('result update TOKEN query');
+        }
+        header('location: /foro/index.php');
       }
     }
   }
-}
-
-
-
 
 ?>

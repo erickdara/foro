@@ -9,6 +9,7 @@ use Hybridauth\Hybridauth;
 
 $hybridauth = new Hybridauth($config);
 $adapters = $hybridauth->getConnectedAdapters();
+$errors = [];
 ?>
 <div class="d-none text-light">
 <ul >
