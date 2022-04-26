@@ -238,7 +238,7 @@ while ($row = mysqli_fetch_array($resultQuery)) {
                                 <h6><strong>Publicado por: <?php echo $row['usuNombres'] ?> (<?php echo $row['tipoRol'] ?>)</strong></h6>
                             </div>
                             <div class="col-7">
-                                <p class="text-muted" style="font-size: smaller;">Fecha: <?php echo $row['fecha'] ?></p>
+                                <p id="month" class="text-muted" style="font-size: smaller;">Fecha: <?php echo $row['fecha'] ?></p>
                             </div>
                         </div>
                         <div class="row titulo titulo-tema">

@@ -448,6 +448,37 @@ function showRegisterModal() {
 }
 
 $(document).ready(function() {
+    //$("#date:contains('April')").text($('#date').text().replace("April","April"));
+    // $('[id="date"]:contains(December)').text($('#date').text().replace("December","Diciembre"));
+    // $('[id="date"]:contains(April)').text($('#date').text().replace("April","Abril"));
+    $('[id=month]').each(function(){
+        $('#month:contains(January)').attr("id", "monthJanuary");
+        $('#month:contains(February)').attr("id", "monthFebruary");
+        $('#month:contains(March)').attr("id", "monthMarch");
+        $('#month:contains(April)').attr("id", "monthApril");
+        $('#month:contains(May)').attr("id", "monthMay");
+        $('#month:contains(June)').attr("id", "monthJune");
+        $('#month:contains(July)').attr("id", "monthJuly");
+        $('#month:contains(August)').attr("id", "monthAugust");
+        $('#month:contains(September)').attr("id", "monthSeptember");
+        $('#month:contains(October)').attr("id", "monthOctober");
+        $('#month:contains(November)').attr("id", "monthNovember");
+        $('#month:contains(December)').attr("id", "monthDecember");
+        });
+        
+        $('[id=monthJanuary]').text($('#monthJanuary').text().replace("January","Enero"));
+        $('[id=monthFebruary]').text($('#monthFebruary').text().replace("February","Febrero"));
+        $('[id=monthMarch]').text($('#monthMarch').text().replace("March","Marzo"));
+        $('[id=monthApril]').text($('#monthApril').text().replace("April","Abril"));
+        $('[id=monthMay]').text($('#monthMay').text().replace("May","Mayo"));
+        $('[id=monthJune]').text($('#monthJune').text().replace("June","Junio"));
+        $('[id=monthJuly]').text($('#monthJuly').text().replace("July","Julio"));
+        $('[id=monthAugust]').text($('#monthAugust').text().replace("August","Agosto"));
+        $('[id=monthSeptember]').text($('#monthSeptember').text().replace("September","Septiembre"));
+        $('[id=monthOctober]').text($('#monthOctober').text().replace("October","Octubre"));
+        $('[id=monthNovember]').text($('#monthNovember').text().replace("November","Noviembre"));
+        $('[id=monthDecember]').text($('#monthDecember').text().replace("December","Diciembre"));
+
     var location = document.location.href;
     console.log(location.href);
     if (location == "http://localhost/Foro/index.php?login") {
@@ -457,6 +488,8 @@ $(document).ready(function() {
     }
     getCountNotification();
 });
+
+
 
 function getCountNotification(){
     if(getCountNotifications > 0){
