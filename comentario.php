@@ -42,12 +42,12 @@ session_start();
 // Check if the user is already logged in, if yes then redirect him to welcome page
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     $idUsuario = $_SESSION['id'];
-    $queryUser = mysqli_query($link, "SELECT u.idUsuario, CONCAT(u.usuNombres,\" \",u.usuApellidos) AS nombres, u.usuNombres, r.idRol, r.tipoRol, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
+    $queryUser = mysqli_query($link, "SELECT u.idUsuario, u.usuNombres, r.idRol, r.tipoRol, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
             FROM usuario u
             INNER JOIN rol r ON u.idRol = r.idRol
             WHERE u.idUsuario = '$idUsuario'");
 } else {
-    $queryUser = mysqli_query($link, "SELECT CONCAT(u.usuNombres,\" \",u.usuApellidos) AS nombres, u.usuNombres, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
+    $queryUser = mysqli_query($link, "SELECT u.usuNombres, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
             FROM usuario u");
     //INNER JOIN rol r ON u.idRol = r.idRol");
 }
@@ -123,7 +123,7 @@ if (isset($_SESSION['id'])) {
                 </div>
                 <div class="row card comentario mb-4">
             <?php
-$queryComentario = "SELECT c.idComentario, c.idTema, c.idUsuario, t.tituloTema, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres,u.usuNombres, c.describeComentario, c.likes, c.unlikes, u.usuImagen, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
+$queryComentario = "SELECT c.idComentario, c.idTema, c.idUsuario, t.tituloTema, u.usuNombres, c.describeComentario, c.likes, c.unlikes, u.usuImagen, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
                           FROM comentario c
                           INNER JOIN tema t ON c.idTema = t.idTema
                           INNER JOIN usuario u ON c.idUsuario = u.idUsuario
@@ -162,9 +162,15 @@ if ($rowComentario['usuImagen'] != null) {
                                 <div class="col-md-6 d-flex justify-content-end">
                                     <div class="d-flex justify-content-between">
                                         <div>
-                                            <a class="likeComment btn" data-vote-type="1" id="like_<?php echo $rowComentario['idComentario'] ?>">
-                                                <i class='bx bx-like' style="color:rgb(0, 253, 93);"></i>
-                                            </a>
+                                            <?php if(isset($_SESSION['id'])){?>
+                                                <a class="likeComment btn" data-vote-type="1" id="like_<?php echo $rowComentario['idComentario'] ?>">
+                                                    <i class='bx bx-like' style="color:rgb(0, 253, 93);"></i>
+                                                </a>
+                                            <?php }else{ ?>
+                                                <a  data-bs-toggle="modal" data-bs-target="#validateModal"  class="btn">
+                                                    <i class='bx bx-like' style="color:rgb(0, 253, 93);" id="likeTema"></i>
+                                                </a>
+                                            <?php } ?>
                                         </div>
                                         <div class="d-flex align-items-end">
                                             <b>
@@ -174,9 +180,15 @@ if ($rowComentario['usuImagen'] != null) {
                                     </div>
                                     <div class="d-flex justify-content-between">
                                         <div>
-                                            <a class="likeComment btn" data-vote-type="0" id="unlike_<?php echo $rowComentario['idComentario'] ?>">
-                                                <i class='bx bx-dislike' style="color:rgb(255, 22, 22);"></i>
-                                            </a>
+                                            <?php if(isset($_SESSION['id'])){?>
+                                                <a class="likeComment btn" data-vote-type="0" id="unlike_<?php echo $rowComentario['idComentario'] ?>">
+                                                    <i class='bx bx-dislike' style="color:rgb(255, 22, 22);"></i>
+                                                </a>    
+                                            <?php }else{ ?>
+                                                <a data-bs-toggle="modal" data-bs-target="#validateModal"  class="btn">
+                                                    <i class='bx bx-dislike' style="color:rgb(255, 22, 22);"></i>
+                                                </a>
+                                            <?php } ?>
                                         </div>
                                         <div class="d-flex align-items-end">
                                             <b>
@@ -194,17 +206,35 @@ if ($rowComentario['usuImagen'] != null) {
 ?>
                         </div>
 <?php 
-if($rowComentario == null){
+$numComentarios = mysqli_num_rows($resultComentario);
+if($numComentarios == 0){
 ?>
-    <!-- <div class="text-center" style="background-color: #a99f9f36; border-radius: 20px;">
+    <div class="text-center" style="background-color: #a99f9f36; border-radius: 20px;">
         <h3 class="p-4" style="color: #928b8b;">Aún no hay comentarios</h3>
-    </div> -->
+    </div>
 <?php
  }
  ?>
             </div>
         </div>
-
+<!-- modal validateModal -->
+<div class="modal fade" id="validateModal" tabindex="-1" aria-labelledby="validateModal" aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-danger">
+        <h5 class="modal-title text-light" id="loginModalLabel" style="padding-left: 40%;">Aviso</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        ¡Tienes que iniciar sesion para poder interactuar en el foro!
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="button" class="btn btn-info" id="loginAlert" data-bs-dismiss="modal" onclick="showRegisterModal()">Registro</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- fin validateModal -->
 
 </body>
 <script type="text/javascript">

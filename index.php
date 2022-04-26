@@ -2,7 +2,9 @@
 
 include 'hybridauth/src/autoload.php';
 include 'App/Auth/config.php';
+include 'utils.php';
 
+$utils = new Utils();
 use Hybridauth\Hybridauth;
 
 $hybridauth = new Hybridauth($config);
@@ -159,7 +161,7 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
         <div class="row mt-4 d-flex justify-content-start">
 
             <?php
-$query = "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres,u.usuNombres, r.tipoRol, t.tituloTema, t.describeTema, t.likes, t.unlikes, DATE_FORMAT(t.created_at, \"%M %d de %Y\") AS fecha
+$query = "SELECT t.idTema, t.idUsuario, u.usuNombres, r.tipoRol, t.tituloTema, t.describeTema, t.likes, t.unlikes, t.created_at, DATE_FORMAT(t.created_at, \"%M %d de %Y\") AS fecha
                   FROM tema t
                   INNER JOIN usuario u ON t.idUsuario = u.idUsuario
                   INNER JOIN rol r ON u.idRol = r.idRol
@@ -176,7 +178,7 @@ while ($row = mysqli_fetch_array($resultQuery)) {
                                 <h6><strong>Publicado por: <?php echo $row['usuNombres'] ?> (<?php echo $row['tipoRol'] ?>)</strong></h6>
                             </div>
                             <div class="col-7">
-                                <p class="text-muted" style="font-size: smaller;">Fecha: <?php echo $row['fecha'] ?></p>
+                                <p class="text-muted" id="date" style="font-size: smaller;">Fecha: <?php echo $row['fecha']; ?></p>
                             </div>
                         </div>
                         <div class="row titulo titulo-tema">
@@ -263,7 +265,7 @@ $idTemaC = $row['idTema'];
                             </div>
                         <?php
 $idTema = $row['idTema'];
-    $queryComentario = "SELECT c.idComentario, c.idTema, c.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, u.usuNombres, c.describeComentario, u.usuImagen, c.likes, c.unlikes, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
+    $queryComentario = "SELECT c.idComentario, c.idTema, c.idUsuario, u.usuNombres, c.describeComentario, u.usuImagen, c.likes, c.unlikes, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
                                                 FROM comentario c
                                                 INNER JOIN tema t ON c.idTema = t.idTema
                                                 INNER JOIN usuario u ON c.idUsuario = u.idUsuario
@@ -359,7 +361,7 @@ $idComentario = $rowComentario['idComentario'];
 
                             <?php
 $idComentario = $rowComentario['idComentario'];
-        $queryRespuesta = "SELECT r.idRespuesta, r.idComentario, r.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres,u.usuNombres, r.describeRespuesta, r.likes, r.unlikes, u.usuImagen, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
+        $queryRespuesta = "SELECT r.idRespuesta, r.idComentario, r.idUsuario, u.usuNombres, r.describeRespuesta, r.likes, r.unlikes, u.usuImagen, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
                                 FROM respuesta r
                                 INNER JOIN comentario c ON r.idComentario = c.idComentario
                                 INNER JOIN usuario u ON r.idUsuario = u.idUsuario
@@ -440,13 +442,13 @@ if ($rowRespuesta['usuImagen'] != null) {
                 </div>
             <?php
 }
-if(!$row = mysqli_fetch_array($resultQuery)){ ?>
-    <!-- <div class="text-center" style="background-color: #a99f9f36; border-radius: 20px;">
+$numTemas = mysqli_num_rows($resultQuery);
+if( $numTemas == 0){?>
+    <div class="text-center" style="background-color: #a99f9f36; border-radius: 20px;">
         <h3 class="p-4" style="color: #928b8b;">Aún no hay temas publicados</h3>
-    </div> -->
-<?php 
-}
-?>
+    </div>
+<?php } ?>
+
         </div>
     </div>
 </div>
@@ -470,8 +472,8 @@ if(!$row = mysqli_fetch_array($resultQuery)){ ?>
       <!-- <form action="registerUser.php" method="post"> -->
         <div class="md-form mb-4">
             <i class="fas fa-user prefix grey-text"></i>
-          <label data-error="wrong" data-success="right" for="orangeForm-name">Nombre</label>
-          <input type="text" id="usernames" name="username" class="form-control ">
+          <label data-error="wrong" data-success="right" for="orangeForm-name">Nombres</label>
+          <input type="text" id="usernames" name="username" class="form-control" placeholder="Formato: Jon Smith">
 
           <h6 id="usercheck" style="color: red;" >
                     Falta nombre de usuario

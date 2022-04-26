@@ -40,7 +40,7 @@ session_start();
         </div>
     </header>
     <?php
-        $queryUser = mysqli_query($link, "SELECT u.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) as nombres, u.usuNombres, u.usuImagen, r.idRol, r.tipoRol, created_at FROM usuario u 
+        $queryUser = mysqli_query($link, "SELECT u.idUsuario, u.usuNombres, u.usuImagen, r.idRol, r.tipoRol, created_at FROM usuario u 
         INNER JOIN rol r ON u.idRol = r.idRol 
         ORDER BY r.idRol AND u.created_at DESC");
 
@@ -53,6 +53,8 @@ session_start();
         INNER JOIN tipoNotificacion tn ON n.idTipoNotificacion = tn.idTipo
         WHERE n.idDestUser = '$idUsuario' 
         ORDER BY n.created_at DESC LIMIT 4");
+
+$num_rows = mysqli_num_rows($queryNotificacion);
         }
     ?>
     <div class="l-navbar" id="nav-bar">
@@ -82,7 +84,7 @@ session_start();
                         <span class="nav_logo-name">Perfil</span>
                     </a>
                 </div>
-                <a class="nav_link active btn" data-bs-toggle="collapse" href="#collapseNotificacion" role="button" aria-expanded="false" aria-controls="collapseNotificacion"> <i class='bx bx-grid-alt nav_icon'></i>Notificaciones </a>
+                <a class="nav_link active btn" id="notification" data-bs-toggle="collapse" href="#collapseNotificacion" role="button" aria-expanded="false" aria-controls="collapseNotificacion"><i class='bx bxs-bell-ring bx-sm'><span id="notification_count"></span></i>Notificaciones </a>
                     <div class="collapse text-light" style="background-color: #d0252d; font-size: 13px;" id="collapseNotificacion">
                         <?php 
                         while($resultQueryNotificacion = mysqli_fetch_array($queryNotificacion)){
@@ -153,6 +155,10 @@ session_start();
 
 
 </body>
+<script type="text/javascript">
+        var getCountNotifications = "<?php echo"$num_rows"?>";
+        document.write('<text style="visibility: hidden">getCountNotifications</text>');
+    </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="js/mainFunctions.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>

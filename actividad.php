@@ -54,12 +54,12 @@ if (isset($_SESSION['id'])) {?>
     <?php
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     $idUsuario = $_SESSION['id'];
-    $queryUser = mysqli_query($link, "SELECT u.idUsuario, CONCAT(u.usuNombres,\" \",u.usuApellidos) AS nombres, r.idRol, r.tipoRol, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
+    $queryUser = mysqli_query($link, "SELECT u.idUsuario, r.idRol, r.tipoRol, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
         FROM usuario u
         INNER JOIN rol r ON u.idRol = r.idRol
         WHERE u.idUsuario = '$idUsuario'");
 } else {
-    $queryUser = mysqli_query($link, "SELECT CONCAT(u.usuNombres,\" \",u.usuApellidos) AS nombres, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
+    $queryUser = mysqli_query($link, "SELECT u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
         FROM usuario u
         INNER JOIN rol r ON u.idRol = r.idRol");
 }
@@ -179,10 +179,11 @@ if ($rowActividad['usuImagen'] != null) {
 ?>
                     </div>
 <?php
-if($rowActividad == null){?>
-    <!-- <div class="text-center" style="background-color: #a99f9f36; border-radius: 20px;">
+$numActividad = mysqli_num_rows($queryActividad);
+if($numActividad == 0){?>
+    <div class="text-center" style="background-color: #a99f9f36; border-radius: 20px;">
         <h3 class="p-4" style="color: #928b8b;">No hay actividad reciente</h3>
-    </div> -->
+    </div>
 <?php
 }
 ?>

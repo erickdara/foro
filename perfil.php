@@ -129,7 +129,7 @@ if ($_SESSION["id"] == null) {
 <?php
 $idUsuario = $_SESSION['id'];
 
-$queryUser = mysqli_query($link, "SELECT u.idUsuario, CONCAT(u.usuNombres,\" \",u.usuApellidos) AS nombres, u.usuNombres, u.empresa, u.cargo, u.skills, r.idRol, r.tipoRol, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
+$queryUser = mysqli_query($link, "SELECT u.idUsuario, u.usuNombres, u.empresa, u.cargo, u.skills, r.idRol, r.tipoRol, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
     FROM usuario u
     INNER JOIN rol r ON u.idRol = r.idRol
     WHERE u.idUsuario = '$idUsuario'");
@@ -143,6 +143,8 @@ $queryNotificacion = mysqli_query($link,"SELECT n.idNotificacion, n.idUsuario, n
     INNER JOIN tipoNotificacion tn ON n.idTipoNotificacion = tn.idTipo
     WHERE n.idDestUser = '$idUsuario' 
     ORDER BY n.created_at DESC LIMIT 4"); 
+
+$num_rows = mysqli_num_rows($queryNotificacion);
 ?>
 <div class="l-navbar" id="nav-bar">
     <nav class="nav">
@@ -165,7 +167,7 @@ if ($rowUser['usuImagen'] != null) {
                 <span class="nav_logo-name">Perfil</span>
             </a>
             </div>
-            <a class="nav_link active btn" data-bs-toggle="collapse" href="#collapseNotificacion" role="button" aria-expanded="false" aria-controls="collapseNotificacion"> <i class='bx bx-grid-alt nav_icon'></i>Notificaciones </a>
+            <a class="nav_link active btn" id="notification" data-bs-toggle="collapse" href="#collapseNotificacion" role="button" aria-expanded="false" aria-controls="collapseNotificacion"><i class='bx bxs-bell-ring bx-sm'><span id="notification_count"></span></i>Notificaciones </a>
                     <div class="collapse text-light" style="background-color: #d0252d; font-size: 13px;" id="collapseNotificacion">
                         <?php 
                         while($resultQueryNotificacion = mysqli_fetch_array($queryNotificacion)){
@@ -189,7 +191,7 @@ if ($rowUser['usuImagen'] != null) {
         <div class="row">
         </div>
         <div class="row d-flex justify-content-center">
-        <div class="card perfil-info mt-4" style="width: 50rem;">
+        <div class="card perfil-info mt-4 mb-4" style="width: 50rem;">
             <?php
 if (!empty($response)) {?>
                     <div class="response perfil-<?php echo $response["type"]; ?> mt-2 text-center">
@@ -249,14 +251,16 @@ if ($rowUser['usuImagen'] != null) {
                         <div class="col-sm-12 col-md-12 mt-2">
                             <p class="text-muted text-center">Miembro de la Comunidad Assist desde <?php echo $rowUser['fecha'] ?></p>
                         </div>
+                        <div class="d-flex justify-content-center">
                         <b>Actualizar información personal <button class="btn" data-bs-toggle="modal" data-bs-target="#actualizarPerfil"><i class='bx bx-edit bx-md'></i></button></b>
+                        </div>
                         <div class="col-md-12 mt-4">
                         <form id="uploadImage" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" enctype="multipart/form-data">
                                 <div class="row mt-2">
-                                    <div class="col-md-6 d-flex justify-content-end">
+                                    <div class="col-md-6 d-flex justify-content-end" style="margin:auto;">
                                         <input type="file" id="image" name="image" class="form-control" >
                                     </div>
-                                    <div class="col-md-6 d-flex justify-content-center">
+                                    <div class="col-md-12 d-flex justify-content-center mt-4">
                                         <input type="submit" id="btnSubmit" name="submit" class="btn btn-danger" value="Actualizar imagen">
                                     </div>
                                 </div>
@@ -306,6 +310,10 @@ if ($rowUser['usuImagen'] != null) {
     </div>
 </div>
 </body>
+<script type="text/javascript">
+        var getCountNotifications = "<?php echo"$num_rows"?>";
+        document.write('<text style="visibility: hidden">getCountNotifications</text>');
+    </script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         <script type="text/javascript" src="js/mainFunctions.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
