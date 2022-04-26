@@ -583,16 +583,26 @@ if( $numTemas == 0){?>
                         <span class="invalid-feedback"><?php echo $password_err; ?></span>
                     </div>
                     <?php if (RegisterSocial::isLogin()): ?>
+                    <div>
                     <div class="mb-3 d-none justify-content-center" >
                     <a href="#" onclick="document.getElementById('provider0').click();" class="fa fa-twitter"></a>
                     <a href="#" onclick="document.getElementById('provider1').click();" class="fa fa-facebook"></a>
                     <a href="#" onclick="document.getElementById('provider2').click();" class="fa fa-google"></a>
                     </div>
+                    <div class="text-center">
+                    <p><a href="enter_email.php">Olvido su contraseña?</a></p>
+                    </div>
+                    </div>
                     <?php else: ?>
+                        <div>
                     <div class="mb-3 d-flex justify-content-center" >
                     <a href="#" onclick="document.getElementById('provider0').click();" class="fa fa-twitter"></a>
                     <a href="#" onclick="document.getElementById('provider1').click();" class="fa fa-facebook"></a>
                     <a href="#" onclick="document.getElementById('provider2').click();" class="fa fa-google"></a>
+                    </div>
+                    <div class="text-center">
+                    <p><a href="enter_email.php">Olvido su contraseña?</a></p>
+                    </div>
                     </div>
                     <?php endif;?>
 
