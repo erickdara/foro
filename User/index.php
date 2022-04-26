@@ -63,7 +63,7 @@ if (isset($_SESSION['id'])) {?>
 
 $idUsuario = $_SESSION['id'];
 
-$queryUser = mysqli_query($link, "SELECT u.idUsuario, CONCAT(u.usuNombres,\" \",u.usuApellidos) AS nombres, r.idRol, r.tipoRol, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
+$queryUser = mysqli_query($link, "SELECT u.idUsuario, r.idRol, r.tipoRol, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
     FROM usuario u
     INNER JOIN rol r ON u.idRol = r.idRol
     WHERE u.idUsuario = '$idUsuario'");
@@ -221,7 +221,7 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
             <!-- fin validateModal -->
 
             <?php
-$query = "SELECT t.idTema, t.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, u.usuNombres, r.tipoRol, t.tituloTema, t.describeTema, DATE_FORMAT(t.created_at, \"%M %d de %Y\") AS fecha, likes, unlikes
+$query = "SELECT t.idTema, t.idUsuario, u.usuNombres, r.tipoRol, t.tituloTema, t.describeTema, DATE_FORMAT(t.created_at, \"%M %d de %Y\") AS fecha, likes, unlikes
                   FROM tema t
                   INNER JOIN usuario u ON t.idUsuario = u.idUsuario
                   INNER JOIN rol r ON u.idRol = r.idRol
@@ -329,7 +329,7 @@ $idTemaC = $row['idTema'];
 
                         <?php
 $idTema = $row['idTema'];
-    $queryComentario = "SELECT c.idComentario, c.idTema, c.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres,u.usuNombres, c.describeComentario, c.likes, c.unlikes, u.usuImagen, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
+    $queryComentario = "SELECT c.idComentario, c.idTema, c.idUsuario, u.usuNombres, c.describeComentario, c.likes, c.unlikes, u.usuImagen, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
                           FROM comentario c
                           INNER JOIN tema t ON c.idTema = t.idTema
                           INNER JOIN usuario u ON c.idUsuario = u.idUsuario
@@ -430,7 +430,7 @@ $idComentario = $rowComentario['idComentario'];
 
                         <?php
 $idComentario = $rowComentario['idComentario'];
-        $queryRespuesta = "SELECT r.idRespuesta, r.idComentario, r.idUsuario, CONCAT(u.usuNombres, \" \", u.usuApellidos) AS nombres, u.usuNombres, r.describeRespuesta, r.likes, r.unlikes, u.usuImagen, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
+        $queryRespuesta = "SELECT r.idRespuesta, r.idComentario, r.idUsuario, u.usuNombres, r.describeRespuesta, r.likes, r.unlikes, u.usuImagen, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
                           FROM respuesta r
                           INNER JOIN comentario c ON r.idComentario = c.idComentario
                           INNER JOIN usuario u ON r.idUsuario = u.idUsuario
@@ -510,10 +510,11 @@ if ($rowRespuesta['usuImagen'] != null) {
                 </div>
             <?php
 }
-if($row == null){?>
-    <!-- <div class="text-center" style="background-color: #a99f9f36; border-radius: 20px;">
+$numTemas = mysqli_num_rows($resultQuery);
+if( $numTemas == 0){?>
+    <div class="text-center" style="background-color: #a99f9f36; border-radius: 20px;">
         <h3 class="p-4" style="color: #928b8b;">Aún no hay temas publicados</h3>
-    </div> -->
+    </div>
 <?php 
 }
 ?>

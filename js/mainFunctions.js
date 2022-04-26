@@ -245,9 +245,9 @@ $(document).ready(function() {
             $("#usercheck").show();
             usernameError = false;
             return false;
-        } else if (usernameValue.length < 3 || usernameValue.length > 10) {
+        } else if (usernameValue.length < 3 || usernameValue.length > 25) {
             $("#usercheck").show();
-            $("#usercheck").html("longitud de usuario debe estar entre 3 y 20");
+            $("#usercheck").html("longitud de usuario debe estar entre 3 y 25");
             usernameError = false;
             return false;
         } else {
@@ -335,26 +335,11 @@ $(document).ready(function() {
             registerUser();
             return true;
         } else {
-            alert("no registra");
             return false;
         }
     });
 });
 
-// $("#likeTema").click(function() {
-//     $("#likeTema").toggleClass("bxs-like");
-// });
-
-// $("#unlikeTema").click(function() {
-//     $("#unlikeTema").toggleClass("bxs-like");
-// });
-
-// $("#logModal").click(function() {
-//     $("#loginModal").modal("show");
-//     setTimeout(function() {
-//         createRecaptcha();
-//     }, 100);
-// });
 
 function createRecaptcha() {
     grecaptcha.render("captcha", {
@@ -517,7 +502,7 @@ $('.bx bx-grid-alt nav_icon').click(function (e) {
 
 $('#notification').click(function (e) { 
     e.preventDefault();
-    if($('#notification_count').is('hidden')){
+    if(getCountNotifications > 0){
         $('.showMenu').css({'width': 'calc(var(--nav-width) + 230px)'});
         $('#header').addClass('notificationShadow');
         $("#notification_count").fadeOut("slow");
@@ -541,32 +526,3 @@ $('#notification').click(function (e) {
   });
 
  
-
-
-// $("#login-info").fadeIn(7000, function() {
-//     $("#login-info").fadeOut(7000);
-// });
-
-// $(window).on("beforeunload", function() {
-//     let searchParams = new URLSearchParams(window.location.search);
-//     searchParams.has("success"); // true
-//     let param = searchParams.get("success");
-//     if (param == true) {
-//         let inf =
-//             `<div class="alert alert-success" id="login-info" role="alert">
-//                         Registro con el correo: ` +
-//             mail +
-//             ` exitoso </div>`;
-//         $(inf).insertBefore(".container").fadeOut(7000);
-//     }
-//     //your code goes here on location change
-// });
-
-// $(document).on("ajaxComplete", function() {
-//     let inf =
-//         `<div class="alert alert-success" id="login-info" role="alert">
-//                         Registro con el correo: ` +
-//         mail +
-//         ` exitoso </div>`;
-//     $(inf).insertBefore(".container").fadeOut(7000);
-// });
