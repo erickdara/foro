@@ -3,7 +3,7 @@ require_once('config.php');
 $buscar = $_GET['buscar'];
 
 if(!empty($buscar)){
-    $buscador = mysqli_query($link,"SELECT t.idTema, t.tituloTema, t.describeTema, t.idUsuario, u.usuNombres, u.usuApellidos, t.created_at as fecha, likes, unlikes FROM tema t 
+    $buscador = mysqli_query($link,"SELECT t.idTema, t.tituloTema, t.describeTema, t.idUsuario, u.usuNombres, t.created_at as fecha, likes, unlikes FROM tema t 
     INNER JOIN usuario u ON t.idUsuario = u.idUsuario
     WHERE t.tituloTema LIKE LOWER('%".$buscar."%')");
 
@@ -22,7 +22,7 @@ while($result = mysqli_fetch_assoc($buscador)){?>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-5 ">
-                                <h6><strong>Publicado por: <?php echo $result['usuNombres']." ".$result['usuApellidos'] ?> </strong></h6>
+                                <h6><strong>Publicado por: <?php echo $result['usuNombres'] ?> </strong></h6>
                             </div>
                             <div class="col-7">
                                 <p class="text-muted" style="font-size: smaller;">Fecha: <?php echo $result['fecha'] ?></p>
