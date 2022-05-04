@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $cargo = $_POST['cargo'];
     $skills = $_POST['skills'];
     
-    $query = mysqli_query($link,"UPDATE usuario SET usuNombres = '$nombre', empresa = '$empresa', cargo = '$cargo', skills = '$skills' WHERE idUsuario = '$idUsuario';");
+    $query = mysqli_query($link,"UPDATE user SET usernames = '$nombre', company = '$empresa', charge = '$cargo', skills = '$skills' WHERE idUser = '$idUsuario';");
     
     if($query){
         header('Location: perfil.php');

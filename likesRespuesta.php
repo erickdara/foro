@@ -14,21 +14,21 @@ if($_GET['idRespuesta'] && $idUsuario){
       if($util -> isUserAlreadyVotedRespuesta($idUsuario,$_GET['idRespuesta']) == 0){
          $getLikesUnlikesRespuesta['likes'] += 1;
          $getLikesUnlikesRespuesta['unlikes'] = $getLikesUnlikesRespuesta['unlikes'];
-         $getLikeRespuesta['tipoLike'] = TRUE;
+         $getLikeRespuesta['typeLike'] = TRUE;
          $likeRespuestaData = array(
-            'idRespuesta' => $_GET['idRespuesta'],
-            'idUsuario' => $idUsuario,
+            'idAnswer' => $_GET['idRespuesta'],
+            'idUser' => $idUsuario,
             'likes' => $getLikesUnlikesRespuesta['likes'],
             'unlikes' => $getLikesUnlikesRespuesta['unlikes'],
-            'tipoLike' => $getLikeRespuesta['tipoLike'], 
+            'typeLike' => $getLikeRespuesta['typeLike'], 
          );
          $util -> updateLikeRespuesta($likeRespuestaData);
       }else{
          if($util -> validateTrueLikeRespuesta($idUsuario, $_GET['idRespuesta']) != 0){//Diferente a cero es "me gusta"
             $getLikesUnlikesRespuesta['likes'] -= 1; 
             $likeRespuestaData = array(
-            'idRespuesta' => $_GET['idRespuesta'],
-            'idUsuario' => $idUsuario,
+            'idAnswer' => $_GET['idRespuesta'],
+            'idUser' => $idUsuario,
             'likes' => $getLikesUnlikesRespuesta['likes'],
             'unlikes' => $getLikesUnlikesRespuesta['unlikes'],
          ); 
@@ -37,13 +37,13 @@ if($_GET['idRespuesta'] && $idUsuario){
          }else{
             $getLikesUnlikesRespuesta['likes'] += 1;
             $getLikesUnlikesRespuesta['unlikes'] -= 1;
-            $getLikeRespuesta['tipoLike'] = true;
+            $getLikeRespuesta['typeLike'] = true;
             $likeRespuestaData = array(
-            'idRespuesta' => $_GET['idRespuesta'],
-            'idUsuario' => $idUsuario,
+            'idAnswer' => $_GET['idRespuesta'],
+            'idUser' => $idUsuario,
             'likes' => $getLikesUnlikesRespuesta['likes'],
             'unlikes' => $getLikesUnlikesRespuesta['unlikes'],
-            'tipoLike' => $getLikeRespuesta['tipoLike'],
+            'typeLike' => $getLikeRespuesta['typeLike'],
          );
          $util -> ifUserVotedToDeleteLikeRespuesta($likeRespuestaData);
          $util->updateLikeRespuesta($likeRespuestaData); 
@@ -53,21 +53,21 @@ if($_GET['idRespuesta'] && $idUsuario){
       if($util -> isUserAlreadyVotedRespuesta($idUsuario,$_GET['idRespuesta']) == 0){
          $getLikesUnlikesRespuesta['unlikes'] += 1;
          $getLikesUnlikesRespuesta['likes'] = $getLikesUnlikesRespuesta['likes'];
-         $getLikeRespuesta['tipoLike'] = FALSE;
+         $getLikeRespuesta['typeLike'] = FALSE;
          $likeRespuestaData = array(
-            'idRespuesta' => $_GET['idRespuesta'],
-            'idUsuario' => $idUsuario,
+            'idAnswer' => $_GET['idRespuesta'],
+            'idUser' => $idUsuario,
             'likes' => $getLikesUnlikesRespuesta['likes'],
             'unlikes' => $getLikesUnlikesRespuesta['unlikes'],
-            'tipoLike' => $getLikeRespuesta['tipoLike'], 
+            'typeLike' => $getLikeRespuesta['typeLike'], 
          );
          $util -> updateLikeRespuesta($likeRespuestaData);
    }else{
       if($util -> validateTrueUnlikeRespuesta($idUsuario, $_GET['idRespuesta']) != 0){
          $getLikesUnlikesRespuesta['unlikes'] -= 1; 
             $likeRespuestaData = array(
-            'idRespuesta' => $_GET['idRespuesta'],
-            'idUsuario' => $idUsuario,
+            'idAnswer' => $_GET['idRespuesta'],
+            'idUser' => $idUsuario,
             'likes' => $getLikesUnlikesRespuesta['likes'],
             'unlikes' => $getLikesUnlikesRespuesta['unlikes'],
          ); 
@@ -76,13 +76,13 @@ if($_GET['idRespuesta'] && $idUsuario){
       }else{
             $getLikesUnlikesRespuesta['unlikes'] += 1;
             $getLikesUnlikesRespuesta['likes'] -= 1;
-            $getLikeRespuesta['tipoLike'] = FALSE;
+            $getLikeRespuesta['typeLike'] = FALSE;
             $likeRespuestaData = array(
-            'idRespuesta' => $_GET['idRespuesta'],
-            'idUsuario' => $idUsuario,
+            'idAnswer' => $_GET['idRespuesta'],
+            'idUser' => $idUsuario,
             'likes' => $getLikesUnlikesRespuesta['likes'],
             'unlikes' => $getLikesUnlikesRespuesta['unlikes'],
-            'tipoLike' => $getLikeRespuesta['tipoLike'],
+            'typeLike' => $getLikeRespuesta['typeLike'],
          );
          $util -> ifUserVotedToDeleteLikeRespuesta($likeRespuestaData);
          $util->updateLikeRespuesta($likeRespuestaData); 

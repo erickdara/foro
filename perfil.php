@@ -37,7 +37,7 @@ if ($_SESSION["id"] == null) {
                     if ($width <= "400" || $height <= "400") {
 
                         // Insert image content into database
-                        $update = mysqli_query($link, "UPDATE usuario u SET u.usuImagen = '$imgContent' WHERE u.idUsuario = '$idUsuario';");
+                        $update = mysqli_query($link, "UPDATE user u SET u.userImage = '$imgContent' WHERE u.idUser = '$idUsuario';");
 
                         if ($update) {
                             $response = array(
@@ -129,18 +129,18 @@ if ($_SESSION["id"] == null) {
 <?php
 $idUsuario = $_SESSION['id'];
 
-$queryUser = mysqli_query($link, "SELECT u.idUsuario, u.usuNombres, u.empresa, u.cargo, u.skills, r.idRol, r.tipoRol, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
-    FROM usuario u
-    INNER JOIN rol r ON u.idRol = r.idRol
-    WHERE u.idUsuario = '$idUsuario'");
+$queryUser = mysqli_query($link, "SELECT u.idUser, u.usernames, u.company, u.charge, u.skills, r.idRole, r.roleType,u.userMail, u.userImage, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
+    FROM user u
+    INNER JOIN role r ON u.idRole = r.idRole
+    WHERE u.idUser = '$idUsuario'");
 $rowUser = mysqli_fetch_array($queryUser);
-$rol = $rowUser['idRol'] == 1 ? 'Administrador' : 'Usuario';
+$rol = $rowUser['idRole'] == 1 ? 'Administrador' : 'Usuario';
 
-$queryNotificacion = mysqli_query($link,"SELECT n.idNotificacion, n.idUsuario, n.idTema, u.usuNombres, u.usuImagen, t.tituloTema, n.idTipoNotificacion, tn.describeNotificacion, DATE_FORMAT(n.created_at, \"%d-%m-%Y %H:%i:%s\") AS fecha
-    FROM notificacion n
-    INNER JOIN usuario u ON n.idUsuario = u.idUsuario
-    INNER JOIN tema t ON n.idtema = t.idTema
-    INNER JOIN tipoNotificacion tn ON n.idTipoNotificacion = tn.idTipo
+$queryNotificacion = mysqli_query($link,"SELECT n.idNotification, n.idUser, n.idTopic, u.usernames, u.userImage, t.titleTopic, n.idNotificationType, tn.describeNotification, DATE_FORMAT(n.created_at, \"%d-%m-%Y %H:%i:%s\") AS fecha
+    FROM notification n
+    INNER JOIN user u ON n.idUser = u.idUser
+    INNER JOIN topic t ON n.idTopic = t.idTopic
+    INNER JOIN notificationType tn ON n.idNotificationType = tn.idType
     WHERE n.idDestUser = '$idUsuario' 
     ORDER BY n.created_at DESC LIMIT 4"); 
 
@@ -154,9 +154,9 @@ $num_rows = mysqli_num_rows($queryNotificacion);
             </div>
             <div style="column-gap: 2rem;width: 1.5rem; height: 1.6rem; margin-left: 1.5rem;" class="d-flex mb-4">
             <?php
-if ($rowUser['usuImagen'] != null) {
+if ($rowUser['userImage'] != null) {
     ?>
-                            <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowUser['usuImagen']); ?>" style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="100%" height="100%" class="rounded-circle" alt="Imagen de usuario">
+                            <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowUser['userImage']); ?>" style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="100%" height="100%" class="rounded-circle" alt="Imagen de usuario">
                     <?php
 } else {?>
                         <img src="img/user.png"  style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="100%" height="100%" class="rounded-circle" alt="Imagen de usuario">
@@ -171,9 +171,9 @@ if ($rowUser['usuImagen'] != null) {
                     <div class="collapse text-light" style="background-color: #d0252d; font-size: 13px;" id="collapseNotificacion">
                         <?php 
                         while($resultQueryNotificacion = mysqli_fetch_array($queryNotificacion)){
-                            $notificacion = $resultQueryNotificacion['idTipoNotificacion'] == 1 ? 'creaste el tema': ($resultQueryNotificacion['idTipoNotificacion'] == 2 ? 'comentó tu publicación' : 'respondió tu comentario en');?>
+                            $notificacion = $resultQueryNotificacion['idNotificationType'] == 1 ? 'creaste el tema': ($resultQueryNotificacion['idNotificationType'] == 2 ? 'comentó tu publicación' : 'respondió tu comentario en');?>
                             <div class="p-2">
-                                <p><b> <?php echo $resultQueryNotificacion['usuNombres'];?></b> <?php echo $notificacion." "."\"".$resultQueryNotificacion['tituloTema']."\""; ?></p>
+                                <p><b> <?php echo $resultQueryNotificacion['usernames'];?></b> <?php echo $notificacion." "."\"".$resultQueryNotificacion['titleTopic']."\""; ?></p>
                             </div>
                             <hr>
 
@@ -202,9 +202,9 @@ if (!empty($response)) {?>
                 <div class="d-flex justify-content-center mt-4">
                 <div class="d-flex justify-content-center mt-4" style="width: 6rem; height: 6rem;">
                     <?php
-if ($rowUser['usuImagen'] != null) {
+if ($rowUser['userImage'] != null) {
     ?>
-                            <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowUser['usuImagen']); ?>" style="object-fit: cover; object-position: center;" width="100%" height="100%" class="img-thumbnail img-perfil rounded-circle" alt="Imagen de usuario">
+                            <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowUser['userImage']); ?>" style="object-fit: cover; object-position: center;" width="100%" height="100%" class="img-thumbnail img-perfil rounded-circle" alt="Imagen de usuario">
                     <?php
 } else {?>
                         <img src="img/user.jpeg"  style="object-fit: cover; object-position: center;" width="100%" height="100%" class="img-thumbnail img-perfil rounded-circle" alt="Imagen de usuario">
@@ -215,7 +215,7 @@ if ($rowUser['usuImagen'] != null) {
                 </div>
             </div>
                 <div class="card-body">
-                    <h2 class="card-title text-center mb-4"><b><?php echo $rowUser['usuNombres'] ?></b></h2>
+                    <h2 class="card-title text-center mb-4"><b><?php echo $rowUser['usernames'] ?></b></h2>
                     <div class="row">
                         <div class="col-sm-12 col-md-6 mt-2">
                             <h6 class="text-center"><b>Tipo de usuario:</b></h6>
@@ -226,19 +226,19 @@ if ($rowUser['usuImagen'] != null) {
                         <div class="col-sm-12 col-md-6 mt-2">
                             <h6 class="text-center"><b>Correo:</b></h6>
                             <hr>
-                            <p class="text-center"><?php echo $rowUser['usuCorreo'] ?></p>
+                            <p class="text-center"><?php echo $rowUser['userMail'] ?></p>
                             <hr>
                         </div>
                         <div class="col-sm-12 col-md-6 mt-2">
                             <h6 class="text-center"><b>Empresa:</b></h6>
                             <hr>
-                            <p class="text-center"><?php if($rowUser['empresa'] != null){ echo $rowUser['empresa']; } else { echo "---";}  ?></p>
+                            <p class="text-center"><?php if($rowUser['company'] != null){ echo $rowUser['company']; } else { echo "---";}  ?></p>
                             <hr>
                         </div>
                         <div class="col-sm-12 col-md-6 mt-2">
                             <h6 class="text-center"><b>Cargo:</b></h6>
                             <hr>
-                            <p class="text-center"><?php if($rowUser['cargo'] != null){ echo $rowUser['cargo']; } else { echo "---";}  ?></p>
+                            <p class="text-center"><?php if($rowUser['charge'] != null){ echo $rowUser['charge']; } else { echo "---";}  ?></p>
                             <hr>
                         </div>
                         <div class="col-sm-12 col-md-12 mt-2">
@@ -278,15 +278,15 @@ if ($rowUser['usuImagen'] != null) {
                                             <div class="row">
                                                 <div class="col-sm-12 col-md-6">
                                                     <label for="" class="label-control">Nombre completo:</label>
-                                                    <input class="form-control" type="text" name="nombre" value="<?php echo $rowUser['usuNombres'] ?>" required>
+                                                    <input class="form-control" type="text" name="nombre" value="<?php echo $rowUser['usernames'] ?>" required>
                                                 </div>
                                                 <div class="col-sm-12 col-md-6">
                                                     <label for="" class="label-control">Empresa:</label>
-                                                    <input class="form-control" type="text" name="empresa" value="<?php echo $rowUser['empresa'] ?>" required>
+                                                    <input class="form-control" type="text" name="empresa" value="<?php echo $rowUser['company'] ?>" required>
                                                 </div>
                                                 <div class="col-sm-12 col-md-12">
                                                     <label for="" class="label-control">Cargo:</label>
-                                                    <input class="form-control" type="text" name="cargo" value="<?php echo $rowUser['cargo'] ?>" required>
+                                                    <input class="form-control" type="text" name="cargo" value="<?php echo $rowUser['charge'] ?>" required>
                                                 </div>
                                                 <div class="col-sm-12 col-md-12">
                                                     <label for="" class="label-control">Skills:</label>

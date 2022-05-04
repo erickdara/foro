@@ -14,21 +14,21 @@ if($_GET['idComentario'] && $idUsuario){
       if($util -> isUserAlreadyVotedComment($idUsuario,$_GET['idComentario']) == 0){
          $getLikesUnlikesComment['likes'] += 1;
          $getLikesUnlikesComment['unlikes'] = $getLikesUnlikesComment['unlikes'];
-         $getLikeComment['tipoLike'] = TRUE;
+         $getLikeComment['typeLike'] = TRUE;
          $likeCommentData = array(
-            'idComentario' => $_GET['idComentario'],
-            'idUsuario' => $idUsuario,
+            'idCommentary' => $_GET['idComentario'],
+            'idUser' => $idUsuario,
             'likes' => $getLikesUnlikesComment['likes'],
             'unlikes' => $getLikesUnlikesComment['unlikes'],
-            'tipoLike' => $getLikeComment['tipoLike'], 
+            'typeLike' => $getLikeComment['typeLike'], 
          );
          $util -> updateLikeComment($likeCommentData);
       }else{
          if($util -> validateTrueLikeComment($idUsuario, $_GET['idComentario']) != 0){//Diferente a cero es "me gusta"
             $getLikesUnlikesComment['likes'] -= 1; 
             $likeCommentData = array(
-            'idComentario' => $_GET['idComentario'],
-            'idUsuario' => $idUsuario,
+            'idCommentary' => $_GET['idComentario'],
+            'idUser' => $idUsuario,
             'likes' => $getLikesUnlikesComment['likes'],
             'unlikes' => $getLikesUnlikesComment['unlikes'],
          ); 
@@ -37,13 +37,13 @@ if($_GET['idComentario'] && $idUsuario){
          }else{
             $getLikesUnlikesComment['likes'] += 1;
             $getLikesUnlikesComment['unlikes'] -= 1;
-            $getLikeComment['tipoLike'] = true;
+            $getLikeComment['typeLike'] = true;
             $likeCommentData = array(
-            'idComentario' => $_GET['idComentario'],
-            'idUsuario' => $idUsuario,
+            'idCommentary' => $_GET['idComentario'],
+            'idUser' => $idUsuario,
             'likes' => $getLikesUnlikesComment['likes'],
             'unlikes' => $getLikesUnlikesComment['unlikes'],
-            'tipoLike' => $getLikeComment['tipoLike'],
+            'typeLike' => $getLikeComment['typeLike'],
          );
          $util -> ifUserVotedToDeleteLikeComentario($likeCommentData);
          $util->updateLikeComment($likeCommentData); 
@@ -53,21 +53,21 @@ if($_GET['idComentario'] && $idUsuario){
       if($util -> isUserAlreadyVotedComment($idUsuario,$_GET['idComentario']) == 0){
          $getLikesUnlikesComment['unlikes'] += 1;
          $getLikesUnlikesComment['likes'] = $getLikesUnlikesComment['likes'];
-         $getLikeComment['tipoLike'] = FALSE;
+         $getLikeComment['typeLike'] = FALSE;
          $likeCommentData = array(
-            'idComentario' => $_GET['idComentario'],
-            'idUsuario' => $idUsuario,
+            'idCommentary' => $_GET['idComentario'],
+            'idUser' => $idUsuario,
             'likes' => $getLikesUnlikesComment['likes'],
             'unlikes' => $getLikesUnlikesComment['unlikes'],
-            'tipoLike' => $getLikeComment['tipoLike'], 
+            'typeLike' => $getLikeComment['typeLike'], 
          );
          $util -> updateLikeComment($likeCommentData);
    }else{
       if($util -> validateTrueUnlikeComment($idUsuario, $_GET['idComentario']) != 0){
          $getLikesUnlikesComment['unlikes'] -= 1; 
             $likeCommentData = array(
-            'idComentario' => $_GET['idComentario'],
-            'idUsuario' => $idUsuario,
+            'idCommentary' => $_GET['idComentario'],
+            'idUser' => $idUsuario,
             'likes' => $getLikesUnlikesComment['likes'],
             'unlikes' => $getLikesUnlikesComment['unlikes'],
          ); 
@@ -76,13 +76,13 @@ if($_GET['idComentario'] && $idUsuario){
       }else{
             $getLikesUnlikesComment['unlikes'] += 1;
             $getLikesUnlikesComment['likes'] -= 1;
-            $getLikeComment['tipoLike'] = FALSE;
+            $getLikeComment['typeLike'] = FALSE;
             $likeCommentData = array(
-            'idComentario' => $_GET['idComentario'],
-            'idUsuario' => $idUsuario,
+            'idCommentary' => $_GET['idComentario'],
+            'idUser' => $idUsuario,
             'likes' => $getLikesUnlikesComment['likes'],
             'unlikes' => $getLikesUnlikesComment['unlikes'],
-            'tipoLike' => $getLikeComment['tipoLike'],
+            'typeLike' => $getLikeComment['typeLike'],
          );
          $util -> ifUserVotedToDeleteLikeComentario($likeCommentData);
          $util->updateLikeComment($likeCommentData); 

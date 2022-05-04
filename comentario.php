@@ -42,21 +42,21 @@ session_start();
 // Check if the user is already logged in, if yes then redirect him to welcome page
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     $idUsuario = $_SESSION['id'];
-    $queryUser = mysqli_query($link, "SELECT u.idUsuario, u.usuNombres, r.idRol, r.tipoRol, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
-            FROM usuario u
-            INNER JOIN rol r ON u.idRol = r.idRol
-            WHERE u.idUsuario = '$idUsuario'");
+    $queryUser = mysqli_query($link, "SELECT u.idUser, u.usernames, r.idRole, r.roleType, u.userMail, u.userImage, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
+            FROM user u
+            INNER JOIN role r ON u.idRole = r.idRole
+            WHERE u.idUser = '$idUsuario'");
 } else {
-    $queryUser = mysqli_query($link, "SELECT u.usuNombres, u.usuCorreo, u.usuImagen, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
-            FROM usuario u");
-    //INNER JOIN rol r ON u.idRol = r.idRol");
+    $queryUser = mysqli_query($link, "SELECT u.usernames, u.userMail, u.userImage, DATE_FORMAT(u.created_at, \"%M de %Y\") as fecha
+            FROM user u");
+    //INNER JOIN rol r ON u.idRole = r.idRole");
 }
 if(isset($_SESSION['id'])){
-    $queryNotificacion = mysqli_query($link,"SELECT n.idNotificacion, n.idUsuario, n.idTema, u.usuNombres, u.usuImagen, t.tituloTema, n.idTipoNotificacion, tn.describeNotificacion, DATE_FORMAT(n.created_at, \"%d-%m-%Y %H:%i:%s\") AS fecha
-    FROM notificacion n
-    INNER JOIN usuario u ON n.idUsuario = u.idUsuario
-    INNER JOIN tema t ON n.idtema = t.idTema
-    INNER JOIN tipoNotificacion tn ON n.idTipoNotificacion = tn.idTipo
+    $queryNotificacion = mysqli_query($link,"SELECT n.idNotification, n.idUser, n.idTopic, u.usernames, u.userImage, t.titleTopic, n.idNotificationType, tn.describeNotification, DATE_FORMAT(n.created_at, \"%d-%m-%Y %H:%i:%s\") AS fecha
+    FROM notification n
+    INNER JOIN user u ON n.idUser = u.idUser
+    INNER JOIN topic t ON n.idTopic = t.idTopic
+    INNER JOIN notificationType tn ON n.idNotificationType = tn.idType
     WHERE n.idDestUser = '$idUsuario' 
     ORDER BY n.created_at DESC LIMIT 4");
 
@@ -74,12 +74,12 @@ $num_rows = mysqli_num_rows($queryNotificacion);
                         <?php
 if (isset($_SESSION['id'])) {
     $idUsuario = $_SESSION['id'];
-    $user = mysqli_query($link, "SELECT * FROM usuario u WHERE idUsuario = '$idUsuario'");
+    $user = mysqli_query($link, "SELECT * FROM user u WHERE idUser = '$idUsuario'");
     $imgUser = mysqli_fetch_array($user);
 
-    if ($imgUser['usuImagen'] != null) {
+    if ($imgUser['userImage'] != null) {
         ?>
-                                        <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($imgUser['usuImagen']); ?>" style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="100%" height="100%" class="rounded-circle" alt="Imagen de usuario">
+                                        <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($imgUser['userImage']); ?>" style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="100%" height="100%" class="rounded-circle" alt="Imagen de usuario">
                                 <?php
 } else {?>
                                     <img src="img/user.png"  style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="100%" height="100%" class="rounded-circle" alt="Imagen de usuario">
@@ -94,9 +94,9 @@ if (isset($_SESSION['id'])) {
                     <div class="collapse text-light" style="background-color: #d0252d; font-size: 13px;" id="collapseNotificacion">
                         <?php 
                         while($resultQueryNotificacion = mysqli_fetch_array($queryNotificacion)){
-                            $notificacion = $resultQueryNotificacion['idTipoNotificacion'] == 1 ? 'creaste el tema': ($resultQueryNotificacion['idTipoNotificacion'] == 2 ? 'comentó tu publicación' : 'respondió tu comentario en');?>
+                            $notificacion = $resultQueryNotificacion['idNotificationType'] == 1 ? 'creaste el tema': ($resultQueryNotificacion['idNotificationType'] == 2 ? 'comentó tu publicación' : 'respondió tu comentario en');?>
                             <div class="p-2">
-                                <p><b> <?php echo $resultQueryNotificacion['usuNombres'];?></b> <?php echo $notificacion." "."\"".$resultQueryNotificacion['tituloTema']."\""; ?></p>
+                                <p><b> <?php echo $resultQueryNotificacion['usernames'];?></b> <?php echo $notificacion." "."\"".$resultQueryNotificacion['titleTopic']."\""; ?></p>
                             </div>
                             <hr>
 
@@ -123,10 +123,10 @@ if (isset($_SESSION['id'])) {
                 </div>
                 <div class="row card comentario mb-4">
             <?php
-$queryComentario = "SELECT c.idComentario, c.idTema, c.idUsuario, t.tituloTema, u.usuNombres, c.describeComentario, c.likes, c.unlikes, u.usuImagen, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
-                          FROM comentario c
-                          INNER JOIN tema t ON c.idTema = t.idTema
-                          INNER JOIN usuario u ON c.idUsuario = u.idUsuario
+$queryComentario = "SELECT c.idCommentary, c.idTopic, c.idUser, t.titleTopic, u.usernames, c.describeCommentary, c.likes, c.unlikes, u.userImage, DATE_FORMAT(c.created_at, \"%M %d de %Y\") AS fecha
+                          FROM commentary c
+                          INNER JOIN topic t ON c.idTopic = t.idTopic
+                          INNER JOIN user u ON c.idUser = u.idUser
                           ORDER BY c.created_at DESC";
 
 $resultComentario = mysqli_query($link, $queryComentario);
@@ -138,9 +138,9 @@ while ($rowComentario = mysqli_fetch_array($resultComentario)) {
                                 <div class="col-md-3 mt-2">
                                     <div class="d-flex justify-content-center" >
                                 <?php
-if ($rowComentario['usuImagen'] != null) {
+if ($rowComentario['userImage'] != null) {
         ?>
-                                        <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowComentario['usuImagen']); ?>" style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="50%" height="50%" class="rounded-circle" alt="Imagen de usuario">
+                                        <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowComentario['userImage']); ?>" style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="50%" height="50%" class="rounded-circle" alt="Imagen de usuario">
                                 <?php
 } else {?>
                                     <img src="img/user.png"  style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="50%" height="50%" class="rounded-circle" alt="Imagen de usuario">
@@ -150,12 +150,12 @@ if ($rowComentario['usuImagen'] != null) {
                                 </div>
                                 </div>
                                 <div class="col-md-9 container-commentary">
-                                    <p class="mt-2"><?php echo $rowComentario['describeComentario'] ?></p>
+                                    <p class="mt-2"><?php echo $rowComentario['describeCommentary'] ?></p>
                                 </div>
                             </div>
                             <div class="row mt-2 ">
                                 <div class="col-md-3 d-flex justify-content-center">
-                                <h5><?php echo $rowComentario['usuNombres'] ?></h5>
+                                <h5><?php echo $rowComentario['usernames'] ?></h5>
                                 </div>
                             </div>
                             <div class="row mb-2">
@@ -163,7 +163,7 @@ if ($rowComentario['usuImagen'] != null) {
                                     <div class="d-flex justify-content-between">
                                         <div>
                                             <?php if(isset($_SESSION['id'])){?>
-                                                <a class="likeComment btn" data-vote-type="1" id="like_<?php echo $rowComentario['idComentario'] ?>">
+                                                <a class="likeComment btn" data-vote-type="1" id="like_<?php echo $rowComentario['idCommentary'] ?>">
                                                     <i class='bx bx-like' style="color:rgb(0, 253, 93);"></i>
                                                 </a>
                                             <?php }else{ ?>
@@ -174,14 +174,14 @@ if ($rowComentario['usuImagen'] != null) {
                                         </div>
                                         <div class="d-flex align-items-end">
                                             <b>
-                                                <p id="likeComentario_<?php echo $rowComentario['idComentario'] ?>" class="text-nowrap mt-2" style="font-size: 12px; color: rgb(0, 253, 93);">Me gusta:&nbsp;<span class="counter" id="likeCount_<?php echo $rowComentario['idComentario'] ?>"><?php echo $rowComentario['likes'] ?></span></p>
+                                                <p id="likeComentario_<?php echo $rowComentario['idCommentary'] ?>" class="text-nowrap mt-2" style="font-size: 12px; color: rgb(0, 253, 93);">Me gusta:&nbsp;<span class="counter" id="likeCount_<?php echo $rowComentario['idCommentary'] ?>"><?php echo $rowComentario['likes'] ?></span></p>
                                             </b>
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-between">
                                         <div>
                                             <?php if(isset($_SESSION['id'])){?>
-                                                <a class="likeComment btn" data-vote-type="0" id="unlike_<?php echo $rowComentario['idComentario'] ?>">
+                                                <a class="likeComment btn" data-vote-type="0" id="unlike_<?php echo $rowComentario['idCommentary'] ?>">
                                                     <i class='bx bx-dislike' style="color:rgb(255, 22, 22);"></i>
                                                 </a>    
                                             <?php }else{ ?>
@@ -192,13 +192,13 @@ if ($rowComentario['usuImagen'] != null) {
                                         </div>
                                         <div class="d-flex align-items-end">
                                             <b>
-                                                <p id="unlikeComentario_<?php echo $rowComentario['idComentario']; ?>" class="text-nowrap mt-2" style="font-size: 12px; color: rgb(255, 22, 22);">No me gusta:&nbsp;<span class="counter" id="unlikeCount_<?php echo $rowComentario['idComentario'] ?>"><?php echo $rowComentario['unlikes'] ?></span></p>
+                                                <p id="unlikeComentario_<?php echo $rowComentario['idCommentary']; ?>" class="text-nowrap mt-2" style="font-size: 12px; color: rgb(255, 22, 22);">No me gusta:&nbsp;<span class="counter" id="unlikeCount_<?php echo $rowComentario['idCommentary'] ?>"><?php echo $rowComentario['unlikes'] ?></span></p>
                                             </b>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6 d-flex justify-content-end">
-                                    <h5><b style="color: rgb(7, 26, 57);">Tema: </b> <b style="color: rgb(255 50 59);"><?php echo $rowComentario['tituloTema'] ?></b></h5>
+                                    <h5><b style="color: rgb(7, 26, 57);">Tema: </b> <b style="color: rgb(255 50 59);"><?php echo $rowComentario['titleTopic'] ?></b></h5>
                                 </div>
                             </div>
                         <?php

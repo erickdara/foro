@@ -1,8 +1,7 @@
 <?php $token = $_GET['token']; 
-include('reset_password.php');
-//session_start();
+session_start();
 $_SESSION['token'] = $token;
-var_dump($_SESSION['token']);
+// var_dump($_SESSION['token']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,17 +19,18 @@ var_dump($_SESSION['token']);
                     <div class="card">
                         <form action="reset_password.php" class="login-form" method="post">
                             <div class="card-header">
-                                <h2 class="card-tittle">Nueva Contraseña</h2>
+                                <h2 class="card-tittle">Restablecer contraseña</h2>
                             </div>
                             <!-- Form validation messages -->
-                            <?php include('messages.php'); ?>
                             <div class="mb-3 mt-4 ms-2 px-2">
                                 <label class="form-label" for="">Nueva contraseña</label>
-                                <input type="password" class="form-control" name="new_pass" id="">
+                                <input type="password" class="form-control" name="new_pass" id="password">
+                                <span><small class="text-danger" id="passcheck"></small></span>
                             </div>
                             <div class="mb-3 ms-2 px-2">
                                 <label class="form-label">Confirmar nueva password</label>
-                                <input class="form-control" type="password" name="new_pass_c">
+                                <input class="form-control" type="password" name="new_pass_c" id="conpassword">
+                                <span><small class="text-danger" id="conpasscheck"></small></span>
                             </div>
                             <div class="mb-3 ms-4">
                                 <input type="submit" name="new_password" class="login-btn btn btn-success" value="Enviar">

@@ -18,24 +18,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $idUsuario = $_SESSION['id'];
 
-        $query = "INSERT INTO comentario (idComentario, idTema, idUsuario, describeComentario, created_at)
-         VALUES (idComentario,'$idTema', '$idUsuario', '$describeComentario', now());";
+        $query = "INSERT INTO commentary (idCommentary, idTopic, idUser, describeCommentary, created_at)
+         VALUES (idCommentary,'$idTema', '$idUsuario', '$describeComentario', now());";
 
         $resultQuery = mysqli_query($link, $query);
 
         if($resultQuery){
-            $queryComentario = mysqli_query($link,"SELECT * FROM comentario order by idComentario DESC LIMIT 1");
+            $queryComentario = mysqli_query($link,"SELECT * FROM commentary order by idCommentary DESC LIMIT 1");
             $resultQueryComentario = mysqli_fetch_array($queryComentario);
 
-            $idTema = $resultQueryComentario['idTema'];
-            $idUsuarioEmisor = $resultQueryComentario['idUsuario'];
+            $idTema = $resultQueryComentario['idTopic'];
+            $idUsuarioEmisor = $resultQueryComentario['idUser'];
 
-            $queryTema = mysqli_query($link,"SELECT * FROM tema WHERE idTema = '$idTema'");
+            $queryTema = mysqli_query($link,"SELECT * FROM topic WHERE idTopic = '$idTema'");
             $resultQueryTema = mysqli_fetch_array($queryTema);
 
-            $idUsuarioDestino =  $resultQueryTema['idUsuario'];
+            $idUsuarioDestino =  $resultQueryTema['idUser'];
 
-            $queryNotificacion = mysqli_query($link,"INSERT INTO notificacion (idNotificacion, idUsuario, idDestUser, idTema, idTipoNotificacion, created_at) VALUES (idNotificacion, '$idUsuarioEmisor', '$idUsuarioDestino','$idTema', 2, now());");
+            $queryNotificacion = mysqli_query($link,"INSERT INTO notification (idNotification, idUser, idDestUser, idTopic, idNotificationType, created_at) VALUES (idNotification, '$idUsuarioEmisor', '$idUsuarioDestino','$idTema', 2, now());");
 
             header("Location: ./User/index.php");
             exit;

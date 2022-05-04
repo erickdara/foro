@@ -15,7 +15,7 @@ class RegisterSocial{
     private $host  = 'localhost';
     private $user  = 'root';
     private $password   = '';
-    private $database  = 'databaseforo';
+    private $database  = 'forumdatabase';
     private $dbConnect = false;
 
     public function __construct()
@@ -32,7 +32,7 @@ class RegisterSocial{
 
     public function getExistingUser($socialUser)
     {
-        $query = "SELECT idUsuario, usuNombres, usuCorreo FROM usuario WHERE usuCorreo = '$socialUser'";
+        $query = "SELECT idUser, usernames, userMail FROM user WHERE userMail = '$socialUser'";
         $result = mysqli_query($this->dbConnect, $query);
 
         return $result->num_rows;
@@ -50,7 +50,7 @@ class RegisterSocial{
 
         echo 'El nombre provedor: ' . $provider;
 
-        $conn = mysqli_connect("localhost", "root", "", "databaseforo");
+        $conn = mysqli_connect("localhost", "root", "", "forumdatabase");
         if (mysqli_connect_errno()) {
             printf("Falló la conexión: %s\n", mysqli_connect_error());
         }
@@ -61,7 +61,7 @@ class RegisterSocial{
         $ifExistingUser = $ExistingUser->getExistingUser($mail);
 
         if ($ifExistingUser == 0) { //No existe el usuario
-            $queryUser = "INSERT INTO usuario(idUsuario, idRol, usuNombres, usuCorreo, created_at) VALUES ('','1','$username','$mail',now())";
+            $queryUser = "INSERT INTO user(idUser, idRole, usernames, userMail, created_at) VALUES ('','1','$username','$mail',now())";
 
             $result = mysqli_query($conn, $queryUser);
 
@@ -71,7 +71,7 @@ class RegisterSocial{
 
             //return $result->num_rows;
 
-            $sql = "SELECT idUsuario FROM usuario WHERE usuCorreo= ?";
+            $sql = "SELECT idUser FROM user WHERE userMail = ?";
 
             if ($stmt = mysqli_prepare($conn, $sql)) {
                 include 'mail.php';
@@ -136,19 +136,19 @@ class RegisterSocial{
             // header('Location: ./User/index.php');
             // $validateUser = 'ya existe el usuario';
             // echo json_encode(array("response"=>$validateUser));
-            $conn = mysqli_connect("localhost", "root", "", "databaseforo");
+            $conn = mysqli_connect("localhost", "root", "", "forumdatabase");
             if (mysqli_connect_errno()) {
                 printf("Falló la conexión: %s\n", mysqli_connect_error());
             }
 
             $mail = $data->{'emailVerified'};
 
-            $query = mysqli_query($conn,"SELECT idUsuario, idRol, usuCorreo, usuImagen FROM usuario WHERE usuCorreo = '$mail'");
+            $query = mysqli_query($conn,"SELECT idUser, idRole, userMail, userImage FROM user WHERE userMail = '$mail'");
             $result = mysqli_fetch_array($query);
 
-            $idUsuario = $result['idUsuario'];
-            $idRol = $result['idRol'];
-            $usuCorreo = $result['usuCorreo'];
+            $idUsuario = $result['idUser'];
+            $idRol = $result['idRole'];
+            $userMail = $result['userMail'];
 
                     session_start();
 
@@ -156,7 +156,7 @@ class RegisterSocial{
                     $_SESSION['loggedin'] = true;
                     $_SESSION['id'] = $idUsuario;
                     $_SESSION['rol'] = $idRol;
-                    $_SESSION['mail'] = $usuCorreo;
+                    $_SESSION['mail'] = $userMail;
 
                     header('Location: ./User/index.php?provider=' . $provider);
         }

@@ -239,7 +239,37 @@ $(document).ready(function() {
         }
     });
 
+    $("#usernames").keyup(function() {
+        validateUsername();
+    });
+
+    // $("#uu").blur(function(e) {
+    //     e.preventDefault();
+    //     let regex = /[A-Z][a-z]+(\s|,)[A-Z][a-z]{1,25}/;
+    //     let user = $("#uu").val();
+    //     console.log(user);
+    //     console.log(regex.test(user));
+    //     if(regex.test(user.toString())){
+    //         console.log("Entro al if: ".regex.test(user));
+    //         $("#usercheck").show();
+    //         $("#uu").html("Debe contener nombre apellido");
+    //     }
+    // });    
+
+    // $("#uu").keyup(function(){
+    //     let regex = /[A-Z][a-z]+(\s|,)[A-Z][a-z]{1,25}/;
+    //     let user = $("#uu").val();
+    //     console.log(user);
+    //     console.log(regex.test(user));
+    //     if(regex.test(user.toString())){
+    //         console.log("Entro al if: ".regex.test(user));
+    //         $("#usercheck").show();
+    //         $("#uu").html("Debe contener nombre apellido");
+    //     }
+    // })
+
     function validateUsername() {
+        
         let usernameValue = $("#usernames").val();
         if (usernameValue.length == "") {
             $("#usercheck").show();
@@ -288,7 +318,7 @@ $(document).ready(function() {
         }
         if (passwordValue.length < 3 || passwordValue.length > 10) {
             $("#passcheck").show();
-            $("#passcheck").html("*longitud de contraseña debe estar entre 3 y 10");
+            $("#passcheck").html("longitud de contraseña debe estar entre 3 y 10 caracteres");
             $("#passcheck").css("color", "red");
             passwordError = false;
             return false;
@@ -305,7 +335,7 @@ $(document).ready(function() {
         let passwordValue = $("#password").val();
         if (passwordValue != confirmPasswordValue) {
             $("#conpasscheck").show();
-            $("#conpasscheck").html("*Contraseña no coincide");
+            $("#conpasscheck").html("Contraseña no coincide");
             $("#conpasscheck").css("color", "red");
             confirmPasswordError = false;
             return false;
@@ -380,7 +410,7 @@ $(function() {
             if (passwordValue.length < 3 || passwordValue.length > 10) {
                 $("#passcheckLogin").show();
                 $("#passcheckLogin").html(
-                    "*longitud de contraseña debe estar entre 3 y 10"
+                    "longitud de contraseña debe estar entre 3 y 10"
                 );
                 $("#passcheckLogin").css("color", "red");
             } else {

@@ -1,4 +1,4 @@
-<?php include('reset_password.php');?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +19,6 @@
                     <div class="card-header">
                     <h2 class="card-tittle">Restablecer Contraseña</h2>
                     <!-- form validation messages -->
-		            <?php include('messages.php'); ?>
                     </div>
                     <div class="mb-3 p-4">
                         <label for="exampleInputEmail1" class="form-label">Su dirección de correo electronico</label>

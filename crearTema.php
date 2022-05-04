@@ -16,23 +16,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "Tiene que ser administrador para publicar un tema.";
         }else{
             
-            $query = "INSERT INTO tema (idTema, idUsuario, tituloTema, describeTema, created_at) 
-            VALUES (idTema, '$idUsuario', '$tituloTema', '$describeTema', now());";
+            $query = "INSERT INTO topic (idTopic, idUser, titleTopic, describeTopic, created_at) 
+            VALUES (idTopic, '$idUsuario', '$tituloTema', '$describeTema', now());";
             
             $resultQuery = mysqli_query($link,$query);
 
-            $llamado = mysqli_query($link,"SELECT idTema, created_at FROM tema ORDER BY created_at DESC LIMIT 1");
+            $llamado = mysqli_query($link,"SELECT idTopic, created_at FROM topic ORDER BY created_at DESC LIMIT 1");
             $resultLlamado = mysqli_fetch_array($llamado);
-            $id_sub = $resultLlamado['idTema'];
+            $id_sub = $resultLlamado['idTopic'];
 
             if($resultQuery){
-                $queryTema = mysqli_query($link,"SELECT * FROM tema order by idTema DESC LIMIT 1");
+                $queryTema = mysqli_query($link,"SELECT * FROM topic order by idTopic DESC LIMIT 1");
                 $resultQueryTema = mysqli_fetch_array($queryTema);
 
-                $idTema = $resultQueryTema['idTema'];
-                $idUsuario = $resultQueryTema['idUsuario'];
+                $idTema = $resultQueryTema['idTopic'];
+                $idUsuario = $resultQueryTema['idUser'];
 
-                $queryNotificacion = mysqli_query($link,"INSERT INTO notificacion (idNotificacion, idUsuario, idDestUser, idTema, idTipoNotificacion, created_at) VALUES (idNotificacion, '$idUsuario', '$idUsuario','$idTema', 1, now());");
+                $queryNotificacion = mysqli_query($link,"INSERT INTO notification (idNotification, idUser, idDestUser, idTopic, idNotificationType, created_at) VALUES (idNotification, '$idUsuario', '$idUsuario','$idTema', 1, now());");
 
                 header("Location: ./User/index.php");
             }else{
