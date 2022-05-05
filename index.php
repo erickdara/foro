@@ -85,8 +85,8 @@ if (isset($_SESSION['id'])) {?>
             </div>
 
             <div class="col-md-6 col-sm- 4 d-flex align-items-center justify-content-end">
-                <i class='bx bx-search bx-sm' style='color:#fffbfb'></i>&nbsp;&nbsp;&nbsp;
-                <input type="text" id="buscar" name="buscar" onkeyup="strangeBuscar($('#buscar').val())"  style="background-color: rgb(7, 26, 57); border: 0;" class="input-busqueda text-light" placeholder="Búsqueda">
+                <i class='bx bx-search bx-md' style='color:#fffbfb'></i>&nbsp;&nbsp;&nbsp;   
+                <input type="text" id="buscar" name="buscar" onkeyup="strangeBuscar($('#buscar').val())"  style="height:100%; background-color: #071a39; background: linear-gradient(180deg, rgba(0,69,127,1) 0%, rgba(6,43,77,1) 30%, rgba(3,39,73,1) 39%, rgba(3,33,68,1) 50%, rgba(7,26,57,1) 88%); border: 1px solid #ffff; border-radius: 5px; color:white; font-size:20px;" class="input-busqueda text-light" placeholder="Búsqueda">
             </div>
         </div>
     </div>
@@ -504,6 +504,7 @@ if( $numTemas == 0){?>
                     <a href="#" onclick="document.getElementById('provider0').click();" class="fa fa-twitter"></a>
                     <a href="#" onclick="document.getElementById('provider1').click();" class="fa fa-facebook"></a>
                     <a href="#" onclick="document.getElementById('provider2').click();" class="fa fa-google"></a>
+                    <a href="#" onclick="" class="fa fa-apple"></a>
         </div>
       </div>
       <div class="modal-footer d-flex justify-content-center">
@@ -572,29 +573,18 @@ if( $numTemas == 0){?>
                         <text id=validation></text>
                         <span class="invalid-feedback"><?php echo $password_err; ?></span>
                     </div>
-                    <?php if (RegisterSocial::isLogin()): ?>
                     <div>
-                    <div class="mb-3 d-none justify-content-center" >
-                    <a href="#" onclick="document.getElementById('provider0').click();" class="fa fa-twitter"></a>
-                    <a href="#" onclick="document.getElementById('provider1').click();" class="fa fa-facebook"></a>
-                    <a href="#" onclick="document.getElementById('provider2').click();" class="fa fa-google"></a>
+                        <div class="mb-3 d-flex justify-content-center" >
+                            <a href="#" onclick="document.getElementById('provider0').click();" class="fa fa-twitter"></a>
+                            <a href="#" onclick="document.getElementById('provider1').click();" class="fa fa-facebook"></a>
+                            <a href="#" onclick="document.getElementById('provider2').click();" class="fa fa-google"></a>
+                            <a href="#" onclick="" class="fa fa-apple"></a> 
+                        </div>
+                        <div class="text-center">
+                        <p><a href="enter_email.php">Olvido su contraseña?</a></p>
+                        </div>
                     </div>
-                    <div class="text-center">
-                    <p><a href="enter_email.php">Olvido su contraseña?</a></p>
-                    </div>
-                    </div>
-                    <?php else: ?>
-                        <div>
-                    <div class="mb-3 d-flex justify-content-center" >
-                    <a href="#" onclick="document.getElementById('provider0').click();" class="fa fa-twitter"></a>
-                    <a href="#" onclick="document.getElementById('provider1').click();" class="fa fa-facebook"></a>
-                    <a href="#" onclick="document.getElementById('provider2').click();" class="fa fa-google"></a>
-                    </div>
-                    <div class="text-center">
-                    <p><a href="enter_email.php">Olvido su contraseña?</a></p>
-                    </div>
-                    </div>
-                    <?php endif;?>
+                  
 
             </div>
             <div class="modal-footer d-flex justify-content-center">

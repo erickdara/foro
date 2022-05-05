@@ -316,9 +316,9 @@ $(document).ready(function() {
             passwordError = false;
             return false;
         }
-        if (passwordValue.length < 3 || passwordValue.length > 10) {
+        if (passwordValue.length < 3 || passwordValue.length > 12) {
             $("#passcheck").show();
-            $("#passcheck").html("longitud de contraseña debe estar entre 3 y 10 caracteres");
+            $("#passcheck").html("longitud de contraseña debe estar entre 3 y 12 caracteres");
             $("#passcheck").css("color", "red");
             passwordError = false;
             return false;

@@ -52,9 +52,9 @@ if (isset($_SESSION['id'])) {?>
                 <a href="../comentario.php" type="button" class="btn text-light btn-nav">Comentarios</a>
             </div>
 
-            <div class="col-md-6 col-sm- 4 d-flex align-items-center justify-content-end">
-                <i class='bx bx-search bx-sm' style='color:#fffbfb'></i>&nbsp;&nbsp;&nbsp;
-                <input type="text" id="buscar" name="buscar" onkeyup="buscar($('#buscar').val())" style="background-color: rgb(7, 26, 57); border: 0;" class="input-busqueda text-light" placeholder="Búsqueda">
+            <div class="col-md-6 col-sm-4 mt-1 d-flex align-items-center justify-content-end">
+                <i class='bx bx-search bx-md' style='color:#fffbfb'></i>&nbsp;&nbsp;&nbsp;
+                <input type="text" id="buscar" name="buscar" onkeyup="buscar($('#buscar').val())" style="height:85%; background-color: #071a39; background: linear-gradient(180deg, rgba(0,69,127,1) 0%, rgba(6,43,77,1) 30%, rgba(3,39,73,1) 39%, rgba(3,33,68,1) 50%, rgba(7,26,57,1) 88%); border: 1px solid #ffff; border-radius: 5px; color:white; font-size:20px;" class="input-busqueda text-light" placeholder="Búsqueda">
             </div>
         </div>
     </div>
@@ -181,13 +181,13 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                         <form action="../crearTema.php" method="POST">
                             <div class="modal-body">
                                 <div class="mb-3">
-                                    <label for="titleTopic" class="form-label">Titulo:</label>
-                                    <input id="titleTopic" type="text" class="form-control" name="tituloTema" required>
+                                    <label for="tituloTema" class="form-label">Titulo:</label>
+                                    <input id="tituloTema" type="text" class="form-control" name="tituloTema" required>
                                     <span id="titleTopic"></span>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="describeTopic" class="form-label">Descripción:</label>
-                                    <textarea id="describeTopic" name="describeTema" class="form-control" cols="30" rows="8" maxlength="1000" required></textarea>
+                                    <label for="describeTema" class="form-label">Descripción:</label>
+                                    <textarea id="describeTema" name="describeTema" class="form-control" cols="30" rows="8" maxlength="1000" required></textarea>
                                     <div class="mt-2" style="font-weight: bold;" id="charNum"></div>
                                 </div>
                             </div>

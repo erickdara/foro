@@ -5,7 +5,7 @@
     --nav-width: 104px;
     --first-color: rgb(255 50 59);
     --first-color-light: #afa5d9;
-    --background-header-color: rgb(7 26 57);
+    --background-header-color: rgb(7, 26, 57);
     --body-font: "Nunito", sans-serif;
     --normal-font-size: 1rem;
     --z-fixed: 100;
@@ -155,7 +155,7 @@ a {
         padding-left: calc(var(--nav-width) + 2rem);
     }
     .header {
-        height: calc(var(--header-height) + 2.3rem);
+        height: calc(var(--header-height) + 2.7rem);
         padding: 0 2rem 0 calc(var(--nav-width) + 2rem);
     }
     .header_img {
@@ -189,6 +189,11 @@ a {
 .btn-nav:hover {
     background-color: rgb(255, 50, 59);
     color: #fff;
+}
+
+#buscar::placeholder{
+    color: #ffff;
+    text-align: center;
 }
 
 .num-commentary,
@@ -290,6 +295,11 @@ a {
 .fa-facebook {
     background: #3B5998;
     color: white;
+}
+
+.fa-apple{
+    background-color: black;
+    color: #ffff;
 }
 
 .img-perfil {
