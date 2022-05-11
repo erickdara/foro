@@ -56,7 +56,7 @@ while($result = mysqli_fetch_assoc($buscador)){?>
                             ?>
                             
                                 <div class="col-md-5 d-flex d-wrap"  style="font-size: 12px;">
-                                <input type="hidden" name="idTemaLike" value="<?php echo $result['idTema'];?>">
+                                <input type="hidden" name="idTemaLike" value="<?php echo $result['idTopic'];?>">
                                 <div class="d-flex justify-content-between">
                                     <div class="d-flex align-items-end">
                                         <b>

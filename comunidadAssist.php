@@ -20,10 +20,10 @@ session_start();
     <header class="header" id="header">
         <div class="row mb-2">
             <div class="col-md-12">
-                <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
+                <div class="header_toggle"> <i class='bx bx-menu' style="color: #071a39;" id="header-toggle"></i> </div>
             </div>
             <div class="col-md-6 d-flex justify-content-start">
-                <h1 id="title"><span style="color: white;">FORO ASSIST</span></h1>
+                <h1 id="title"><span style="color: white; font-family: 'Alfa Slab One', cursive;">FORO ASSIST</span></h1>
             </div>
             <div class="col-md-6 d-flex align-items-start justify-content-end">
                 <div style="width: 5rem; height: 5rem;">
@@ -114,7 +114,8 @@ $num_rows = mysqli_num_rows($queryNotificacion);
 
     <div class="height-100 bg-light">
         <div class="container">
-        <div class="row d-flex justify-content-center mt-2">
+            <div class="row"></div>
+        <div class="row d-flex justify-content-center mt-4">
             <div class="card actividad-info mt-4 mb-4">
         <?php
             while ($rowUser = mysqli_fetch_array($queryUser)) {

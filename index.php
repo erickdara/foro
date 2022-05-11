@@ -57,13 +57,11 @@ $register->insertUser($data, $name);
 </head>
 <header class="header" id="header">
     <div class="row">
-        <div class="col-md-12">
-            <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
-        </div>
-        <div class="col-md-6 d-flex justify-content-start">
+        
+        <div class="col-md-6 mt-4 d-flex justify-content-start">
             <h1 id="title"><span style="color: white; font-family: 'Alfa Slab One', cursive;">FORO ASSIST</span></h1>
         </div>
-        <div class="col-md-6 d-flex align-items-start justify-content-end">
+        <div class="col-md-6 mt-4 d-flex align-items-start justify-content-end">
             <div style="width: 5rem; height: 5rem;">
                 <img src="./img/foro-02.png" style="object-fit: contain; object-position: center;" width="100%" height="100%">
             </div>
@@ -99,7 +97,7 @@ if (isset($_SESSION['id'])) {?>
                 <div class="">
                 <img class="imgLogo" style="margin-left: 0.6rem; margin-bottom: 1rem; border-radius: 50%;" src="./img/logo.jpg" width="27%" height="15%" alt="">
                 </div>
-                <a href="#" class="nav_logo" data-bs-toggle="modal" data-bs-target="#loginModal" id="logModal"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">Iniciar Sesion</span> </a>
+                <a href="#" class="nav_link" data-bs-toggle="modal" data-bs-target="#loginModal" id="logModal"> <i class='bx bx-layer nav_icon'></i> <span class="nav_name">Iniciar Sesion</span> </a>
                 <a href="#" class="nav_link active" data-bs-toggle="modal" data-bs-target="#registerModal"> <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Registrarse</span> </a>
                 <a href="./comunidadAssist.php" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Comunidad Assist</span> </a>
                 <a href="#" class="nav_link">
@@ -128,7 +126,8 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
 ?>
 <div class="height-100 bg-light">
     <div class="container">
-    <div id="datos_buscador" class="row mt-2">
+        <div class="row"></div>
+    <div id="datos_buscador" class="row mt-4">
 
     </div>
         <div class="row d-flex justify-content-end mt-4">
@@ -581,7 +580,7 @@ if( $numTemas == 0){?>
                             <a href="#" onclick="" class="fa fa-apple"></a> 
                         </div>
                         <div class="text-center">
-                        <p><a href="enter_email.php">Olvido su contraseña?</a></p>
+                        <p><a href="enter_email.php">¿Olvidó su contraseña?</a></p>
                         </div>
                     </div>
                   

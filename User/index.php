@@ -30,7 +30,7 @@ require_once "../config.php";
 <header class="header" id="header">
     <div class="row">
         <div class="col-md-12">
-                <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
+                <div class="header_toggle"> <i class='bx bx-menu' style="color: #071a39;" id="header-toggle"></i> </div>
             </div>
             <div class="col-md-6 d-flex justify-content-start">
                 <h1 id="title"><span style="color: white; font-family: 'Alfa Slab One', cursive;">FORO ASSIST</span></h1>
@@ -135,7 +135,8 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
 ?>
 <div class="height-100 bg-light">
     <div class="container">
-            <div id="datos_buscador" class="row mt-2">
+        <div class="row"></div>
+            <div id="datos_buscador" class="row mt-4">
 
             </div>
         <div class="row d-flex justify-content-end mt-4">

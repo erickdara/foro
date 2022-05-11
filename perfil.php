@@ -101,10 +101,10 @@ if ($_SESSION["id"] == null) {
 <header class="header" id="header">
     <div class="row">
     <div class="col-md-12">
-            <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
+            <div class="header_toggle"> <i class='bx bx-menu' style="color: #071a39;" id="header-toggle"></i> </div>
         </div>
         <div class="col-md-6 d-flex justify-content-start">
-            <h1 id="title"><span style="color: white;">FORO ASSIST</span></h1>
+            <h1 id="title"><span style="color: white; font-family: 'Alfa Slab One', cursive;">FORO ASSIST</span></h1>
         </div>
         <div class="col-md-6 d-flex align-items-start justify-content-end">
             <div style="width: 5rem; height: 5rem;">
@@ -116,11 +116,6 @@ if ($_SESSION["id"] == null) {
                 <a href="./User/index.php" type="button" class="btn text-light btn-nav">Temas</a>
                 <a href="actividad.php" type="button" class="btn text-light btn-nav">Actividad Reciente</a>
                 <a href="comentario.php" type="button" class="btn text-light btn-nav">Comentarios</a>
-            </div>
-
-            <div class="col-md-6 col-sm- 4 d-flex align-items-center justify-content-end">
-                <i class='bx bx-search bx-sm' style='color:#fffbfb'></i>&nbsp;&nbsp;&nbsp;
-                <input type="text" style="background-color: rgb(7, 26, 57); border: 0;" class="input-busqueda text-light" placeholder="Búsqueda">
             </div>
         </div>
     </div>
@@ -188,7 +183,8 @@ if ($rowUser['userImage'] != null) {
 </div>
 <div class="height-100 bg-light">
     <div class="container">
-        <div class="row">
+        <div class="row"></div>
+        <div class="row mt-4">
         </div>
         <div class="row d-flex justify-content-center">
         <div class="card perfil-info mt-4 mb-4" style="width: 50rem;">
@@ -296,7 +292,7 @@ if ($rowUser['userImage'] != null) {
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <input type="submit"  class="btn btn-danger" value="Actulizar">
+                                        <input type="submit"  class="btn btn-danger" value="Actualizar">
                                     </div>
                                     </form>
                                     </div>

@@ -102,20 +102,29 @@ a {
     color: var(--background-header-color);
 }
 
+.nav_logo:hover{
+    color: var(--first-color-light);
+}
+
 .nav_logo-name {
     color: var(--background-header-color);
     font-weight: 700;
 }
 
+.nav_logo-name:hover{
+    color: var(--first-color-light);
+}
+
 .nav_link {
     position: relative;
-    color: var(--first-color-light);
+    color: rgb(7, 26, 57);
     margin-bottom: 1.5rem;
     transition: 0.3s;
+    font-weight: 700;
 }
 
 .nav_link:hover {
-    color: var(--background-header-color);
+    color: var(--first-color-light);
 }
 
 .nav_icon {
