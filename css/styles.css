@@ -336,7 +336,7 @@ a {
     font-size: 30px;
     text-align: center;
     text-decoration: none;
-    margin: 5px 2px;
+    margin: 5px 2px; 
     border-radius: 30px;
     width: 57px;
 }
@@ -399,3 +399,19 @@ div .logo {
         border: 3px solid #111111;
         border-radius: 5px;
     }
+
+    #spinner {
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity .5s ease-out, visibility 0s linear .5s;
+        z-index: 99999;
+    }
+    
+    #spinner.show {
+        transition: opacity .5s ease-out, visibility 0s linear 0s;
+        visibility: visible;
+        opacity: 1;
+    }
+
+
+  

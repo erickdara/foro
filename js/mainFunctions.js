@@ -501,16 +501,21 @@ $(document).ready(function() {
     } else if (location == "http://localhost/Foro/index.php?register") {
         $("#registerModal").modal("show");
     }
+    setTimeout(function(){
+        //Spinner
+        if ($('#spinner').length > 0) {
+            $('#spinner').removeClass('show');
+        }
+  },1000);
     getCountNotification();
+   
 });
 
-
-
 function getCountNotification(){
-    if(getCountNotifications > 0){
-        $('#notification_count').text(getCountNotifications);
-    }else{
+    if(typeof getCountNotifications === 'undefined'){
         $('#notification_count').hide();
+    }else{
+        $('#notification_count').text(getCountNotifications);
     }
 }
 
