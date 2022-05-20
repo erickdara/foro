@@ -145,6 +145,15 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
             <div id="datos_buscador" class="row mt-4">
 
             </div>
+            <?php 
+                $queryTop = mysqli_query($link,"SELECT t.idTopic, t.titleTopic, u.usernames as nombres, t.likes, t.unlikes, count(c.idTopic) as num
+                FROM commentary c
+                INNER JOIN topic t ON c.idTopic = t.idTopic
+                INNER JOIN user u ON t.idUser = u.idUser
+                where c.idTopic = t.idTopic and t.likes > 12 OR t.unlikes > 12
+                group by t.idTopic")
+                    ?>
+
             <div class="row d-flex justify-start-end mt-4">
                 <div class="col-md-2 d-flex align-items-end justify-content-start">
                     <div class="row tema">
@@ -190,7 +199,7 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                 <!-- Spinner End -->
 
                 <!--Start Carousel -->
-                <div class="col-md-5">
+                <!-- <div class="col-md-5">
                     <div id="carouselExampleCaptions" class="carousel slide" style="height: 100%;" data-bs-ride="carousel">
                         <div class="carousel-indicators">
                             <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0"
@@ -234,8 +243,66 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                             <span class="visually-hidden">Next</span>
                         </button>
                     </div>
-                </div>
+                </div> -->
              <!--End Carousel -->
+             <div class="col-md-5">
+                <div id="carouselExampleControls" style="height: 100%;" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        
+                        <div class="carousel-item active">
+                          <div class="card bg-light d-flex justify-content-center align-items-center"  style="border: 1.5px solid rgb(7, 26, 57); height: 100%;">
+                                    <h3 style="color: rgb(255 50 59);"><b>Temas más interactuados</b></h3>
+                          </div>
+                        </div>
+                        <?php
+                            while($resultTop = mysqli_fetch_array($queryTop)){
+                        ?>
+                        <div class="carousel-item" style="border: 1.5px solid rgb(7, 26, 57);">
+                            <div class="card">
+                            <div class="row mx-3 pt-2">
+                                    <div class="col-2 col-md-2 d-flex justify-content-end">
+                                        <img src="./img/user.png" style="max-width: 3rem; max-height: 3rem;" alt="img_user">
+                                    </div>
+                                    <div class="col-9 col-md-9 d-flex justify-content-start align-items-end p-2">
+                                        <h6><b><?php echo $resultTop['nombres'] ?></b></h6>
+                                    </div>
+                                    <!-- <div class="col-12 col-md-12 d-flex justify-content-start mt-2">
+                                        <b style="color: rgb(255 50 59);">Tema:</b>&nbsp;<b style="color: rgb(7, 26, 57);">Transformación digital</b>
+                                    </div> -->
+                                </div>
+                                <div class="row mt-2 mx-1">
+                                    <div class="col-md-12 col-12">
+                                    <b style="color: rgb(255 50 59);">Tema:</b>&nbsp;<b style="color: rgb(7, 26, 57);"><?php echo $resultTop['titleTopic'] ?></b>
+                                    </div>
+                                </div>
+                                <div class="row mt-1 mb-2">
+                                    <div class="col-3 col-md-3 d-flex justify-content-center">&nbsp;&nbsp;
+                                        <small style="color:rgb(0, 253, 93);">Likes:<?php echo $resultTop['likes'] ?></small>
+                                    </div>
+                                    <div class="col-3 col-md-3 d-flex justify-content-start">
+                                        <small style="color: rgb(255, 22, 22);">Unlikes: <?php echo $resultTop['unlikes'] ?></small>
+                                    </div>
+                                    <div class="col-4 col-md-4">
+                                        <small>Comentarios:<?php echo $resultTop['num'] ?></small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <?php 
+                            }
+                        ?>
+                    </div>
+        <!-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button> -->
+        <!-- <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button> -->
+        </div>
+            </div> 
+
             </div>
 
 
