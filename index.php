@@ -151,7 +151,8 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                 INNER JOIN topic t ON c.idTopic = t.idTopic
                 INNER JOIN user u ON t.idUser = u.idUser
                 where c.idTopic = t.idTopic and t.likes > 12 OR t.unlikes > 12
-                group by t.idTopic")
+                group by t.idTopic");
+
                     ?>
 
             <div class="row d-flex justify-start-end mt-4">
@@ -249,14 +250,12 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                 <div id="carouselExampleControls" style="height: 100%;" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         
-                        <div class="carousel-item active">
-                          <div class="card bg-light d-flex justify-content-center align-items-center"  style="border: 1.5px solid rgb(7, 26, 57); height: 100%;">
-                                    <h3 style="color: rgb(255 50 59);"><b>Temas más interactuados</b></h3>
-                          </div>
+                        
                         </div>
                         <?php
                             while($resultTop = mysqli_fetch_array($queryTop)){
                         ?>
+                        
                         <div class="carousel-item" style="border: 1.5px solid rgb(7, 26, 57);">
                             <div class="card">
                             <div class="row mx-3 pt-2">
@@ -290,7 +289,12 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                         </div>
                         <?php 
                             }
+                            $topUser = mysqli_num_rows($queryTop);
                         ?>
+                        <div class="carousel-item <?php if($topUser != 0){echo "active"; }else{ echo ""; } ?>">
+                          <div class="card bg-light d-flex justify-content-center align-items-center"  style="border: 1.5px solid rgb(7, 26, 57); height: 100%;">
+                                    <h3 style="color: rgb(255 50 59);"><b>Temas más interactuados</b></h3>
+                          </div>
                     </div>
         <!-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
