@@ -108,7 +108,7 @@ if ($_SESSION["id"] == null) {
         </div>
         <div class="col-md-6 d-flex align-items-start justify-content-end">
             <div style="width: 5rem; height: 5rem;">
-                <img src="./img/foro-02.png" style="object-fit: contain; object-position: center;" width="100%" height="100%">
+                <img src="./img/ForoTech.png" style="object-fit: contain; object-position: center;" width="100%" height="100%">
             </div>
         </div>
         <div class="col-md-12 d-flex justify-content-start">
@@ -145,7 +145,7 @@ $num_rows = mysqli_num_rows($queryNotificacion);
     <nav class="nav">
             <div class="nav_list">
             <div class="">
-            <img class="imgLogo" style="margin-left: 0.6rem; margin-bottom: 1rem; border-radius: 50%;" src="img/logo.jpg" width="27%" height="17%" alt="">
+            <img class="imgLogo" style="margin-left: 0.6rem; margin-bottom: 1rem; border-radius: 50%;" src="img/Assist.png" width="27%" height="17%" alt="">
             </div>
             <div style="column-gap: 2rem;width: 1.5rem; height: 1.6rem; margin-left: 1.5rem;" class="d-flex mb-4">
             <?php

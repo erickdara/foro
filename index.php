@@ -67,8 +67,8 @@ $register->insertUser($data, $name);
             <h1 id="title"><span style="color: white; font-family: 'Alfa Slab One', cursive;">FORO ASSIST</span></h1>
         </div>
         <div class="col-md-6 mt-4 d-flex align-items-start justify-content-end">
-            <div style="width: 5rem; height: 5rem;">
-                <img src="./img/foro-02.png" style="object-fit: contain; object-position: center;" width="100%"
+            <div style="width: 5rem; height: 5rem; margin-right: 87px;">
+                <img src="./img/ForoTech.png" style="object-fit: contain; object-position: center;" width="100%"
                     height="100%">
             </div>
         </div>
@@ -103,8 +103,8 @@ if (isset($_SESSION['id'])) {?>
 
             <div class="nav_list">
                 <div class="">
-                    <img class="imgLogo" style="margin-left: 0.6rem; margin-bottom: 1rem; border-radius: 50%;"
-                        src="./img/logo.jpg" width="27%" height="15%" alt="">
+                    <img class="imgLogo" style="margin-left: 0.6rem; margin-bottom: 1rem;"
+                        src="./img/Assist.png" width="27%" height="15%" alt="">
                 </div>
                 <a href="#" class="nav_link" data-bs-toggle="modal" data-bs-target="#loginModal" id="logModal"> <i
                         class='bx bx-layer nav_icon'></i> <span class="nav_name">Iniciar Sesion</span> </a>
@@ -197,70 +197,26 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                         <span class="visually-hidden">Loading...</span>
                     </div>
                 </div>
-                <!-- Spinner End -->
+                <div class="col-md-5">
+                    <!-- Spinner End -->
 
-                <!--Start Carousel -->
-                <!-- <div class="col-md-5">
-                    <div id="carouselExampleCaptions" class="carousel slide" style="height: 100%;" data-bs-ride="carousel">
-                        <div class="carousel-indicators">
-                            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0"
-                                class="active" aria-current="true" aria-label="Slide 1"></button>
-                            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
-                                aria-label="Slide 2"></button>
-                            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
-                                aria-label="Slide 3"></button>
-                        </div>
+                    <!-- Start Carousel -->
+                    <div id="carouselExampleControls" style="height: 100%;" class="carousel slide carousel-fade"
+                        data-bs-ride="carousel">
                         <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <img src="..." class="d-block w-100" alt="...">
-                                <div class="carousel-caption d-none d-md-block text-dark">
-                                    <h5>First slide label</h5>
-                                    <p>Some representative placeholder content for the first slide.</p>
-                                </div>
-                            </div>
-                            <div class="carousel-item">
-                                <img src="..." class="d-block w-100" alt="...">
-                                <div class="carousel-caption d-none d-md-block text-dark">
-                                    <h5>Second slide label</h5>
-                                    <p>Some representative placeholder content for the second slide.</p>
-                                </div>
-                            </div>
-                            <div class="carousel-item">
-                                <img src="..." class="d-block w-100" alt="...">
-                                <div class="carousel-caption d-none d-md-block text-dark">
-                                    <h5>Third slide label</h5>
-                                    <p>Some representative placeholder content for the third slide.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
-                            data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
-                            data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
-                    </div>
-                </div> -->
-             <!--End Carousel -->
-             <div class="col-md-5">
-                <div id="carouselExampleControls" style="height: 100%;" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        
-                        
+
+
                         </div>
                         <?php
                             while($resultTop = mysqli_fetch_array($queryTop)){
                         ?>
-                        
-                        <div class="carousel-item" style="border: 1.5px solid rgb(7, 26, 57);">
+
+                        <div class="carousel-item">
                             <div class="card">
-                            <div class="row mx-3 pt-2">
+                                <div class="row mx-3 pt-2">
                                     <div class="col-2 col-md-2 d-flex justify-content-end">
-                                        <img src="./img/user.png" style="max-width: 3rem; max-height: 3rem;" alt="img_user">
+                                        <img src="./img/user.png" style="max-width: 3rem; max-height: 3rem;"
+                                            alt="img_user">
                                     </div>
                                     <div class="col-9 col-md-9 d-flex justify-content-start align-items-end p-2">
                                         <h6><b><?php echo $resultTop['nombres'] ?></b></h6>
@@ -271,15 +227,18 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                                 </div>
                                 <div class="row mt-2 mx-1">
                                     <div class="col-md-12 col-12">
-                                    <b style="color: rgb(255 50 59);">Tema:</b>&nbsp;<b style="color: rgb(7, 26, 57);"><?php echo $resultTop['titleTopic'] ?></b>
+                                        <b style="color: rgb(255 50 59);">Tema:</b>&nbsp;<b
+                                            style="color: rgb(7, 26, 57);"><?php echo $resultTop['titleTopic'] ?></b>
                                     </div>
                                 </div>
-                                <div class="row mt-1 mb-2">
+                                <div class="row mt-1">
                                     <div class="col-3 col-md-3 d-flex justify-content-center">&nbsp;&nbsp;
-                                        <small style="color:rgb(0, 253, 93);">Likes:<?php echo $resultTop['likes'] ?></small>
+                                        <small
+                                            style="color:rgb(0, 253, 93);">Likes:<?php echo $resultTop['likes'] ?></small>
                                     </div>
                                     <div class="col-3 col-md-3 d-flex justify-content-start">
-                                        <small style="color: rgb(255, 22, 22);">Unlikes: <?php echo $resultTop['unlikes'] ?></small>
+                                        <small style="color: rgb(255, 22, 22);">Unlikes:
+                                            <?php echo $resultTop['unlikes'] ?></small>
                                     </div>
                                     <div class="col-4 col-md-4">
                                         <small>Comentarios:<?php echo $resultTop['num'] ?></small>
@@ -292,20 +251,23 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                             $topUser = mysqli_num_rows($queryTop);
                         ?>
                         <div class="carousel-item <?php if($topUser != 0){echo "active"; }else{ echo ""; } ?>">
-                          <div class="card bg-light d-flex justify-content-center align-items-center"  style="border: 1.5px solid rgb(7, 26, 57); height: 100%;">
-                                    <h3 style="color: rgb(255 50 59);"><b>Temas más interactuados</b></h3>
-                          </div>
-                    </div>
-        <!-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                            <div class="card bg-light d-flex justify-content-center align-items-center"
+                                style="height: 100%;">
+                                <h3 style="color: rgb(255 50 59);"><b>Top Temas Interactuados</b></h3>
+                            </div>
+                        </div>
+                        <!-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
         </button> -->
-        <!-- <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                        <!-- <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Next</span>
         </button> -->
-        </div>
-            </div> 
+                    </div>
+
+                    <!-- End Carousel -->
+                </div>
 
             </div>
 
