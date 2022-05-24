@@ -48,7 +48,7 @@ $register->insertUser($data, $name);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
     <link rel="stylesheet" type="text/css" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -141,7 +141,7 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
 <body>
     <div class="height-100 bg-light">
         <div class="container">
-            <div class="row "></div>
+            <div class="row contain"></div>
             <div id="datos_buscador" class="row mt-4">
 
             </div>
@@ -396,7 +396,7 @@ $idTopic = $row['idTopic'];
                                                 FROM commentary c
                                                 INNER JOIN topic t ON c.idTopic = t.idTopic
                                                 INNER JOIN user u ON c.idUser = u.idUser
-                                                WHERE C.idTopic = '$idTopic'
+                                                WHERE c.idTopic = '$idTopic'
                                                 ORDER BY c.idCommentary DESC";
 
     $resultComentario = mysqli_query($link, $queryComentario);
@@ -672,8 +672,8 @@ if( $numTemas == 0){?>
                     </div>
                     <div class="mb-3 d-flex justify-content-center">
 
-                        <a href="#" onclick="document.getElementById('provider1').click();" class="fa fa-facebook"></a>
-                        <a href="#" onclick="document.getElementById('provider2').click();" class="fa fa-google"></a>
+                        <a href="#" onclick="document.getElementById('provider0').click();" class="fa fa-facebook"></a>
+                        <a href="#" onclick="document.getElementById('provider1').click();" class="fa fa-google"></a>
 
                     </div>
                 </div>

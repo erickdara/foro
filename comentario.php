@@ -24,8 +24,8 @@ session_start();
             <div class="col-md-6 d-flex justify-content-start">
                 <h1 id="title"><span style="color: white; font-family: 'Alfa Slab One', cursive;">FORO ASSIST</span></h1>
             </div>
-            <div class="col-md-6 d-flex align-items-start justify-content-end">
-                <div style="width: 5rem; height: 5rem;">
+            <div class="col-md-6 d-flex align-items-start justify-content-end ">
+                <div style="width: 5rem; height: 5rem; margin-right: 87px;">
                     <img src="./img/ForoTech.png" style="object-fit: contain; object-position: center;" width="100%" height="100%">
                 </div>
             </div>
@@ -68,7 +68,7 @@ $num_rows = mysqli_num_rows($queryNotificacion);
             <nav class="nav">
                 <div class="nav_list">
                 <div class="">
-                    <img class="imgLogo" style="margin-left: 0.6rem; margin-bottom: 1rem; border-radius: 50%;" src="img/Assist.png" width="27%" height="17%" alt="">
+                    <img class="imgLogo" style="margin-left: 0.6rem; margin-bottom: 1rem; " src="img/Assist.png" width="27%" height="17%" alt="">
                 </div>
                     <div style="column-gap: 2rem;width: 1.5rem; height: 1.6rem; margin-left: 1.5rem;" class="d-flex mb-4">
                         <?php

@@ -32,7 +32,7 @@ function loginUser() {
     var password = $("#pass").val();
 
     let inf =
-        `<div class="alert alert-success" id="login-info" role="alert">
+        `<div class="alert alert-success mt-3" id="login-info" role="alert">
                 Registro con el correo: ` +
         mail +
         ` exitoso </div>`;
@@ -127,13 +127,13 @@ function registerUser() {
                 $("#registerModal").modal("hide");
 
                 var inf =
-                    `<div class="alert alert-danger" id="login-info" role="alert">
+                    `<div class="alert alert-danger mt-5" id="login-info" role="alert">
             Este correo: ` +
                     mail +
                     ` ya se encuentra Registrado
                  </div>`;
 
-                $(inf).insertBefore(".container").fadeOut(12000);
+                $(inf).insertAfter(".contain").fadeOut(12000);
 
                 $("#usernames").val("");
                 $("#email").val("");
@@ -144,13 +144,13 @@ function registerUser() {
                 $("#registerModal").modal("hide");
 
                 var inf =
-                    `<div class="alert alert-success" id="login-info" role="alert">
+                    `<div class="alert alert-success mt-5" id="login-info" role="alert">
                 Registro con el correo: ` +
                     mail +
                     ` exitoso 
                      </div>`;
 
-                $(inf).insertBefore(".container").fadeOut(7000);
+                $(inf).insertAfter(".contain").fadeOut(7000);
                 //alert("Data: " + data + "\nStatus: " + status);
 
                 // alert("Usuario:" + mail + "registrado con exito");
@@ -441,10 +441,10 @@ $(window).on("load", function() {
     searchParams.has("success"); // true
     let param = searchParams.get("success");
     if (param == true) {
-        let inf = `<div class="alert alert-success" id="login-info" role="alert">
+        let inf = `<div class="alert alert-success mt-5" id="login-info" role="alert">
                         Registro con el correo: `
         ` exitoso </div>`;
-        $(inf).insertBefore(".container").fadeOut(7000);
+        $(inf).insertAfter(".contain").fadeOut(7000);
     }
 });
 
@@ -512,7 +512,8 @@ $(document).ready(function() {
 });
 
 function getCountNotification(){
-    if(typeof getCountNotifications === 'undefined'){
+    if( getCountNotifications == 0){
+        
         $('#notification_count').hide();
     }else{
         $('#notification_count').text(getCountNotifications);
