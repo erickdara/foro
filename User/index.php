@@ -350,14 +350,22 @@ while ($row = mysqli_fetch_array($resultQuery)) {
             <div class="card tema-informacion mt-2 mb-3">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-5 ">
+                        <div class="col-md-5 col-5">
                             <h6><strong>Publicado por: <?php echo $row['usernames'] ?>
                                     (<?php echo $row['roleType'] ?>)</strong></h6>
                         </div>
-                        <div class="col-7">
+                        <div class="col-md-5 col-5">
                             <p id="month" class="text-muted" style="font-size: smaller;">Fecha:
                                 <?php echo $row['fecha'] ?></p>
                         </div>
+                        <?php if($_SESSION['id'] == $row['idUser']){?>
+                            <div class="dropdown col-md-2 col-2 d-flex justify-content-end">
+                                <i class='bx bx-dots-horizontal-rounded bx-sm btn' id="dropdownEdit" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownEdit">      
+                                    <li><button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalActualizarTema<?php echo $row['idTopic']; ?>" type="button">Editar</button></li>               
+                                </ul>
+                            </div>
+                            <?php } ?>
                     </div>
                     <div class="row titulo titulo-tema">
                         <div class="col">
@@ -444,7 +452,39 @@ $idTopicC = $row['idTopic'];
                                 aria-expanded="false" aria-controls="collapseExample"><b>Comentar</b></button>
                         </div>
                     </div>
-
+                    <!-- Actualizar tema Modal-->
+            <div class="modal fade" id="modalActualizarTema<?php echo $row['idTopic']?>" tabindex="-1" aria-labelledby="modalActualizarTema" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalTema">Actualizar tema <?php echo $row['idTopic']; ?></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form action="../topicEdit.php" method="POST">
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="titleTopic" class="form-label">Titulo:</label>
+                                    <input id="titleTopic" type="text" class="form-control" name="titleTopic" value="<?php echo $row['titleTopic'] ?>" required>
+                                    <span id="titleTopic"></span>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="describeTopic" class="form-label">Descripción:</label>
+                                    <textarea id="describeTopic" name="describeTopic" class="form-control" cols="30" rows="8" maxlength="1000" required><?php echo $row['describeTopic'] ?></textarea>
+                                    <div class="mt-2" style="font-weight: bold;" id="charNum"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <input type="hidden" name="idTopic" value="<?php echo $row['idTopic']; ?>">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <input name="crearTema" type="submit" class="btn btn-primary" value="Actualizar tema"></input>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Fin modal -->
                     <form action="../comentar.php" method="POST">
                         <div class="row collapse mt-4" id="collapseComentar_tema<?php echo $row['idTopic'] ?>">
                             <div class="col-md-10">
