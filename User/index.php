@@ -36,7 +36,7 @@ require_once "../config.php";
             <h1 id="title"><span style="color: white; font-family: 'Alfa Slab One', cursive;">FORO ASSIST</span></h1>
         </div>
         <div class="col-md-6 d-flex align-items-start justify-content-end">
-            <div style="width: 5rem; height: 5rem;">
+            <div style="width: 5rem; height: 5rem; margin-right: 87px;">
                 <img src="../img/ForoTech.png" style="object-fit: contain; object-position: center;" width="100%"
                     height="100%">
             </div>
@@ -156,12 +156,13 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
 
         </div>
         <?php 
-                $queryTop = mysqli_query($link,"SELECT t.idTopic, t.titleTopic, u.usernames as nombres, u.userImage, t.likes, t.unlikes, count(c.idTopic) as num
+                $queryTop = mysqli_query($link,"SELECT t.idTopic, t.titleTopic, u.usernames as nombres, t.likes, COUNT(c.idTopic) as num_com 
                 FROM commentary c
                 INNER JOIN topic t ON c.idTopic = t.idTopic
                 INNER JOIN user u ON t.idUser = u.idUser
-                where c.idTopic = t.idTopic and t.likes > 12 OR t.unlikes > 12
-                group by t.idTopic");
+				WHERE c.idTopic = t.idTopic and t.likes >= 12
+                group by t.idTopic
+                HAVING num_com >= 6");
 
                     ?>
 
@@ -253,7 +254,7 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                                         <?php echo $resultTop['unlikes'] ?></small>
                                 </div>
                                 <div class="col-4 col-md-4 text-dark">
-                                    <small>Comentarios:<?php echo $resultTop['num'] ?></small>
+                                    <small>Comentarios:<?php echo $resultTop['num_com'] ?></small>
                                 </div>
                             </div>
                                 </a>

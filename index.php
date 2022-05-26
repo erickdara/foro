@@ -146,19 +146,20 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
 
             </div>
             <?php 
-                $queryTop = mysqli_query($link,"SELECT t.idTopic, t.titleTopic, u.usernames as nombres, u.userImage, t.likes, t.unlikes, count(c.idTopic) as num
+                $queryTop = mysqli_query($link,"SELECT t.idTopic, t.titleTopic, u.usernames as nombres, t.likes, COUNT(c.idTopic) as num_com 
                 FROM commentary c
                 INNER JOIN topic t ON c.idTopic = t.idTopic
                 INNER JOIN user u ON t.idUser = u.idUser
-                where c.idTopic = t.idTopic and t.likes > 12 OR t.unlikes > 12
-                group by t.idTopic");
+				WHERE c.idTopic = t.idTopic and t.likes >= 12
+                group by t.idTopic
+                HAVING num_com >= 6");
 
                     ?>
 
             <div class="row d-flex justify-start-end mt-4">
                 <div class="col-md-2 d-flex align-items-end justify-content-start">
                     <div class="row tema">
-                        <button type="button" class="btn d-flex justify-content-between align-items-center"
+                        <button type="button" class="btn justify-content-between align-items-start"
                             data-bs-toggle="modal" data-bs-target="#validateModal">
                             <div class="col-md-6 d-flex justify-content-end btn">
                                 <img class="img img-add-tema" src="img/agregar.png" alt="">
@@ -246,7 +247,7 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                                             <?php echo $resultTop['unlikes'] ?></small>
                                     </div>
                                     <div class="col-4 col-md-4 text-dark">
-                                        <small>Comentarios:<?php echo $resultTop['num'] ?></small>
+                                        <small>Comentarios:<?php echo $resultTop['num_com'] ?></small>
                                     </div>
                                 </div>
                                 </a>
