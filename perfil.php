@@ -6,7 +6,6 @@ session_start();
 
 // Check if the user is already logged in, if yes then redirect him to welcome page
 if ($_SESSION["id"] == null) {
-    echo 'entra a la validación de sesion';
     print($_SESSION["id"]);
     header("location: index.php");
     die();

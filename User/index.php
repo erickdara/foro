@@ -156,7 +156,7 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
 
         </div>
         <?php 
-                $queryTop = mysqli_query($link,"SELECT t.idTopic, t.titleTopic, u.usernames as nombres, t.likes, t.unlikes, count(c.idTopic) as num
+                $queryTop = mysqli_query($link,"SELECT t.idTopic, t.titleTopic, u.usernames as nombres, u.userImage, t.likes, t.unlikes, count(c.idTopic) as num
                 FROM commentary c
                 INNER JOIN topic t ON c.idTopic = t.idTopic
                 INNER JOIN user u ON t.idUser = u.idUser
@@ -169,7 +169,7 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
             <div class="col-md-2 d-flex align-items-end justify-content-start">
                 <div class="row tema">
                     <button type="button" class="btn d-flex justify-content-between align-items-center"
-                        data-bs-toggle="modal" data-bs-target="#validateModal">
+                        data-bs-toggle="modal" data-bs-target="#modalTema<?php echo $_SESSION['rol'] ?>">
                         <div class="col-md-6 d-flex justify-content-end btn">
                             <img class="img img-add-tema" src="../img/agregar.png" alt="">
                         </div>
@@ -211,28 +211,31 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                 <!-- Spinner End -->
 
                 <!-- Start Carousel -->
-                <div id="carouselExampleControls" style="height: 100%;" class="carousel slide carousel-fade"
-                    data-bs-ride="carousel">
+                <div id="carouselExampleControls" style="height: 100%;" class="carousel slide carousel-fade" data-bs-ride="carousel">
                     <div class="carousel-inner">
-
-
-                    </div>
                     <?php
                             while($resultTop = mysqli_fetch_array($queryTop)){
                         ?>
 
                     <div class="carousel-item">
                         <div class="card">
+                        <a href="#tema_<?php echo $resultTop['idTopic']?>">
                             <div class="row mx-3 pt-2">
                                 <div class="col-2 col-md-2 d-flex justify-content-end">
-                                    <img src="../img/user.png" style="max-width: 3rem; max-height: 3rem;" alt="img_user">
+                                <?php
+                            if ($resultTop['userImage'] != null) {
+                                ?>
+                                <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($resultTop['userImage']); ?>" style="object-fit: cover; object-position: center; border:1px solid #ffff; max-width: 3rem; max-height: 3rem;" class="rounded-circle" alt="Imagen de usuario">
+                            <?php
+                            } else {?>
+                            <img src="../img/user.png"  style="object-fit: cover; object-position: center; border:1px solid #ffff; max-width: 3rem; max-height: 3rem;" class="rounded-circle" alt="Imagen de usuario">
+                                    <?php       
+                                    }
+                                    ?>
                                 </div>
-                                <div class="col-9 col-md-9 d-flex justify-content-start align-items-end p-2">
+                                <div class="col-9 col-md-9 d-flex justify-content-start align-items-end p-2 text-dark">
                                     <h6><b><?php echo $resultTop['nombres'] ?></b></h6>
                                 </div>
-                                <!-- <div class="col-12 col-md-12 d-flex justify-content-start mt-2">
-                                        <b style="color: rgb(255 50 59);">Tema:</b>&nbsp;<b style="color: rgb(7, 26, 57);">Transformación digital</b>
-                                    </div> -->
                             </div>
                             <div class="row mt-2 mx-1">
                                 <div class="col-md-12 col-12">
@@ -249,10 +252,11 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                                     <small style="color: rgb(255, 22, 22);">Unlikes:
                                         <?php echo $resultTop['unlikes'] ?></small>
                                 </div>
-                                <div class="col-4 col-md-4">
+                                <div class="col-4 col-md-4 text-dark">
                                     <small>Comentarios:<?php echo $resultTop['num'] ?></small>
                                 </div>
                             </div>
+                                </a>
                         </div>
                     </div>
                     <?php 
@@ -260,11 +264,13 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                             $topUser = mysqli_num_rows($queryTop);
                         ?>
                     <div class="carousel-item <?php if($topUser != 0){echo "active"; }else{ echo ""; } ?>">
-                        <div class="card bg-light d-flex justify-content-center align-items-center"
-                            style="height: 100%;">
+                        <div class="card bg-light d-flex justify-content-center align-items-centert-" style="height: 100%;">
                             <h3 style="color: rgb(255 50 59);"><b>Top Temas Interactuados</b></h3>
                         </div>
                     </div>
+
+                    </div>
+
                     <!-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>

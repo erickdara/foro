@@ -36,8 +36,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $idUsuarioDestino =  $resultQueryTema['idUser'];
 
             $queryNotificacion = mysqli_query($link,"INSERT INTO notification (idNotification, idUser, idDestUser, idTopic, idNotificationType, created_at) VALUES (idNotification, '$idUsuarioEmisor', '$idUsuarioDestino','$idTema', 2, now());");
-
-            header("Location: ./User/index.php");
+            
+            header("Location: ./User/index.php#tema_$idTema");
             exit;
         }else{
             echo("Query notificacion failed");

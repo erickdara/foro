@@ -146,7 +146,7 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
 
             </div>
             <?php 
-                $queryTop = mysqli_query($link,"SELECT t.idTopic, t.titleTopic, u.usernames as nombres, t.likes, t.unlikes, count(c.idTopic) as num
+                $queryTop = mysqli_query($link,"SELECT t.idTopic, t.titleTopic, u.usernames as nombres, u.userImage, t.likes, t.unlikes, count(c.idTopic) as num
                 FROM commentary c
                 INNER JOIN topic t ON c.idTopic = t.idTopic
                 INNER JOIN user u ON t.idUser = u.idUser
@@ -204,21 +204,26 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                     <div id="carouselExampleControls" style="height: 100%;" class="carousel slide carousel-fade"
                         data-bs-ride="carousel">
                         <div class="carousel-inner">
-
-
-                        </div>
                         <?php
                             while($resultTop = mysqli_fetch_array($queryTop)){
                         ?>
-
                         <div class="carousel-item">
                             <div class="card">
+                            <a href="#tema_<?php echo $resultTop['idTopic']?>">
                                 <div class="row mx-3 pt-2">
                                     <div class="col-2 col-md-2 d-flex justify-content-end">
-                                        <img src="./img/user.png" style="max-width: 3rem; max-height: 3rem;"
-                                            alt="img_user">
+                        <?php
+                        if ($resultTop['userImage'] != null) {
+                            ?>
+                            <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($resultTop['userImage']); ?>" style="object-fit: cover; object-position: center; border:1px solid #ffff; max-width: 3rem; max-height: 3rem;" class="rounded-circle" alt="Imagen de usuario">
+                        <?php
+                        } else {?>
+                        <img src="./img/user.png"  style="object-fit: cover; object-position: center; border:1px solid #ffff; max-width: 3rem; max-height: 3rem;" class="rounded-circle" alt="Imagen de usuario">
+                                    <?php       
+                                    }
+                        ?>
                                     </div>
-                                    <div class="col-9 col-md-9 d-flex justify-content-start align-items-end p-2">
+                                    <div class="col-9 col-md-9 d-flex justify-content-start align-items-end p-2 text-dark">
                                         <h6><b><?php echo $resultTop['nombres'] ?></b></h6>
                                     </div>
                                     <!-- <div class="col-12 col-md-12 d-flex justify-content-start mt-2">
@@ -240,11 +245,12 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                                         <small style="color: rgb(255, 22, 22);">Unlikes:
                                             <?php echo $resultTop['unlikes'] ?></small>
                                     </div>
-                                    <div class="col-4 col-md-4">
+                                    <div class="col-4 col-md-4 text-dark">
                                         <small>Comentarios:<?php echo $resultTop['num'] ?></small>
                                     </div>
                                 </div>
-                            </div>
+                                </a>
+                            </div>         
                         </div>
                         <?php 
                             }
@@ -255,6 +261,8 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                                 style="height: 100%;">
                                 <h3 style="color: rgb(255 50 59);"><b>Top Temas Interactuados</b></h3>
                             </div>
+                        </div>
+
                         </div>
                         <!-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
