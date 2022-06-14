@@ -14,13 +14,15 @@ require './PHPMailer/src/SMTP.php';
             // Server settings
             //$mail->SMTPDebug = SMTP::DEBUG_SERVER; // for detailed debug output
             $sendMail->isSMTP();
+
+            $sendMail-> SMTP::DEBUG_SERVER;
             $sendMail->Host = 'smtp.gmail.com';
             $sendMail->SMTPAuth = true;
             $sendMail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $sendMail->Port = 587;
         
             $sendMail->Username = 'erick1rg@gmail.com'; // YOUR gmail email
-            $sendMail->Password = 'Erda-1022'; // YOUR gmail password
+            $sendMail->Password = 'mmarviwzyrdpyuim'; // YOUR gmail password
         
             // Sender and recipient settings
             $sendMail->setFrom('erick1rg@gmail.com', 'Foro Assist');

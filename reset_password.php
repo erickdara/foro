@@ -39,20 +39,24 @@ if(isset($_POST['reset-password'])){
    
 
     $mail = new PHPMailer();
+
+    
     $mail->CharSet =  "utf-8";
     $mail->IsSMTP();
+
+    $mail-> SMTPDebug = 2;
     // enable SMTP authentication
     $mail->SMTPAuth = true;                  
     // GMAIL username
     $mail->Username = "erick1rg@gmail.com";
     // GMAIL password
-    $mail->Password = "Erda-1022";
+    $mail->Password = "mmarviwzyrdpyuim";
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     // sets GMAIL as the SMTP server
     $mail->Host = "smtp.gmail.com";
     // set the SMTP port for the GMAIL server
     $mail->Port = "587";
-    $mail->From='your_gmail_id@gmail.com';
+    $mail->From='erick1rg@gmail.com';
     $mail->FromName='Foro ASSIST';
     $mail->AddAddress($email, 'reciever_name');
     $mail->Subject  =  'Restablecer Contraseña';

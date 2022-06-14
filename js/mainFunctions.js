@@ -169,6 +169,7 @@ function registerUser() {
 $.get(
     "http://localhost/Foro/App/Auth/callback.php?provider=Google",
     function(data, textStatus, jqXHR) {
+        var data = data;
         console.log("Lo que llega de registerSocial".data.response);
     },
     "json"

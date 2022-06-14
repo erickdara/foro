@@ -159,6 +159,7 @@ class RegisterSocial{
                     $_SESSION['mail'] = $userMail;
 
                     header('Location: ./User/index.php?provider=' . $provider);
+                    exit();
         }
     }
 }
