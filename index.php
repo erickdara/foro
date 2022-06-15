@@ -32,6 +32,14 @@ $errors = [];
     <!-- <?php print_r($adapter->getUserProfile())?> -->
     <?php //echo '' . $name;
 $data = $adapter->getUserProfile();
+var_dump($data);
+
+$identifier = $data->{'identifier'};
+$mail = $data->{'emailVerified'};
+
+echo 'El identificador: '.$identifier;
+echo 'El e-mail: '.$mail;
+
 $register = new RegisterSocial();
 $register->insertUser($data, $name);
 ?>

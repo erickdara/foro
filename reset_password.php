@@ -68,7 +68,7 @@ if(isset($_POST['reset-password'])){
     }
     else
     {
-      echo "Mail Error - >".$mail->ErrorInfo;
+      array_push($errors, "Error en el envío de correo: ".$mail->ErrorInfo);
     }
   }
 }
