@@ -3,8 +3,8 @@
  * Build a simple HTML page with multiple providers, opening provider authentication in a pop-up.
  */
 
-require '../../src/autoload.php';
-require 'config.php';
+require '../../../hybridauth/src/autoload.php';
+require '../example/config.php';
 
 use Hybridauth\Hybridauth;
 
@@ -21,7 +21,7 @@ $adapters = $hybridauth->getConnectedAdapters();
     <script>
         function auth_popup(provider) {
             // replace 'path/to/hybridauth' with the real path to this script
-            var authWindow = window.open('https://path/to/hybridauth/examples/example_07/callback.php?provider=' + provider, 'authWindow', 'width=600,height=400,scrollbars=yes');
+            var authWindow = window.open('http://localhost/Foro/App/Auth/example/callback.php?provider=' + provider, 'authWindow', 'width=600,height=400,scrollbars=yes');
             window.closeAuthWindow = function () {
               authWindow.close();
             }
