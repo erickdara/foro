@@ -2,7 +2,7 @@
 
 // Include config file
 require_once "config.php";
-include("mail.php");
+require_once "mail.php";
 
 // passing true in constructor enables exceptions in PHPMailer
 //$sendMail = new PHPMailer(true);

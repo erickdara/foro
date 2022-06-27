@@ -18,9 +18,9 @@ $errors = [];
     <ul>
         <?php foreach ($hybridauth->getProviders() as $name): ?>
         <?php if (!isset($adapters[$name])): ?>
-        <li>
-            <a class="provider" href="<?php print $config['callback'] . "?provider={$name}";?>">
-                Sign in with <strong><?php print $name;?></strong>
+            <li>
+            <a id="auth" href="#" onclick="javascript:auth_popup('<?php print $name ?>');">
+                Sign in with <?php print $name ?>
             </a>
         </li>
         <?php endif;?>
@@ -29,20 +29,44 @@ $errors = [];
 
     <?php require_once 'registerSocial.php'?>
     <?php foreach ($adapters as $name => $adapter): ?>
-    <!-- <?php print_r($adapter->getUserProfile())?> -->
+    <li>
+        <strong><?php print $adapter->getUserProfile()->displayName; ?></strong> from
+        <i><?php print $name; ?></i>
+        <span>(<a href="<?php print $config['callback'] . "?logout={$name}"; ?>">Log Out</a>)</span>
+    </li>
+
+       <!--  if(isset(adapters)){
+            header("location: logout.php");
+        } -->
+
+        $email =  $adapter->{'emailVerified'};
+
+        echo 'email: '.$email;
+
+        <script type="text/javascript">
+        var loggedEmail = "<?php echo"$email"?>";
+        document.write(loggedEmail);
+        console.log(loggedEmail);
+        </script>
+
+    <?php print_r($adapter->getUserProfile())?> 
     <?php //echo '' . $name;
-$data = $adapter->getUserProfile();
-var_dump($data);
+    $data = $adapter->getUserProfile();
+    var_dump($data);
 
-$identifier = $data->{'identifier'};
-$mail = $data->{'emailVerified'};
+    $identifier = $data->{'identifier'};
+    $mail = $data->{'emailVerified'};
 
-echo 'El identificador: '.$identifier;
-echo 'El e-mail: '.$mail;
+    echo 'El identificador: '.$identifier;
+    echo 'El e-mail: '.$mail;
 
-$register = new RegisterSocial();
-$register->insertUser($data, $name);
+    if(empty($data)){
+    $register = new RegisterSocial();
+    $register->insertUser($data, $name);
+    }
 ?>
+
+
     <span>(<a href="<?php print $config['callback'] . "?logout={$name}";?>">Log Out</a>)</span>
     <?php endforeach;?>
 </div>
@@ -65,6 +89,17 @@ $register->insertUser($data, $name);
     <script src="https://www.google.com/recaptcha/api.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <script>
+        function auth_popup(provider) {
+            // replace 'path/to/hybridauth' with the real path to this script
+            var authWindow = window.open('http://localhost/Foro/App/Auth/callback.php?provider=' + provider, 'authWindow', 'width=600,height=400,scrollbars=yes');
+            window.closeAuthWindow = function () {
+            window.location = 'http://localhost/foro/User/index.php?provider='+ provider;
+            authWindow.close();
+            }
+            return false;
+        }
+    </script>
 
     <title>Foro ASSIST</title>
 </head>
@@ -690,7 +725,7 @@ if( $numTemas == 0){?>
                     <div class="mb-3 d-flex justify-content-center">
 
                         <a href="#" onclick="document.getElementById('provider0').click();" class="fa fa-facebook"></a>
-                        <a href="#" onclick="document.getElementById('provider1').click();" class="fa fa-google"></a>
+                        <a href="#" onclick="document.getElementById('auth').click();" class="fa fa-google"></a>
 
                     </div>
                 </div>
@@ -768,7 +803,7 @@ if( $numTemas == 0){?>
 
                             <a href="#" onclick="document.getElementById('provider1').click();"
                                 class="fa fa-facebook"></a>
-                            <a href="#" onclick="document.getElementById('provider2').click();"
+                            <a href="#" onclick="document.getElementById('auth').click();"
                                 class="fa fa-google"></a>
 
                         </div>

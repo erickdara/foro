@@ -1,10 +1,10 @@
 <?php
 /**
- * Build a simple HTML page with multiple providers.
+ * Build a simple HTML page with multiple providers, opening provider authentication in a pop-up.
  */
 
-include '../../hybridauth/src/autoload.php';
-include 'config.php';
+require '../../../hybridauth/src/autoload.php';
+require './config.php';
 
 use Hybridauth\Hybridauth;
 
@@ -16,36 +16,50 @@ $adapters = $hybridauth->getConnectedAdapters();
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Example 06</title>
+    <title>Example 07</title>
+
+    <script>
+        function auth_popup(provider) {
+            // replace 'path/to/hybridauth' with the real path to this script
+            var authWindow = window.open('http://localhost/Foro/App/Auth/example/callback.php?provider=' + provider, 'authWindow', 'width=600,height=400,scrollbars=yes');
+            window.closeAuthWindow = function () {
+              authWindow.close();
+            }
+
+            return false;
+        }
+    </script>
+    
 </head>
 <body>
-<h1>Sign in</h1>
+    <h1>Sign in</h1>
 
-<ul>
-    <?php foreach ($hybridauth->getProviders() as $name) : ?>
-        <?php if (!isset($adapters[$name])) : ?>
-            <li>
-                <a href="<?php print $config['callback'] . "?provider={$name}"; ?>">
-                    Sign in with <strong><?php print $name; ?></strong>
-                </a>
-            </li>
-        <?php endif; ?>
-    <?php endforeach; ?>
-</ul>
+    <ul>
+
+<?php foreach ($hybridauth->getProviders() as $name) : ?>
+    <?php if (!isset($adapters[$name])) : ?>
+        <li>
+            <a href="#" onclick="javascript:auth_popup('<?php print $name ?>');">
+                Sign in with <?php print $name ?>
+            </a>
+        </li>
+    <?php endif; ?>
+<?php endforeach; ?>
+
+    </ul>
 
 <?php if ($adapters) : ?>
     <h1>You are logged in:</h1>
     <ul>
         <?php foreach ($adapters as $name => $adapter) : ?>
             <li>
-            <strong><?php print_r($adapter->getUserProfile()) ?></strong> from
                 <strong><?php print $adapter->getUserProfile()->displayName; ?></strong> from
                 <i><?php print $name; ?></i>
-                <strong><?php print $adapter->getUserProfile()->email; ?>
                 <span>(<a href="<?php print $config['callback'] . "?logout={$name}"; ?>">Log Out</a>)</span>
             </li>
         <?php endforeach; ?>
     </ul>
 <?php endif; ?>
+
 </body>
 </html>

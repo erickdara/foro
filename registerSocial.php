@@ -1,5 +1,10 @@
 
 <?php
+ob_start();
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(32767);
+
 require_once 'config.php';
 
 
@@ -38,105 +43,8 @@ class RegisterSocial{
         return $result->num_rows;
     }
 
-    public function insertUser($data, $provider)
-    {
-        echo 'El identifier: ' . $data->{'identifier'};
-        echo 'El correo: ' . $data->{'emailVerified'};
-
-        $provider = $provider;
-        $identifier = $data->{'identifier'};
-        $mail = $data->{'emailVerified'};
-        $username = $data->{'displayName'};
-
-        echo 'El nombre provedor: ' . $provider;
-
+    public function loginUser($data, $provider){
         $conn = mysqli_connect("localhost", "root", "", "forumdatabase");
-        if (mysqli_connect_errno()) {
-            printf("Falló la conexión: %s\n", mysqli_connect_error());
-        }
-
-        mysqli_autocommit($conn, false);
-
-        $ExistingUser = new RegisterSocial();
-        $ifExistingUser = $ExistingUser->getExistingUser($mail);
-
-        if ($ifExistingUser == 0) { //No existe el usuario
-            $queryUser = "INSERT INTO user(idUser, idRole, usernames, userMail, created_at) VALUES ('','1','$username','$mail',now())";
-
-            $result = mysqli_query($conn, $queryUser);
-
-            if ($result !== true) {
-                mysqli_rollback($conn); //If error, roll back transaction
-            }
-
-            //return $result->num_rows;
-
-            $sql = "SELECT idUser FROM user WHERE userMail = ?";
-
-            if ($stmt = mysqli_prepare($conn, $sql)) {
-                include 'mail.php';
-                // Bind variables to the prepared statement as parameters
-                mysqli_stmt_bind_param($stmt, "s", $param_mail);
-
-                // Set parameters
-                $param_mail = $mail;
-
-                // Attempt to execute the prepared statement
-                if (mysqli_stmt_execute($stmt)) {
-                    // Store result
-                    mysqli_stmt_store_result($stmt);
-
-                    // Check if username exists, if yes then verify password
-                    if (mysqli_stmt_num_rows($stmt) == 1) {
-
-                        // Bind result variables
-                        mysqli_stmt_bind_result($stmt, $idUsuario);
-                        if (mysqli_stmt_fetch($stmt)) {
-                            echo 'entro al BIND';
-
-                            $idUsuario = $idUsuario;
-
-                            //TODO: Enviar estas variables por parametro para una función que realize el insert de user-social
-                            $querySocial = "INSERT INTO user_social(id, user_id, social_id, provider, created_at) VALUES ('','$idUsuario','$identifier','$provider',now())";
-                            $result = mysqli_query($conn, $querySocial);
-
-                                $sendMail = new Mail();
-                                
-
-                            
-                            $sendMail -> sendMail($mail,$username);
-
-                            if($sendMail){
-                                // Redirect to login page
-                                header("location: index.php");
-                            }else{
-                                echo 'No se envió email';
-                            }
-
-                            if ($result !== true) {
-                                mysqli_rollback($conn); //If error, roll back transaction
-                            }
-
-                            //Assuming no error, commit transaction
-                            mysqli_commit($conn);
-
-
-                            /* cerrar la sentencia */
-                            $stmt->close();
-
-                            /* cerrar la conexión */
-                            $conn->close();
-                        }
-                    }
-                }
-            }
-        } else {
-            // session_start();
-            // $_SESSION["loggedin"] = true;
-            // header('Location: ./User/index.php');
-            // $validateUser = 'ya existe el usuario';
-            // echo json_encode(array("response"=>$validateUser));
-            $conn = mysqli_connect("localhost", "root", "", "forumdatabase");
             if (mysqli_connect_errno()) {
                 printf("Falló la conexión: %s\n", mysqli_connect_error());
             }
@@ -158,8 +66,109 @@ class RegisterSocial{
                     $_SESSION['rol'] = $idRol;
                     $_SESSION['mail'] = $userMail;
 
-                    header('Location: ./User/index.php?provider=' . $provider);
+                    /* cerrar la conexión */
+                    $conn->close();
+                    //TODO: si no hace el redirect retornar un bool con la consulta realizada puede ser en una función
+                    header('Location:./User/index.php?provider='. $provider);
                     exit();
+    }
+
+    public function insertUser($data, $provider)
+    {
+        $identifier = $data->{'identifier'};
+        $mail= $data->{'emailVerified'};
+
+        //$provider = $provider;
+        $identifier = $data->{'identifier'};
+        $mail = $data->{'emailVerified'};
+        $username = $data->{'displayName'};
+
+        echo 'El nombre provedor: ' . $provider;
+
+        $conn = mysqli_connect("localhost", "root", "", "forumdatabase");
+        if (mysqli_connect_errno()) {
+            printf("Falló la conexión: %s\n", mysqli_connect_error());
+        }
+
+        mysqli_autocommit($conn, false);
+
+        $ExistingUser = new RegisterSocial();
+        $ifExistingUser = $ExistingUser->getExistingUser($mail);
+
+        if ($ifExistingUser == 0) { //No existe el usuario se realiza insert del correo
+            $queryUser = "INSERT INTO user(idUser, idRole, usernames, userMail, created_at) VALUES ('','1','$username','$mail',now())";
+
+            //Resultado del INSERT
+            $result = mysqli_query($conn, $queryUser);
+
+            /* if ($result !== true) {
+                mysqli_rollback($conn); //If error, roll back transaction
+            } */
+
+            //return $result->num_rows;
+            //Consultar el usuario 
+            $sql = "SELECT idUser FROM user WHERE userMail = ?";
+
+            if ($stmt = mysqli_prepare($conn, $sql)) {
+                require_once  'mail.php';
+                // Bind variables to the prepared statement as parameters
+                mysqli_stmt_bind_param($stmt, "s", $param_mail);
+
+                // Set parameters
+                $param_mail = $mail;
+
+                // Attempt to execute the prepared statement
+                if (mysqli_stmt_execute($stmt)) {
+                    // Store result
+                    mysqli_stmt_store_result($stmt);
+
+                    // Check if username exists, if yes then verify password
+                    if (mysqli_stmt_num_rows($stmt) == 1) {
+
+                        // Bind result variables
+                        mysqli_stmt_bind_result($stmt, $idUsuario);
+                        if (mysqli_stmt_fetch($stmt)) {
+                            echo 'entro al BIND';
+
+                            //$idUsuario = $idUsuario;
+
+                            //TODO: Enviar estas variables por parametro para una función que realize el insert de user-social
+                            $querySocial = "INSERT INTO user_social(id, user_id, social_id, provider, created_at) VALUES ('','$idUsuario','$identifier','$provider',now())";
+                            $result = mysqli_query($conn, $querySocial);
+
+                            if ($result !== true) {
+                                mysqli_rollback($conn); //If error, roll back transaction
+                            }
+
+                            //Assuming no error, commit transaction
+                            mysqli_commit($conn);
+
+                            $sendMail = new Mail();
+                                
+                            $sendMail -> sendMail($mail,$username);
+
+                            if($sendMail){
+                                // Redirect to login page
+                                echo 'Se envió email correctamente';
+                                //header("location: index.php");
+                            }else{
+                                echo 'No se envió email';
+                            }
+                            /* cerrar la sentencia */
+                            $stmt->close();
+                            
+                            /* cerrar la conexión */
+                            $conn->close();
+                            
+                            $this->loginUser($data, $provider);
+                        }
+                    }
+                }
+            }
+        } else {
+            $this->loginUser($data, $provider);
         }
     }
 }
+ob_end_flush();
+?>

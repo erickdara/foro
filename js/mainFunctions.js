@@ -1,6 +1,7 @@
 //Global Variables
 let loggedUser;
 let provider;
+let loggedMail;
 
 $("#nav-bar").mouseover(function() {
     //alert("Estoy entrando al evento mouseover");
@@ -165,15 +166,6 @@ function registerUser() {
         "json"
     );
 }
-
-$.get(
-    "http://localhost/Foro/App/Auth/callback.php?provider=Google",
-    function(data, textStatus, jqXHR) {
-        var data = data;
-        console.log("Lo que llega de registerSocial".data.response);
-    },
-    "json"
-);
 
 function buscar(buscar) {
     var parametros = { buscar: buscar };
@@ -449,10 +441,22 @@ $(window).on("load", function() {
     }
 });
 
-$.get("/Foro/User/index.php", "provider=", function(data, textStatus, jqXHR) {
-    const urlParams = new URLSearchParams(window.location.search);
-    const param = urlParams.get("provider");
-    provider = param;
+$.get("/foro/User/index.php", "provider=", function(data, textStatus) {
+    if(typeof loggedEmail === 'undefined'){
+    loggedMail = loggedEmail;
+    }
+    var data = data;
+    var textStatus = textStatus;
+    //console.log("Lo que llega de registerSocial"+loggedMail);
+    //const urlParams = new URLSearchParams(window.location.search);
+    //const param = urlParams.get("provider");
+    if(typeof loggedEmail === 'undefined'){
+        window.location = 'http://localhost/foro/index.php';
+        }else if((typeof loggedEmail !== 'undefined' && textStatus == 'success')) {
+        alert('Esta definida con el mail: ' + loggedEmail);
+        }
+    //console.log(param);
+    //provider = param;
 });
 
 function showModalLogin() {

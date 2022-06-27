@@ -4,7 +4,7 @@ header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 
 include 'hybridauth/src/autoload.php';
-include 'App/Auth/example/config.php';
+include 'App/Auth/config.php';
 include 'utils.php';
 
 $utils = new Utils();
@@ -34,20 +34,39 @@ $errors = [];
         <i><?php print $name; ?></i>
         <span>(<a href="<?php print $config['callback'] . "?logout={$name}"; ?>">Log Out</a>)</span>
     </li>
+
+       <!--  if(isset(adapters)){
+            header("location: logout.php");
+        } -->
+
+        $email =  $adapter->{'emailVerified'};
+
+        echo 'email: '.$email;
+
+        <script type="text/javascript">
+        var loggedEmail = "<?php echo"$email"?>";
+        document.write(loggedEmail);
+        console.log(loggedEmail);
+        </script>
+
     <?php print_r($adapter->getUserProfile())?> 
     <?php //echo '' . $name;
-$data = $adapter->getUserProfile();
-var_dump($data);
+    $data = $adapter->getUserProfile();
+    var_dump($data);
 
-$identifier = $data->{'identifier'};
-$mail = $data->{'emailVerified'};
+    $identifier = $data->{'identifier'};
+    $mail = $data->{'emailVerified'};
 
-echo 'El identificador: '.$identifier;
-echo 'El e-mail: '.$mail;
+    echo 'El identificador: '.$identifier;
+    echo 'El e-mail: '.$mail;
 
-$register = new RegisterSocial();
-$register->insertUser($data, $name);
+    if(empty($data)){
+    $register = new RegisterSocial();
+    $register->insertUser($data, $name);
+    }
 ?>
+
+
     <span>(<a href="<?php print $config['callback'] . "?logout={$name}";?>">Log Out</a>)</span>
     <?php endforeach;?>
 </div>
@@ -73,11 +92,11 @@ $register->insertUser($data, $name);
     <script>
         function auth_popup(provider) {
             // replace 'path/to/hybridauth' with the real path to this script
-            var authWindow = window.open('http://localhost/Foro/App/Auth/example/callback.php?provider=' + provider, 'authWindow', 'width=600,height=400,scrollbars=yes');
+            var authWindow = window.open('http://localhost/Foro/App/Auth/callback.php?provider=' + provider, 'authWindow', 'width=600,height=400,scrollbars=yes');
             window.closeAuthWindow = function () {
-              authWindow.close();
+            window.location = 'http://localhost/foro/User/index.php?provider='+ provider;
+            authWindow.close();
             }
-
             return false;
         }
     </script>
@@ -784,7 +803,7 @@ if( $numTemas == 0){?>
 
                             <a href="#" onclick="document.getElementById('provider1').click();"
                                 class="fa fa-facebook"></a>
-                            <a href="#" onclick="document.getElementById('provider2').click();"
+                            <a href="#" onclick="document.getElementById('auth').click();"
                                 class="fa fa-google"></a>
 
                         </div>

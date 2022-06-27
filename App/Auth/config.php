@@ -1,32 +1,27 @@
 <?php
-
+/**
+ * Build a configuration array to pass to `Hybridauth\Hybridauth`
+ *
+ * Set the Authorization callback URL to https://path/to/hybridauth/examples/example_07/callback.php
+ * Understandably, you need to replace 'path/to/hybridauth' with the real path to this script.
+ */
 $config = [
-
-    'callback' => "http://localhost/Foro/App/Auth/callback.php",
-    //'callback' => "http://localhost/Foro/App/Auth/Auth.php",
-
+    'callback' => 'http://localhost/Foro/App/Auth/callback.php',
     'providers' => [
-        'Twitter' => [
-            'enabled' => true,
-            'keys' => [
-                'key' => 'r1TpqNVJ4CvHaIsHNu10ALvsX',
-                'secret' => 'VRMqNLLIpBgGSYyZUsg6BowoELs4sZtFSxcY5p6r2Rh6yTnhak',
-            ],
-            "includeEmail" => true,
-        ],
-
-        'Facebook' => [
-            'enabled' => true,
-            'keys' => [
-                'id' => '427082155860894',
-                'secret' => '464ccdbcb7657881d051219256aa8123',
-            ],
-            "scope" => "email",
-        ],
 
         'Google' => [
             'enabled' => true,
-            'keys' => ['id' => '78280605947-5b83n49acaot3ndt7rmjo9ikctjvmg6c.apps.googleusercontent.com', 'secret' => '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'],
+            'keys' => [
+                'key' => '78280605947-5b83n49acaot3ndt7rmjo9ikctjvmg6c.apps.googleusercontent.com',
+                'secret' => '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',
+            ],
+            'includeEmail' => true,
         ],
+
+        // 'Yahoo' => ['enabled' => true, 'keys' => ['key' => '...', 'secret' => '...']],
+        // 'Facebook' => ['enabled' => true, 'keys' => ['id' => '...', 'secret' => '...']],
+        // 'Twitter' => ['enabled' => true, 'keys' => ['key' => '...', 'secret' => '...']],
+        // 'Instagram' => ['enabled' => true, 'keys' => ['id' => '...', 'secret' => '...']],
+
     ],
 ];

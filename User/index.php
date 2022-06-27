@@ -1,17 +1,48 @@
 <?php
 setlocale(LC_ALL, "es_ES");
 // Initialize the session
-session_start();
+//session_start();
+if(!isset($_SESSION)) 
+    { 
+        session_start(); 
+    }
+    else
+    {
+        session_destroy();
+        session_start(); 
+    }
+
+echo 'entrada sesión: '.$_SESSION["id"];
 // date_default_timezone_set("America/Bogota");
 // Check if the user is already logged in, if yes then redirect him to welcome page
-if ($_SESSION["id"] == null) {
+
+
+if (empty($_SESSION["id"])) { 
     header("location: ../index.php");
     die();
+} else if(isset($_SESSION['loggedin'])){
+
+    echo 'Entro a el else por sesion logged'."</br>";
+
+    $mail = $_SESSION['mail'];
+
+    echo 'session logged: ' .$_SESSION['loggedin']."</br>";
+    echo 'session id: ' .$_SESSION['id']."</br>";
+    echo 'session rol: ' .$_SESSION['rol']."</br>";
+    echo 'session mail: ' .$_SESSION['mail']."</br>";
+
+
 }
 
 // Include config file
 require_once "../config.php";
 ?>
+
+<script type="text/javascript">
+        var loggedEmail = "<?php echo"$mail"?>";
+        document.write(loggedEmail);
+        console.log(loggedEmail);
+    </script>
 
 
 <!DOCTYPE html>
