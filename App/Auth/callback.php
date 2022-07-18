@@ -86,6 +86,11 @@ try {
             'last_name' => $userProfile->lastName,
             'photoURL' => strtok($userProfile->photoURL, '?'),
         ];
+
+        require_once '../../';
+
+        $register = new RegisterSocial();
+        $register -> insertUser($data,$provider);
         // ...
         // Close pop-up window
         echo "

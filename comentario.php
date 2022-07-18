@@ -136,29 +136,30 @@ while ($rowComentario = mysqli_fetch_array($resultComentario)) {
 
 
                             <div class="row d-flex justify-content-between mt-4">
-                                <div class="col-md-3 mt-2">
+                                <div class="col-md-3 col-sm-12 mt-2">
                                     <div class="d-flex justify-content-center" >
                                 <?php
 if ($rowComentario['userImage'] != null) {
         ?>
-                                        <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowComentario['userImage']); ?>" style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="50%" height="50%" class="rounded-circle" alt="Imagen de usuario">
+                                        <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowComentario['userImage']); ?>" style="object-fit: cover; object-position: center;" width="50%" height="50%" class="rounded-circle img-thumbnail img-perfil" alt="Imagen de usuario">
                                 <?php
 } else {?>
-                                    <img src="img/user.png"  style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="50%" height="50%" class="rounded-circle" alt="Imagen de usuario">
+                                    <img src="img/user.png"  style="object-fit: cover; object-position: center;" width="50%" height="50%" class="rounded-circle img-thumbnail img-perfil" alt="Imagen de usuario">
                                 <?php
 }
     ?>
                                 </div>
                                 </div>
-                                <div class="col-md-9 container-commentary">
+                                <div class="col-md-9 col-sm-12 container-commentary">
                                     <p class="mt-2"><?php echo $rowComentario['describeCommentary'] ?></p>
                                 </div>
-                            </div>
-                            <div class="row mt-2 ">
-                                <div class="col-md-3 d-flex justify-content-center">
+                                <div class="col-md-3 col-sm-12 mt-2 d-flex justify-content-center">
                                 <h5><?php echo $rowComentario['usernames'] ?></h5>
                                 </div>
                             </div>
+                            
+                              
+                            
                             <div class="row mb-2">
                                 <div class="col-md-6 d-flex justify-content-end">
                                     <div class="d-flex justify-content-between">

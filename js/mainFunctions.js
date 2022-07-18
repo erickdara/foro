@@ -14,6 +14,7 @@ $("#nav-bar").mouseover(function() {
     $("#header").toggleClass("body-pd").delay(1000);
 });
 
+
 $("#nav-bar").mouseout(function() {
     //alert("Estoy entrando al evento mouseover");
     $("#nav-bar").toggleClass("showMenu").delay(1000);
@@ -25,6 +26,16 @@ $("#nav-bar").mouseout(function() {
     $("#header").toggleClass("body-pd").delay(1000);
 
 });
+
+$( "#clickMenu" ).click(function() {
+    $("#nav-bar").toggleClass("showMenu").delay(1000);
+    // change icon
+    $("#header-toggle").toggleClass("bx-x").delay(1000);
+    // add padding to body
+    $("#body-pd").toggleClass("body-pd").delay(1000);
+    // add padding to header
+    $("#header").toggleClass("body-pd").delay(1000);
+  });
 
 // login USER
 function loginUser() {

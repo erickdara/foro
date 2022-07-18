@@ -49,7 +49,7 @@ class RegisterSocial{
                 printf("Falló la conexión: %s\n", mysqli_connect_error());
             }
 
-            $mail = $data->{'emailVerified'};
+            $mail = $data['email'];
 
             $query = mysqli_query($conn,"SELECT idUser, idRole, userMail, userImage FROM user WHERE userMail = '$mail'");
             $result = mysqli_fetch_array($query);
@@ -75,13 +75,11 @@ class RegisterSocial{
 
     public function insertUser($data, $provider)
     {
-        $identifier = $data->{'identifier'};
-        $mail= $data->{'emailVerified'};
 
-        //$provider = $provider;
-        $identifier = $data->{'identifier'};
-        $mail = $data->{'emailVerified'};
-        $username = $data->{'displayName'};
+        $provider = $provider;
+        $identifier = $data['identifier'];
+        $mail = $data['email'];
+        $username = $data['first_name'];
 
         echo 'El nombre provedor: ' . $provider;
 

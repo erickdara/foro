@@ -60,20 +60,20 @@ require_once "../config.php";
 </head>
 <header class="header" id="header">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 col-sm-12">
             <div class="header_toggle"> <i class='bx bx-menu' style="color: #071a39;" id="header-toggle"></i> </div>
         </div>
-        <div class="col-md-6 d-flex justify-content-start">
+        <div class="col-md-6 col-sm-6 d-flex justify-content-start">
             <h1 id="title"><span style="color: white; font-family: 'Alfa Slab One', cursive;">FORO ASSIST</span></h1>
         </div>
-        <div class="col-md-6 d-flex align-items-start justify-content-end">
+        <div class="col-md-6 col-sm-6 d-flex align-items-start justify-content-end">
             <div style="width: 5rem; height: 5rem; margin-right: 87px;">
                 <img src="../img/ForoTech.png" style="object-fit: contain; object-position: center;" width="100%"
                     height="100%">
             </div>
         </div>
         <div class="col-md-12 d-flex justify-content-start">
-            <div class="col-md-6 col-sm-2 pb-1">
+            <div class="col-md-6 col-sm-6 pb-1">
                 <?php
 if (isset($_SESSION['id'])) {?>
                 <a href="../User/index.php" type="button" class="btn text-light btn-nav">Temas</a>
@@ -83,7 +83,7 @@ if (isset($_SESSION['id'])) {?>
                 <a href="../actividad.php" type="button" class="btn text-light btn-nav">Actividad Reciente</a>
                 <a href="../comentario.php" type="button" class="btn text-light btn-nav">Comentarios</a>
             </div>
-
+            
             <div class="col-md-6 col-sm-4 mt-1 d-flex align-items-center justify-content-end">
                 <i class='bx bx-search bx-md' style='color:#fffbfb'></i>&nbsp;&nbsp;&nbsp;
                 <input type="text" id="buscar" name="buscar" onkeyup="buscar($('#buscar').val())"
@@ -551,40 +551,38 @@ $idTopic = $row['idTopic'];
     while ($rowComentario = mysqli_fetch_array($resultComentario)) {
         ?>
                     <div class="row collapse titulo-comentario mt-3" id="tema<?php echo $row['idTopic'] ?>">
-                        <div class="col-md-12 mt-3">
+                        <div class="col-md-12 col-sm-12 mt-3">
                             <h5><b>Comentario anterior</b></h5>
                         </div>
                         <?php
 
         ?>
                         <div class="row d-flex justify-content-between mt-4">
-                            <div class="col-md-3 mt-2">
-                                <div class="d-flex justify-content-center mb-2" style="width: 100%; height: 100%;">
+                            <div class="col-md-3 col-sm-12 mt-2">
+                                <div class="d-flex justify-content-center">
                                     <?php
 if ($rowComentario['userImage'] != null) {
             ?>
                                     <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowComentario['userImage']); ?>"
-                                        style="object-fit: cover; object-position: center;" width="60%" height="60%"
+                                        style="object-fit: cover; object-position: center;" width="50%" height="50%"
                                         class="img-thumbnail img-perfil rounded-circle" alt="Imagen de usuario">
                                     <?php
 } else {?>
                                     <img src="../img/user.png" style="object-fit: cover; object-position: center;"
-                                        width="60%" height="60%" class="img-thumbnail img-perfil rounded-circle"
+                                        width="50%" height="50%" class="img-thumbnail img-perfil rounded-circle"
                                         alt="Imagen de usuario">
                                     <?php
 }
         ?>
                                 </div>
                             </div>
-                            <div class="col-md-9 container-commentary">
+                            <div class="col-md-9 col-sm-12 container-commentary">
                                 <p class="mt-2"><?php echo $rowComentario['describeCommentary'] ?></p>
                             </div>
                         </div>
-                        <div class="row mt-2 ">
-                            <div class="col-md-3 mt-1 d-flex justify-content-center">
+                        <div class="col-md-3 col-sm-12 mt-1 d-flex justify-content-center">
                                 <h5><?php echo $rowComentario['usernames'] ?></h5>
                             </div>
-                        </div>
                         <?php
 $idCommentary = $rowComentario['idCommentary'];
         $queryCountRespuesta = "SELECT COUNT(*) AS res FROM answer a WHERE a.idCommentary = '$idCommentary' ";

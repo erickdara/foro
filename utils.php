@@ -58,14 +58,14 @@ class Utils{
     public function getlikeTema($idTopic){
         $sqlQuery = 'SELECT idLike, idTopic, idUser, typeLike, created_at FROM '.$this->liketopicTable." WHERE idTopic = '".$idTopic."'";
         $result = mysqli_query($this->dbConnect, $sqlQuery);
-        $row = $result->fetch_array(MYSQLI_ASSOC);
+        $row = mysqli_fetch_array($result);
         return  $row;
     }  
 
     public function getLikesUnlikesTema($idTopic){
         $sqlQuery = 'SELECT idTopic, idUser, likes, unlikes FROM '.$this->temaTable." WHERE idTopic = '".$idTopic."'";
         $result = mysqli_query($this->dbConnect, $sqlQuery);
-        $row = $result->fetch_array(MYSQLI_ASSOC);
+        $row = mysqli_fetch_array($result);
         return  $row;
     }   
 
@@ -115,14 +115,14 @@ class Utils{
     public function getlikeRespuesta($idAnswer){
         $sqlQuery = 'SELECT idLike, idAnswer, idUser, typeLike, created_at FROM '.$this->likeanswerTable." WHERE idAnswer = '".$idAnswer."'";
         $result = mysqli_query($this->dbConnect, $sqlQuery);
-        $row = $result->fetch_array(MYSQLI_ASSOC);
+        $row = mysqli_fetch_array($result);
         return  $row;
     }  
 
     public function getLikesUnlikesRespuesta($idAnswer){
         $sqlQuery = 'SELECT idAnswer, idCommentary, idUser, likes, unlikes FROM '.$this->respuestaTable." WHERE idAnswer = '".$idAnswer."'";
         $result = mysqli_query($this->dbConnect, $sqlQuery);
-        $row = $result->fetch_array(MYSQLI_ASSOC);
+        $row = mysqli_fetch_array($result);
         return  $row;
     }   
 
@@ -173,7 +173,7 @@ class Utils{
     public function getlikeComentario($idComment){
         $sqlQuery = 'SELECT idLike, idCommentary, idUser, typeLike, created_at FROM '.$this->likecommentaryTable." WHERE idCommentary = '".$idComment."'";
         $result = mysqli_query($this->dbConnect, $sqlQuery);
-        $row = $result->fetch_array(MYSQLI_ASSOC);
+        $row = mysqli_fetch_array($result);
         return  $row;
     }  
 

@@ -253,7 +253,14 @@ if ($rowUser['userImage'] != null) {
                         <form id="uploadImage" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" enctype="multipart/form-data">
                                 <div class="row mt-2">
                                     <div class="col-md-6 d-flex justify-content-end" style="margin:auto;">
-                                        <input type="file" id="image" name="image" class="form-control" >
+                                        <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <input type="file" id="image" name="image" class="form-control">
+                                                </div>
+                                                <div class="col-md-12 col-sm-12">
+                                                    <small style="color:rgb(236, 97, 97 );">Seleccione la imagen</small>
+                                                </div>
+                                            </div>
                                     </div>
                                     <div class="col-md-12 d-flex justify-content-center mt-4">
                                         <input type="submit" id="btnSubmit" name="submit" class="btn btn-danger" value="Actualizar imagen">

@@ -155,10 +155,10 @@ while ($rowActividad = mysqli_fetch_array($queryActividad)) {
                                     <?php
 if ($rowActividad['userImage'] != null) {
         ?>
-                                            <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowActividad['userImage']); ?>" style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="50%" height="50%" class="rounded-circle" alt="Imagen de usuario">
+                                            <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowActividad['userImage']); ?>" style="object-fit: cover; object-position: center;" width="50%" height="50%" class="rounded-circle img-perfil img-thumbnail" alt="Imagen de usuario">
                                     <?php
 } else {?>
-                                        <img src="img/user.png"  style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="50%" height="50%" class="rounded-circle" alt="Imagen de usuario">
+                                        <img src="img/user.png"  style="object-fit: cover; object-position: center; " width="50%" height="50%" class="rounded-circle img-thumbnail img-perfil" alt="Imagen de usuario">
                                     <?php
 }
     ?>

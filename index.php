@@ -60,10 +60,10 @@ $errors = [];
     echo 'El identificador: '.$identifier;
     echo 'El e-mail: '.$mail;
 
-    if(empty($data)){
-    $register = new RegisterSocial();
-    $register->insertUser($data, $name);
-    }
+    // if(empty($data)){
+    // $register = new RegisterSocial();
+    // $register->insertUser($data, $name);
+    // }
 ?>
 
 
@@ -83,9 +83,7 @@ $errors = [];
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
     <link rel="stylesheet" type="text/css" href="css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://www.google.com/recaptcha/api.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -103,8 +101,8 @@ $errors = [];
 
     <title>Foro ASSIST</title>
 </head>
-<header class="header" id="header">
-    <div class="row">
+<div class="header" id="header">
+    <header class="row">
 
         <div class="col-md-6 mt-4 d-flex justify-content-start">
             <h1 id="title"><span style="color: white; font-family: 'Alfa Slab One', cursive;">FORO ASSIST</span></h1>
@@ -138,8 +136,8 @@ if (isset($_SESSION['id'])) {?>
                     class="input-busqueda text-light" placeholder="Búsqueda">
             </div>
         </div>
-    </div>
-</header>
+    </header>
+                </div>
 <div class="l-navbar" id="nav-bar">
     <nav class="nav">
         <div>
