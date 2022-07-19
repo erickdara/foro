@@ -12,7 +12,6 @@ if(!isset($_SESSION))
         session_start(); 
     }
 
-echo 'entrada sesión: '.$_SESSION["id"];
 // date_default_timezone_set("America/Bogota");
 // Check if the user is already logged in, if yes then redirect him to welcome page
 
@@ -22,14 +21,8 @@ if (empty($_SESSION["id"])) {
     die();
 } else if(isset($_SESSION['loggedin'])){
 
-    echo 'Entro a el else por sesion logged'."</br>";
 
     $mail = $_SESSION['mail'];
-
-    echo 'session logged: ' .$_SESSION['loggedin']."</br>";
-    echo 'session id: ' .$_SESSION['id']."</br>";
-    echo 'session rol: ' .$_SESSION['rol']."</br>";
-    echo 'session mail: ' .$_SESSION['mail']."</br>";
 
 
 }
@@ -38,11 +31,6 @@ if (empty($_SESSION["id"])) {
 require_once "../config.php";
 ?>
 
-<script type="text/javascript">
-        var loggedEmail = "<?php echo"$mail"?>";
-        document.write(loggedEmail);
-        console.log(loggedEmail);
-    </script>
 
 
 <!DOCTYPE html>
@@ -52,47 +40,13 @@ require_once "../config.php";
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
     <link rel="stylesheet" type="text/css" href="../css/styles.css">
 
     <title>Foro ASSIST</title>
 </head>
-<header class="header" id="header">
-    <div class="row">
-        <div class="col-md-12 col-sm-12">
-            <div class="header_toggle"> <i class='bx bx-menu' style="color: #071a39;" id="header-toggle"></i> </div>
-        </div>
-        <div class="col-md-6 col-sm-6 d-flex justify-content-start">
-            <h1 id="title"><span style="color: white; font-family: 'Alfa Slab One', cursive;">FORO ASSIST</span></h1>
-        </div>
-        <div class="col-md-6 col-sm-6 d-flex align-items-start justify-content-end">
-            <div style="width: 5rem; height: 5rem; margin-right: 87px;">
-                <img src="../img/ForoTech.png" style="object-fit: contain; object-position: center;" width="100%"
-                    height="100%">
-            </div>
-        </div>
-        <div class="col-md-12 d-flex justify-content-start">
-            <div class="col-md-6 col-sm-6 pb-1">
-                <?php
-if (isset($_SESSION['id'])) {?>
-                <a href="../User/index.php" type="button" class="btn text-light btn-nav">Temas</a>
-                <?php } else {?>
-                <a href="index.php" type="button" class="btn text-light btn-nav">Temas</a>
-                <?php }?>
-                <a href="../actividad.php" type="button" class="btn text-light btn-nav">Actividad Reciente</a>
-                <a href="../comentario.php" type="button" class="btn text-light btn-nav">Comentarios</a>
-            </div>
-            
-            <div class="col-md-6 col-sm-4 mt-1 d-flex align-items-center justify-content-end">
-                <i class='bx bx-search bx-md' style='color:#fffbfb'></i>&nbsp;&nbsp;&nbsp;
-                <input type="text" id="buscar" name="buscar" onkeyup="buscar($('#buscar').val())"
-                    style="height:85%; background-color: #071a39; background: linear-gradient(180deg, rgba(0,69,127,1) 0%, rgba(6,43,77,1) 30%, rgba(3,39,73,1) 39%, rgba(3,33,68,1) 50%, rgba(7,26,57,1) 88%); border: 1px solid #ffff; border-radius: 5px; color:white; font-size:20px;"
-                    class="input-busqueda text-light" placeholder="Búsqueda">
-            </div>
-        </div>
-    </div>
-</header>
+
 <?php
 
 $idUsuario = $_SESSION['id'];
@@ -114,56 +68,6 @@ $rowUser = mysqli_fetch_array($queryUser);
     $num_rows = mysqli_num_rows($queryNotificacion);
 
 ?>
-<div class="l-navbar" id="nav-bar">
-    <nav class="nav">
-        <div class="nav_list">
-            <div class="">
-                <img class="imgLogo" style="margin-left: 0.6rem; margin-bottom: 1rem; " src="../img/Assist.png"
-                    width="27%" height="17%" alt="">
-            </div>
-            <div style="column-gap: 2rem;width: 1.5rem; height: 1.6rem; margin-left: 1.5rem;" class="d-flex mb-4">
-                <?php
-if ($rowUser['userImage'] != null) {
-    ?>
-                <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowUser['userImage']); ?>"
-                    style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="100%"
-                    height="100%" class="rounded-circle" alt="Imagen de usuario">
-                <?php
-} else {?>
-                <img src="../img/user.png" style="object-fit: cover; object-position: center; border:1px solid #ffff;"
-                    width="100%" height="100%" class="rounded-circle" alt="Imagen de usuario">
-                <?php
-}
-?>
-                <a href="../perfil.php" class="d-flex">
-                    <span class="nav_logo-name">Perfil</span>
-                </a>
-            </div>
-            <a class="nav_link active btn" id="notification" data-bs-toggle="collapse" href="#collapseNotificacion"
-                role="button" aria-expanded="false" aria-controls="collapseNotificacion"><i
-                    class='bx bxs-bell-ring bx-sm'><span id="notification_count"></span></i>Notificaciones </a>
-            <div class="collapse text-light" style="background-color: #d0252d; font-size: 13px;"
-                id="collapseNotificacion">
-                <?php 
-                    while($resultQueryNotificacion = mysqli_fetch_array($queryNotificacion)){
-                        $notificacion = $resultQueryNotificacion['idNotificationType'] == 1 ? 'creaste el tema': ($resultQueryNotificacion['idNotificationType'] == 2 ? 'comentó tu publicación' : 'respondió tu comentario en');?>
-                <div class="p-2">
-                    <p><b> <?php echo $resultQueryNotificacion['usernames'];?></b>
-                        <?php echo $notificacion." "."\"".$resultQueryNotificacion['titleTopic']."\""; ?></p>
-                </div>
-                <hr>
-
-                <?php }?>
-            </div>
-            <a href="../comunidadAssist.php" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span
-                    class="nav_name">Comunidad Assist</span> </a>
-            <a href="#" class="nav_link">
-        </div>
-
-        <a href="../logout.php" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name"
-                onclick="logoutSocial(provider)">Cerrar sesión</span> </a>
-    </nav>
-</div>
 
 
 <?php
@@ -178,12 +82,132 @@ $totalR = "SELECT COUNT(*) AS totalRespuestas FROM answer";
 $resultTotalR = mysqli_query($link, $totalR);
 $rowTotalR = mysqli_fetch_array($resultTotalR);
 ?>
+<body>
+     <!-- top navigation bar -->
+     <nav class="navbar-expand-lg navbar-dark container-fluid" id="header">
+    
+    <div class="row">
+        <div class="col-6 col-md-6 col-sm-6">
+            <h1 style="color: white; font-family: 'Alfa Slab One', cursive;"><span class="navbar-nav mt-3 me-auto ms-3 text-uppercase">FORO ASSIST</span></h1>
+        </div>
+        <div class="col-6 col-md-6 col-sm-6 d-flex justify-content-end">
+        <div class="mt-3 mb-1" style="width: 5rem; height: 5rem;">
+            <img src="../img/ForoTech.png" style="object-fit: contain; object-position: center;" width="100%"
+                height="100%">
+        </div>
+        </div>
+        <div class="col-sm-12 mt-2 mb-2 col-md-12 d-flex justify-content-between">
+            <button class="navbar-toggler clickMenu" type="button" data-bs-toggle="offcanvas" data-bs-target="#nav-bar" aria-controls="offcanvasExample">
+                <span class="clickMenu" data-bs-target="#nav-bar"><i class='bx bxs-home-alt-2 clickMenu' style='color:#ffffff'></i></span>
+            </button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNavBar" aria-controls="topNavBar" aria-expanded="false" aria-label="Toggle navigation">
+                        <span data-bs-target="#topNavBar"><i class='bx bx-menu' style='color:#f3efef'></i></span>
+            </button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#search" aria-controls="bsc" aria-expanded="false" aria-label="Toggle navigation">
+                        <span data-bs-target="#search"><i class='bx bx-search-alt-2' style='color:#ffffff'></i></span>
+            </button>
+        </div>
+        <div class="col-12 col-md-12 col-sm-12 ">
+            <div class="row">
+              
+                <div class="col-sm-12 col-md-7 align-items-end collapse navbar-collapse" id="topNavBar">
+                 <ul class="d-flex">
+                    <li>
+                <?php
+                if (isset($_SESSION['id'])) {?>
+                        <a href="../User/index.php" type="button" class="btn text-light btn-nav">Temas</a>
+            <?php } else {?>
+                        <a href="index.php" type="button" class="btn text-light btn-nav">Temas</a>
+            <?php }?>
+                    </li>
+                    <li>
+                        <a href="../actividad.php" type="button" class="btn text-light btn-nav">Actividad</a>
+                    </li>
+                    <li>
+                        <a href="../comentario.php" type="button" class="btn text-light btn-nav">Comentarios</a>
+                    </li>
+                    </ul>
+                </div>
+             
+                <div class="collapse navbar-collapse col-sm-12 col-md-5 " id="search">
+                    <form class="d-flex ms-auto my-3 my-lg-0">
+                        <div class="input-group">
+                        <i class='bx bx-search bx-md' style='color:#fffbfb'></i>&nbsp;&nbsp;   
+                        <input type="text" id="buscar" name="buscar" onkeyup="userBuscar($('#buscar').val())" class="input-busqueda text-light form-control" placeholder="Búsqueda" 
+                        style="height:100%; background-color: #071a39; background: linear-gradient(180deg, rgba(0,69,127,1) 0%, rgba(6,43,77,1) 30%, rgba(3,39,73,1) 39%, rgba(3,33,68,1) 50%, rgba(7,26,57,1) 88%); border: 1px solid #ffff; border-radius: 5px; color:white; font-size:20px;">
+                        </div>
+                    </form>
+                </div>
+            
+            </div>
+            
+        </div>     
+  </div>
+</nav>
+<!-- top navigation bar -->
+<!-- offcanvas -->
+<div class="offcanvas offcanvas-start sidebar-nav" tabindex="-1" id="nav-bar">
+  <div class="offcanvas-body p-0" style="height:100%;">
+   
+      <ul class="navbar-nav">
+      <li class="nav_logo" style="width:5rem; height:4rem; margin-bottom: 2rem; margin-top:1rem;">
+                <img class="imgLogo" src="../img/Assist.png" width="100%" height="100%" alt="">
+        </li>
+        <a href="../perfil.php" class="d-flex">
+        <li  style="column-gap: 1.2rem;width: 1.5rem; height: 1.6rem; margin-left: 2rem;" class="d-flex mb-4">
+                                <?php
+if ($rowUser['userImage'] != null) {
+?>
+            <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rowUser['userImage']); ?>"
+                style="object-fit: cover; object-position: center; border:1px solid #ffff;" width="100%"
+                height="100%" class="rounded-circle" alt="Imagen de usuario">
+            <?php
+} else {?>
+            <img src="../img/user.png" style="object-fit: cover; object-position: center; border:1px solid #ffff;"
+                width="100%" height="100%" class="rounded-circle" alt="Imagen de usuario">
+            <?php
+}
+?>     
+                <span class="nav_link">Perfil</span>     
+        </li>
+        </a>
+        <li>
+        <a class="nav_link btn" id="notification" data-bs-toggle="collapse" href="#collapseNotificacion"
+            role="button" aria-expanded="false" aria-controls="collapseNotificacion"><i
+                class='bx bxs-bell-ring bx-sm'><span id="notification_count"></span></i>Notificaciones </a>
+                <div class="collapse text-light" style="background-color: #d0252d; font-size: 13px;"
+            id="collapseNotificacion">
+            <?php 
+                while($resultQueryNotificacion = mysqli_fetch_array($queryNotificacion)){
+                    $notificacion = $resultQueryNotificacion['idNotificationType'] == 1 ? 'creaste el tema': ($resultQueryNotificacion['idNotificationType'] == 2 ? 'comentó tu publicación' : 'respondió tu comentario en');?>
+            <div class="p-2">
+                <p><b> <?php echo $resultQueryNotificacion['usernames'];?></b>
+                    <?php echo $notificacion." "."\"".$resultQueryNotificacion['titleTopic']."\""; ?></p>
+            </div>
+            <hr>
 
+            <?php }?>
+        </div>  
+        </li>
+        <li>
+            <a href="../comunidadAssist.php" class="nav_link"> <i class='bx bx-user nav_icon bx-sm'></i> <span
+                    class="nav_name">Comunidad Assist</span> </a>
+            <a href="#" class="nav_link">
+        </li>
+        <li>
+        <a href="../logout.php" class="nav_link"> <i class='bx bx-log-out nav_icon bx-sm'></i> <span class="nav_name"
+            onclick="logoutSocial(provider)">Cerrar sesión</span> </a> 
+        </li>
+        <li class="my-4"><hr class="dropdown-divider bg-light" /></li>
+      </ul>
+  </div>
+</div>
+<!-- offcanvas -->
     <div class="height-100 bg-light">
 <!--Container Main start-->
     <div class="container">
-        <div class="row contain"></div>
-        <div id="datos_buscador" class="row mt-4">
+        <div class="row contain mb-4"></div>
+        <div id="datos_buscador" class="row">
 
         </div>
         <?php 
@@ -771,7 +795,7 @@ if( $numTemas == 0){?>
     </div>
 </div>
 <!--Container Main end-->
-
+</body>
 <script type="text/javascript">
 var getCountNotifications = "<?php echo"$num_rows"?>";
 document.write('<text style="visibility: hidden">getCountNotifications</text>');
@@ -780,6 +804,6 @@ document.write('<text style="visibility: hidden">getCountNotifications</text>');
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="../js/mainFunctions.js"></script>
 <script type="text/javascript" src="../js/likes.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 </html>

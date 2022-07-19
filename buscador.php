@@ -17,7 +17,7 @@ $num = mysqli_num_rows($buscador);
 <?php }else{ ?>
     <h5 style="background-color: #ff060630; color: #850404;" class="card-tittle mt-3 p-1">Resultados encontrados (<?php echo $num?>)</h5>
 <?php    }
-while($result = mysqli_fetch_assoc($buscador)){?>
+while($result = mysqli_fetch_array($buscador)){?>
     <div class="card tema-informacion mt-2 mb-3">
                     <div class="card-body">
                         <div class="row">
@@ -77,6 +77,8 @@ while($result = mysqli_fetch_assoc($buscador)){?>
                                 <a class="btn" style="background-color: rgb(7, 26, 57); color: rgb(255 50 59);" href="#tema_<?php echo $result['idTopic'] ?>"><h6><b>VER TEMA</b></h6></a>
                             </div>
                         </div>
+                        </div>
+</div>
 
 <?php
 }

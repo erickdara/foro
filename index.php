@@ -101,69 +101,7 @@ $errors = [];
 
     <title>Foro ASSIST</title>
 </head>
-<div class="header" id="header">
-    <header class="row">
 
-        <div class="col-md-6 mt-4 d-flex justify-content-start">
-            <h1 id="title"><span style="color: white; font-family: 'Alfa Slab One', cursive;">FORO ASSIST</span></h1>
-        </div>
-        <div class="col-md-6 mt-4 d-flex align-items-start justify-content-end">
-            <div style="width: 5rem; height: 5rem; margin-right: 87px;">
-                <img src="./img/ForoTech.png" style="object-fit: contain; object-position: center;" width="100%"
-                    height="100%">
-            </div>
-        </div>
-
-
-        <!-- <div class="header_img"> <img src="https://i.imgur.com/hczKIze.jpg" alt=""> </div> -->
-
-        <div class="col-md-12 d-flex justify-content-start mt-2">
-            <div class="col-md-6 col-sm-2 pb-1">
-                <?php
-if (isset($_SESSION['id'])) {?>
-                <a href="../User/index.php" type="button" class="btn text-light btn-nav">Temas</a>
-                <?php } else {?>
-                <a href="index.php" type="button" class="btn text-light btn-nav">Temas</a>
-                <?php }?>
-                <a href="actividad.php" type="button" class="btn text-light btn-nav">Actividad Reciente</a>
-                <a href="comentario.php" type="button" class="btn text-light btn-nav">Comentarios</a>
-            </div>
-
-            <div class="col-md-6 col-sm- 4 d-flex align-items-center justify-content-end">
-                <i class='bx bx-search bx-md' style='color:#fffbfb'></i>&nbsp;&nbsp;&nbsp;
-                <input type="text" id="buscar" name="buscar" onkeyup="strangeBuscar($('#buscar').val())"
-                    style="height:100%; background-color: #071a39; background: linear-gradient(180deg, rgba(0,69,127,1) 0%, rgba(6,43,77,1) 30%, rgba(3,39,73,1) 39%, rgba(3,33,68,1) 50%, rgba(7,26,57,1) 88%); border: 1px solid #ffff; border-radius: 5px; color:white; font-size:20px;"
-                    class="input-busqueda text-light" placeholder="Búsqueda">
-            </div>
-        </div>
-    </header>
-                </div>
-<div class="l-navbar" id="nav-bar">
-    <nav class="nav">
-        <div>
-
-            <div class="nav_list">
-                <div class="">
-                    <img class="imgLogo" style="margin-left: 0.6rem; margin-bottom: 1rem;"
-                        src="./img/Assist.png" width="27%" height="15%" alt="">
-                </div>
-                <a href="#" class="nav_link" data-bs-toggle="modal" data-bs-target="#loginModal" id="logModal"> <i
-                        class='bx bx-layer nav_icon'></i> <span class="nav_name">Iniciar Sesion</span> </a>
-                <a href="#" class="nav_link active" data-bs-toggle="modal" data-bs-target="#registerModal"> <i
-                        class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Registrarse</span> </a>
-                <a href="./comunidadAssist.php" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span
-                        class="nav_name">Comunidad Assist</span> </a>
-                <a href="#" class="nav_link">
-            </div>
-        </div>
-        <?php if(isset($_SESSION['id'])){ ?>
-        <a href="logout.php" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">Cerrar
-                sesión</span> </a>
-        <?php }else{?>
-        <a href="#"></a>
-        <?php } ?>
-    </nav>
-</div>
 <!--Container Main start-->
 <?php
 require_once "config.php";
@@ -180,10 +118,106 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
 ?>
 
 <body>
+     <!-- top navigation bar -->
+     <nav class="navbar-expand-lg navbar-dark container-fluid" id="header">
+    
+    <div class="row">
+        <div class="col-6 col-md-6 col-sm-6">
+            <h1 style="color: white; font-family: 'Alfa Slab One', cursive;"><span class="navbar-nav mt-3 me-auto ms-3 text-uppercase">FORO ASSIST</span></h1>
+        </div>
+        <div class="col-6 col-md-6 col-sm-6 d-flex justify-content-end">
+        <div class="mt-3 mb-1" style="width: 5rem; height: 5rem;">
+            <img src="./img/ForoTech.png" style="object-fit: contain; object-position: center;" width="100%"
+                height="100%">
+        </div>
+        </div>
+        <div class="col-sm-12 mt-2 mb-2 col-md-12 d-flex justify-content-between">
+            <button class="navbar-toggler clickMenu" type="button" data-bs-toggle="offcanvas" data-bs-target="#nav-bar" aria-controls="offcanvasExample">
+                <span class="clickMenu" data-bs-target="#nav-bar"><i class='bx bxs-home-alt-2 clickMenu' style='color:#ffffff'></i></span>
+            </button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNavBar" aria-controls="topNavBar" aria-expanded="false" aria-label="Toggle navigation">
+                        <span data-bs-target="#topNavBar"><i class='bx bx-menu' style='color:#f3efef'></i></span>
+            </button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#search" aria-controls="bsc" aria-expanded="false" aria-label="Toggle navigation">
+                        <span data-bs-target="#search"><i class='bx bx-search-alt-2' style='color:#ffffff'></i></span>
+            </button>
+        </div>
+        <div class="col-12 col-md-12 col-sm-12 ">
+            <div class="row">
+              
+                <div class="col-sm-12 col-md-7 align-items-end collapse navbar-collapse" id="topNavBar">
+                 <ul class="d-flex">
+                    <li>
+                <?php
+                if (isset($_SESSION['id'])) {?>
+                        <a href="../User/index.php" type="button" class="btn text-light btn-nav">Temas</a>
+            <?php } else {?>
+                        <a href="index.php" type="button" class="btn text-light btn-nav">Temas</a>
+            <?php }?>
+                    </li>
+                    <li>
+                        <a href="actividad.php" type="button" class="btn text-light btn-nav">Actividad</a>
+                    </li>
+                    <li>
+                        <a href="comentario.php" type="button" class="btn text-light btn-nav">Comentarios</a>
+                    </li>
+                    </ul>
+                </div>
+             
+                <div class="collapse navbar-collapse col-sm-12 col-md-5 " id="search">
+                    <form class="d-flex ms-auto my-3 my-lg-0">
+                        <div class="input-group">
+                            
+                        <i class='bx bx-search bx-md' style='color:#fffbfb'></i>&nbsp;&nbsp;
+                        <input class="form-control input-busqueda text-light" id="buscar" type="texto" placeholder="Búsqueda" name="buscar" onkeyup="strangeBuscar($('#buscar').val())"
+                        style="height:100%; background-color: #071a39; background: linear-gradient(180deg, rgba(0,69,127,1) 0%, rgba(6,43,77,1) 30%, rgba(3,39,73,1) 39%, rgba(3,33,68,1) 50%, rgba(7,26,57,1) 88%); border: 1px solid #ffff; border-radius: 5px; color:white; font-size:20px;">
+                        </div>
+                    </form>
+                </div>
+            
+            </div>
+            
+        </div>     
+  </div>
+</nav>
+<!-- top navigation bar -->
+<!-- offcanvas -->
+<div class="offcanvas offcanvas-start sidebar-nav" tabindex="-1" id="nav-bar">
+  <div class="offcanvas-body p-0" style="height:100%;">
+   
+      <ul class="navbar-nav">
+      <li class="nav_logo" style="width:5rem; height:4rem; margin-bottom: 2rem; margin-top:1rem;">
+                <img class="imgLogo" src="./img/Assist.png" width="100%" height="100%" alt="">
+        </li>
+        <li>
+        <a href="#" class="nav_link" data-bs-toggle="modal" data-bs-target="#loginModal" id="logModal"> <i
+                    class='bx bx-layer nav_icon bx-sm'></i> <span class="nav_name">Iniciar Sesion</span> </a>
+        </li>
+        <li>
+        <a href="#" class="nav_link active" data-bs-toggle="modal" data-bs-target="#registerModal"> <i
+                    class='bx bx-grid-alt nav_icon bx-sm'></i><span class="nav_name">Registrarse</span> </a>
+        </li>
+        <li>
+        <a href="./comunidadAssist.php" class="nav_link"> <i class='bx bx-user nav_icon bx-sm'></i> <span
+                    class="nav_name">Comunidad Assist</span> </a>
+            <a href="#" class="nav_link">
+        </li>
+        <li>
+        <?php if(isset($_SESSION['id'])){ ?>
+            <a href="logout.php" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">Cerrar sesión</span> </a>
+        <?php }else{?>
+            <a href="#"></a>
+        <?php } ?>
+        </li>
+        <li class="my-4"><hr class="dropdown-divider bg-light" /></li>
+      </ul>
+  </div>
+</div>
+<!-- offcanvas -->
     <div class="height-100 bg-light">
         <div class="container">
             <div class="row contain"></div>
-            <div id="datos_buscador" class="row mt-4">
+            <div id="datos_buscador" class="row">
 
             </div>
             <?php 
@@ -831,9 +865,9 @@ if( $numTemas == 0){?>
     </div>
     <!-- Fin Modal Login -->
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="js/mainFunctions.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 </html>

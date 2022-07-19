@@ -178,7 +178,7 @@ function registerUser() {
     );
 }
 
-function buscar(buscar) {
+function userBuscar(buscar) {
     var parametros = { buscar: buscar };
     $.ajax({
         type: "GET",
@@ -199,7 +199,7 @@ function strangeBuscar(buscar) {
     var parametros = { buscar: buscar };
     $.ajax({
         type: "GET",
-        url: "buscador.php",
+        url: "./buscador.php",
         data: parametros,
         success: function(data) {
             // $(data).insertBefore("#datos_buscador");
