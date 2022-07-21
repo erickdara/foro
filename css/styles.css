@@ -26,6 +26,10 @@ body {
     transition: 0.5s;
 }
 
+h6{
+    font-size:15px;
+}
+
 
 .offcanvas-body{
     scrollbar-width:none;
@@ -134,7 +138,6 @@ body {
         padding-left:var(--offcanvas-width);
     }
     
-  
   }
   
   

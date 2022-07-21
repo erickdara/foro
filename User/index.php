@@ -221,7 +221,7 @@ if ($rowUser['userImage'] != null) {
 
                     ?>
 
-        <div class="row d-flex justify-start-end mt-4">
+        <!-- <div class="row d-flex justify-start-end mt-4">
             <div class="col-md-2 d-flex align-items-end justify-content-start">
                 <div class="row tema">
                     <button type="button" class="btn d-flex justify-content-between align-items-center"
@@ -248,7 +248,34 @@ if ($rowUser['userImage'] != null) {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
+            <div class="row mt-4">
+            <div class="col-md-3 col-sm-12">
+                <div class="row d-flex justify-content-center mt-4">
+                    <button type="button" class="btn col-md-10 col-sm-10 justify-content-between align-items-start" data-bs-toggle="modal" data-bs-target="#modalTema<?php echo $_SESSION['rol'] ?>">
+                        <div class="row">
+                            <i class='col-md-3 col-sm-3 bx bx-plus-circle bx-md'></i>
+                            <h5 class="col-md-9 col-sm-9 text-center text-add-tema mt-1">CREAR TEMA</h5>  
+                        </div>
+                    </button>
+                </div>
+        </div>
+        <div class="col-md-4 col-sm-12 mb-2">
+        <div class="card info">
+                        <div class="card-body">
+                            <div class="row d-flex justify-content-center"> 
+                            <div class="col-md-6 col-sm-12 num-commentary pt-2 mb-1">
+                                <h6 class="text-center text-light">COMENTARIOS</h6>
+                                <h6 class="text-center text-light"><?php echo $rowTotalC['totalComentarios']; ?></h6>
+                            </div>
+                            <div class="col-md-5 col-sm-12 num-answer pt-2 mb-1">
+                                <h6 class="text-center text-light">RESPUESTAS</h6>
+                                <h6 class="text-center text-light"><?php echo $rowTotalR['totalRespuestas']; ?></h6>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+        </div>
 
             <!-- Spinner Start -->
             <div id="spinner"

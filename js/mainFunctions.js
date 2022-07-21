@@ -524,6 +524,25 @@ $(document).ready(function() {
         }
   },1000);
     getCountNotification();
+
+    //Controlo tamaño de pantalla para mostrar titulo o icono
+    if ($(window).width() <= 600){ 
+        // $('.banner').css('background-image', 'url(' + imageUrl + ')');
+        // $('#idPrincipal').html(`<div id="logoForo" class="mt-3 mb-1" style="width: 10rem; height: 5rem;">
+        // <img src="./img/logoHorizontalAssist.png" width="100%" height="100%">
+        // </div>`);
+        $('#logoForo').show();
+        $('#tituloForo').hide();
+     //    $('.addTopic').removeClass("justify-content-end").addClass("justify-content-center");
+     } else if ($(window).width() >= 800){ 
+         $('#tituloForo').show();
+         $('#logoForo').hide();
+     //    $('.addTopic').removeClass("justify-content-center").addClass("justify-content-end");
+     } else if ($(window).width() >= 1024){ 
+         $('#tituloForo').show();
+         $('#logoForo').hide();
+      //    $('.addTopic').removeClass("justify-content-center").addClass("justify-content-end");
+      }
    
 });
 
@@ -577,4 +596,29 @@ $('#notification').click(function (e) {
     $('#notification_count').is(":hidden") ? $('#notification_count').show() : $('#notification_count').show();
   });
 
- 
+//   $("#search").keyup(function() {
+//     setTimeout(function (){    
+//         $("#search").collapse("hide");          
+//     }, 5000);
+//   });
+
+$(window).resize(function(){
+    if ($(window).width() <= 600){ 
+       // $('.banner').css('background-image', 'url(' + imageUrl + ')');
+    //    $('#idPrincipal').html(`<div id="logoForo" class="mt-3 mb-1" style="width: 10rem; height: 5rem;">
+    //    <img src="./img/logoHorizontalAssist.png" width="100%" height="100%">
+    //    </div>`);
+    $('#logoForo').show();
+       $('#tituloForo').hide();
+    //    $('.addTopic').removeClass("justify-content-end").addClass("justify-content-center");
+    } else if ($(window).width() >= 800){ 
+        $('#tituloForo').show();
+        $('#logoForo').hide();
+    //    $('.addTopic').removeClass("justify-content-center").addClass("justify-content-end");
+    } else if ($(window).width() >= 1024){ 
+        $('#tituloForo').show();
+        $('#logoForo').hide();
+     //    $('.addTopic').removeClass("justify-content-center").addClass("justify-content-end");
+     }
+});
+  

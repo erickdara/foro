@@ -133,6 +133,43 @@ if (isset($_SESSION['id'])) {
       </div>
     </div>
     <!-- offcanvas -->
+    <div class="row mb-4"></div>
+    <div class="row mb-4"></div>
+    <div class="row mb-4"></div>
+    <div class="row mb-4"></div>
+    <div class="row mt-4" style="margin-left:200px;">
+        <div class="col-md-3 col-sm-12">
+            <button type="button" class="btn justify-content-between align-items-start" data-bs-toggle="modal" data-bs-target="#validateModal">
+                <div class="row">
+                    <i class='col-md-12 col-sm-12 d-flex justify-content-end bx bx-plus-circle bx-md'><h5 class="text-center text-add-tema">CREAR TEMA</h5>  </i>
+                </div>
+            </button>
+        </div>
+        <div class="col-md-4 col-sm-12">
+        <div class="card info">
+                        <div class="card-body">
+                            <div class="row d-flex justify-content-center"> 
+                            <div class="col-md-6 num-commentary pt-2">
+                                <h6 class="text-center text-light">COMENTARIOS</h6>
+                                <h6 class="text-center text-light">10</h6>
+                            </div>
+                            <div class="col-md-5 num-answer pt-2">
+                                <h6 class="text-center text-light">RESPUESTAS</h6>
+                                <h6 class="text-center text-light">30</h6>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+        </div>
+        <div class="col-md-5 col-sm-12">
+        <div id="carouselExampleControls" class="carousel slide carousel-fade" data-bs-ride="carousel">
+                <div class="carousel-item active">
+                    <div class="card bg-light d-flex justify-content-center align-items-center" style="height: 100%;">
+                       <h3 style="color: rgb(255 50 59);"><b>Top Temas Interactuados</b></h3>
+                </div>
+        </div>
+        </div>
+    </div>
 
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>

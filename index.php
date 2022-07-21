@@ -122,8 +122,12 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
      <nav class="navbar-expand-lg navbar-dark container-fluid" id="header">
     
     <div class="row">
-        <div class="col-6 col-md-6 col-sm-6">
-            <h1 style="color: white; font-family: 'Alfa Slab One', cursive;"><span class="navbar-nav mt-3 me-auto ms-3 text-uppercase">FORO ASSIST</span></h1>
+        <div id="idPrincipal" class="col-6 col-md-6 col-sm-6">
+            <!-- <h1 id="tituloForo" style="color: white; font-family: 'Alfa Slab One', cursive;"><span class="navbar-nav mt-3 me-auto ms-3 text-uppercase">FORO ASSIST</span></h1>
+            <div id="logoForo" class="mt-3 mb-1" style="width: 10rem; height: 5rem;">
+            <img  src="./img/logoHorizontalAssist.png" width="100%" height="100%">
+            </div> -->
+            
         </div>
         <div class="col-6 col-md-6 col-sm-6 d-flex justify-content-end">
         <div class="mt-3 mb-1" style="width: 5rem; height: 5rem;">
@@ -221,7 +225,7 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
 
             </div>
             <?php 
-                $queryTop = mysqli_query($link,"SELECT t.idTopic, t.titleTopic, u.usernames as nombres, t.likes, COUNT(c.idTopic) as num_com 
+                $queryTop = mysqli_query($link,"SELECT t.idTopic, t.titleTopic, u.usernames as nombres, u.userImage, t.likes, t.unlikes, COUNT(c.idTopic) as num_com 
                 FROM commentary c
                 INNER JOIN topic t ON c.idTopic = t.idTopic
                 INNER JOIN user u ON t.idUser = u.idUser
@@ -231,15 +235,41 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
 
                     ?>
 
-            <div class="row d-flex justify-start-end mt-4">
-                <div class="col-md-2 d-flex align-items-end justify-content-start">
+            <div class="row mt-4">
+            <div class="col-md-3 col-sm-12">
+                <div class="row d-flex justify-content-center mt-4">
+                    <button type="button" class="btn col-md-10 col-sm-10 justify-content-between align-items-start" data-bs-toggle="modal" data-bs-target="#validateModal">
+                        <div class="row">
+                            <i class='col-md-3 col-sm-3 bx bx-plus-circle bx-md'></i>
+                            <h5 class="col-md-9 col-sm-9 text-center text-add-tema mt-1">CREAR TEMA</h5>  
+                        </div>
+                    </button>
+                </div>
+        </div>
+        <div class="col-md-4 col-sm-12 mb-2">
+        <div class="card info">
+                        <div class="card-body">
+                            <div class="row d-flex justify-content-center"> 
+                            <div class="col-md-6 col-sm-12 num-commentary pt-2 mb-1">
+                                <h6 class="text-center text-light">COMENTARIOS</h6>
+                                <h6 class="text-center text-light"><?php echo $rowTotalC['totalComentarios']; ?></h6>
+                            </div>
+                            <div class="col-md-5 col-sm-12 num-answer pt-2 mb-1">
+                                <h6 class="text-center text-light">RESPUESTAS</h6>
+                                <h6 class="text-center text-light"><?php echo $rowTotalR['totalRespuestas']; ?></h6>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+        </div>
+                <!-- <div class="col-md-2 col-sm-12 d-flex align-items-end justify-content-start">
                     <div class="row tema">
                         <button type="button" class="btn justify-content-between align-items-start"
                             data-bs-toggle="modal" data-bs-target="#validateModal">
-                            <div class="col-md-6 d-flex justify-content-end btn">
-                                <img class="img img-add-tema" src="img/agregar.png" alt="">
+                            <div class="col-md-6 col-sm-6 d-flex justify-content-end btn">
+                                <i class='bx bx-plus-circle bx-md'></i>
                             </div>
-                            <div class="col-md-6 d-flex justify-content-center btn">
+                            <div class="col-md-6 col-sm-6 d-flex justify-content-center btn">
                                 <h5 class="text-center text-add-tema text-nowrap">CREAR TEMA</h5>
                             </div>
                         </button>
@@ -250,15 +280,15 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                         <div class="row card-body d-flex">
                             <div class="col num-commentary pt-2">
                                 <h6 class="text-center text-light">COMENTARIOS</h6>
-                                <h6 class="text-center text-light"><?php echo $rowTotalC['totalComentarios']; ?></h6>
+                                <h6 class="text-center text-light"><?php // echo $rowTotalC['totalComentarios']; ?></h6>
                             </div>
                             <div class="col num-answer pt-2">
                                 <h6 class="text-center text-light">RESPUESTAS</h6>
-                                <h6 class="text-center text-light"><?php echo $rowTotalR['totalRespuestas']; ?></h6>
+                                <h6 class="text-center text-light"><?php // echo $rowTotalR['totalRespuestas']; ?></h6>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- Spinner Start -->
                 <div id="spinner"
@@ -273,7 +303,7 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                         <span class="visually-hidden">Loading...</span>
                     </div>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-5 col-sm-12 mt-2">
                     <!-- Spinner End -->
 
                     <!-- Start Carousel -->
@@ -286,8 +316,8 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                         <div class="carousel-item">
                             <div class="card">
                             <a href="#tema_<?php echo $resultTop['idTopic']?>">
-                                <div class="row mx-3 pt-2">
-                                    <div class="col-2 col-md-2 d-flex justify-content-end">
+                                <div class="row mx-3 ms-3 pt-2">
+                                    <div class="col-2 col-md-2 d-flex justify-content-end ms-3">
                         <?php
                         if ($resultTop['userImage'] != null) {
                             ?>
@@ -306,22 +336,22 @@ $rowTotalR = mysqli_fetch_array($resultTotalR);
                                         <b style="color: rgb(255 50 59);">Tema:</b>&nbsp;<b style="color: rgb(7, 26, 57);">Transformación digital</b>
                                     </div> -->
                                 </div>
-                                <div class="row mt-2 mx-1">
-                                    <div class="col-md-12 col-12">
+                                <div class="row mt-2 ms-1">
+                                    <div class="col-md-12 col-sm-12">
                                         <b style="color: rgb(255 50 59);">Tema:</b>&nbsp;<b
                                             style="color: rgb(7, 26, 57);"><?php echo $resultTop['titleTopic'] ?></b>
                                     </div>
                                 </div>
-                                <div class="row mt-1">
-                                    <div class="col-3 col-md-3 d-flex justify-content-center">&nbsp;&nbsp;
+                                <div class="row mt-1 ms-2">
+                                    <div class="col-sm-3 col-md-3 ">
                                         <small
                                             style="color:rgb(0, 253, 93);">Likes:<?php echo $resultTop['likes'] ?></small>
                                     </div>
-                                    <div class="col-3 col-md-3 d-flex justify-content-start">
+                                    <div class="col-sm-3 col-md-3">
                                         <small style="color: rgb(255, 22, 22);">Unlikes:
                                             <?php echo $resultTop['unlikes'] ?></small>
                                     </div>
-                                    <div class="col-4 col-md-4 text-dark">
+                                    <div class="col-sm-12 col-md-4 text-dark ">
                                         <small>Comentarios:<?php echo $resultTop['num_com'] ?></small>
                                     </div>
                                 </div>

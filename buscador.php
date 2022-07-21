@@ -21,10 +21,10 @@ while($result = mysqli_fetch_array($buscador)){?>
     <div class="card tema-informacion mt-2 mb-3">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-5 ">
+                            <div class="col-md-5 col-sm-12">
                                 <h6><strong>Publicado por: <?php echo $result['usernames'] ?> </strong></h6>
                             </div>
-                            <div class="col-7">
+                            <div class="col-md-7 col-sm-12">
                                 <p class="text-muted" style="font-size: smaller;">Fecha: <?php echo $result['fecha'] ?></p>
                             </div>
                         </div>
